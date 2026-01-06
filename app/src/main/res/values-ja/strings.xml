@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Simple Workout Log</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">ホーム</string>
+    <string name="nav_history">履歴</string>
+    <string name="nav_calendar">カレンダー</string>
+    <string name="nav_graph">グラフ</string>
+    <string name="nav_settings">設定</string>
+
+    <!-- Common -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">キャンセル</string>
+    <string name="common_close">閉じる</string>
+    <string name="common_yes">はい</string>
+    <string name="common_no">いいえ</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    <string name="save">保存</string>
+    <string name="back">戻る</string>
+    <string name="coming_soon">準備中</string>
+    <string name="confirm">確定</string>
+    <string name="discard">破棄</string>
+    <string name="rename">名前変更</string>
+
+    <!-- Main Screen -->
+    <string name="today_grand_total">Today Grand Total</string>
+    <string name="card_today_menu">今日のトレーニングメニュー</string>
+    <string name="midnight_rule_note">午前0時から午前3時の記録は前日の記録として保存されます</string>
+    <string name="settings_hint">言語とkg/lbs,km/mileは設定で変更できます</string>
+
+    <!-- Workout Types -->
+    <string name="select_workout_type">運動種別を選択</string>
+    <string name="workout_strength">筋トレ</string>
+    <string name="workout_cardio">有酸素運動</string>
+    <string name="workout_interval">インターバルトレーニング</string>
+    <string name="workout_studio">スタジオ</string>
+    <string name="add_workout_type">＋ 新規タイプを追加</string>
+    <string name="workout_type_name">タイプ名</string>
+
+    <!-- Exercise Selection -->
+    <string name="select_exercise">種目を選択</string>
+    <string name="empty_slot">空欄</string>
+    <string name="add_new_exercise">＋ 新規種目を追加</string>
+    <string name="exercise_name">種目名</string>
+
+    <!-- Strength Training -->
+    <string name="reps">reps</string>
+    <string name="add_new_set">＋ 新たなセット</string>
+    <string name="session_total">total</string>
+    <string name="finish_training">トレーニング終了・保存</string>
+    <string name="finish_and_save">終了・保存</string>
+    <string name="go_home">Homeに戻る</string>
+    <string name="discard_confirm_title">変更を破棄しますか？</string>
+    <string name="discard_confirm_message">保存されていない確定済みセットがあります。破棄しますか？</string>
+
+    <!-- Delete Confirm -->
+    <string name="delete_confirm_title">削除しますか？</string>
+    <string name="delete_confirm_message">「%1$s」を削除してもよろしいですか？</string>
+
+    <!-- Cardio / Interval / Studio -->
+    <string name="duration_minutes">時間（分）</string>
+    <string name="distance">距離</string>
+    <string name="calories">消費カロリー</string>
+    <string name="kcal">kcal</string>
+    <string name="cardio_coming_soon">有酸素運動画面 - 準備中\n基本的な時間入力のみ</string>
+    <string name="interval_coming_soon">インターバル画面 - 準備中\n基本的な時間入力のみ</string>
+
+    <!-- Exercise Names - Strength -->
+    <string name="exercise_bench_press">ベンチプレス</string>
+    <string name="exercise_squat">スクワット</string>
+    <string name="exercise_deadlift">デッドリフト</string>
+    <string name="exercise_overhead_press">オーバーヘッドプレス</string>
+    <string name="exercise_barbell_row">バーベルロウ</string>
+    
+    <!-- Exercise Names - Cardio -->
+    <string name="exercise_running">ランニング</string>
+    <string name="exercise_walking">ウォーキング</string>
+    <string name="exercise_indoor_bike">室内バイク</string>
+    <string name="exercise_cycling">サイクリング</string>
+    <string name="exercise_swimming">水泳</string>
+    
+    <!-- Exercise Names - Interval -->
+    <string name="exercise_hiit">HIIT</string>
+    <string name="exercise_tabata">タバタ式</string>
+    
+    <!-- Exercise Names - Studio -->
+    <string name="exercise_yoga">ヨガ</string>
+    <string name="exercise_pilates">ピラティス</string>
+
+    <!-- Settings -->
+    <string name="settings_title">設定</string>
+    <string name="settings_language_title">言語</string>
+    <string name="settings_language_description">表示言語を変更します</string>
+    <string name="settings_weight_unit_title">重量単位</string>
+    <string name="settings_weight_unit_description">現在: %1$s</string>
+    <string name="settings_distance_unit_title">距離単位</string>
+    <string name="settings_distance_unit_description">現在: %1$s</string>
+    <string name="settings_delete_title">全データ削除</string>
+    <string name="settings_delete_description">すべてのトレーニング記録を削除します</string>
+
+    <!-- Language Change -->
+    <string name="language_confirm_title">言語を適用しますか？</string>
+    <string name="language_confirm_message">新しい言語設定を適用するためにアプリが再起動します。</string>
+    <string name="applying_language">言語を適用しています…</string>
+
+    <!-- Delete All -->
+    <string name="delete_all_title">全データ削除</string>
+    <string name="delete_all_message">すべてのデータを削除しますか？この操作は取り消せません。</string>
+
+    <!-- Language -->
+    <string name="language_system_default">システム設定に従う</string>
+</resources>

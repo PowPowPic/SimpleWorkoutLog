@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Simple Workout Log</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_graph">Graph</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Common -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_close">Close</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="back">Back</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="confirm">Confirm</string>
+    <string name="discard">Discard</string>
+    <string name="rename">Rename</string>
+
+    <!-- Main Screen -->
+    <string name="today_grand_total">Today Grand Total</string>
+    <string name="card_today_menu">Today\'s Training Menu</string>
+    <string name="midnight_rule_note">Records between 0:00-3:00 AM are saved as the previous day.</string>
+    <string name="settings_hint">Language and kg/lbs, km/mile can be changed in Settings.</string>
+
+    <!-- Workout Types -->
+    <string name="select_workout_type">Select Workout Type</string>
+    <string name="workout_strength">Strength Training</string>
+    <string name="workout_cardio">Cardio</string>
+    <string name="workout_interval">Interval Training</string>
+    <string name="workout_studio">Studio</string>
+    <string name="add_workout_type">+ Add New Type</string>
+    <string name="workout_type_name">Type Name</string>
+
+    <!-- Exercise Selection -->
+    <string name="select_exercise">Select Exercise</string>
+    <string name="empty_slot">Empty</string>
+    <string name="add_new_exercise">+ Add New Exercise</string>
+    <string name="exercise_name">Exercise Name</string>
+
+    <!-- Strength Training -->
+    <string name="reps">reps</string>
+    <string name="add_new_set">+ Add New Set</string>
+    <string name="session_total">Total</string>
+    <string name="finish_training">Finish &amp; Save</string>
+    <string name="finish_and_save">Finish &amp; Save</string>
+    <string name="go_home">Go Home</string>
+    <string name="discard_confirm_title">Discard Changes?</string>
+    <string name="discard_confirm_message">You have confirmed sets that haven\'t been saved. Do you want to discard them?</string>
+
+    <!-- Delete Confirm -->
+    <string name="delete_confirm_title">Delete?</string>
+    <string name="delete_confirm_message">Are you sure you want to delete \"%1$s\"?</string>
+
+    <!-- Cardio / Interval / Studio -->
+    <string name="duration_minutes">Duration (min)</string>
+    <string name="distance">Distance</string>
+    <string name="calories">Calories</string>
+    <string name="kcal">kcal</string>
+    <string name="cardio_coming_soon">Cardio screen - Coming Soon\nBasic time input available</string>
+    <string name="interval_coming_soon">Interval screen - Coming Soon\nBasic time input available</string>
+
+    <!-- Exercise Names - Strength -->
+    <string name="exercise_bench_press">Bench Press</string>
+    <string name="exercise_squat">Squat</string>
+    <string name="exercise_deadlift">Deadlift</string>
+    <string name="exercise_overhead_press">Overhead Press</string>
+    <string name="exercise_barbell_row">Barbell Row</string>
+    
+    <!-- Exercise Names - Cardio -->
+    <string name="exercise_running">Running</string>
+    <string name="exercise_walking">Walking</string>
+    <string name="exercise_indoor_bike">Indoor Bike</string>
+    <string name="exercise_cycling">Cycling</string>
+    <string name="exercise_swimming">Swimming</string>
+    
+    <!-- Exercise Names - Interval -->
+    <string name="exercise_hiit">HIIT</string>
+    <string name="exercise_tabata">Tabata</string>
+    
+    <!-- Exercise Names - Studio -->
+    <string name="exercise_yoga">Yoga</string>
+    <string name="exercise_pilates">Pilates</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_language_title">Language</string>
+    <string name="settings_language_description">Change display language.</string>
+    <string name="settings_weight_unit_title">Weight Unit</string>
+    <string name="settings_weight_unit_description">Current: %1$s</string>
+    <string name="settings_distance_unit_title">Distance Unit</string>
+    <string name="settings_distance_unit_description">Current: %1$s</string>
+    <string name="settings_delete_title">Delete All Data</string>
+    <string name="settings_delete_description">Delete all workout records.</string>
+
+    <!-- Language Change -->
+    <string name="language_confirm_title">Apply Language?</string>
+    <string name="language_confirm_message">The app will restart to apply the new language setting.</string>
+    <string name="applying_language">Applying language…</string>
+
+    <!-- Delete All -->
+    <string name="delete_all_title">Delete All Data</string>
+    <string name="delete_all_message">Delete all data? This action cannot be undone.</string>
+
+    <!-- Language -->
+    <string name="language_system_default">System Default</string>
+</resources>
