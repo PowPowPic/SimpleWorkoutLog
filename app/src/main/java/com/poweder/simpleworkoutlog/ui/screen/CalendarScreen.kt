@@ -23,6 +23,7 @@ import com.poweder.simpleworkoutlog.util.currentLogicalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun CalendarScreen(
@@ -51,18 +52,12 @@ fun CalendarScreen(
         DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
             .withLocale(Locale.getDefault())
     }
-    
-    val backgroundGradient = Brush.horizontalGradient(
-        colors = listOf(
-            WorkoutColors.BackgroundDark,
-            WorkoutColors.BackgroundMedium
-        )
-    )
-    
+
+    // 変更後
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(backgroundGradient)
+            .background(Color.Transparent)
     ) {
         // 広告バナー
         TopBannerAd(showAd = !adRemoved)
@@ -93,15 +88,6 @@ fun CalendarScreen(
             )
         }
         
-        // 設定案内
-        Text(
-            text = stringResource(R.string.settings_hint),
-            style = MaterialTheme.typography.bodyMedium,
-            color = WorkoutColors.PureBlue,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
+
     }
 }

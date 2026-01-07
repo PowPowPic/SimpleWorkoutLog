@@ -132,7 +132,10 @@ class WorkoutViewModel(
     
     private val _studioExercises = MutableStateFlow<List<ExerciseEntity>>(emptyList())
     val studioExercises: StateFlow<List<ExerciseEntity>> = _studioExercises.asStateFlow()
-    
+
+    private val _otherExercises = MutableStateFlow<List<ExerciseEntity>>(emptyList())
+    val otherExercises: StateFlow<List<ExerciseEntity>> = _otherExercises.asStateFlow()
+
     init {
         // 筋トレ種目を監視
         viewModelScope.launch {
@@ -156,6 +159,12 @@ class WorkoutViewModel(
         viewModelScope.launch {
             repository.getExercisesByType(WorkoutType.STUDIO).collect { exercises ->
                 _studioExercises.value = exercises
+            }
+        }
+        // その他種目を監視
+        viewModelScope.launch {
+            repository.getExercisesByType(WorkoutType.OTHER).collect { exercises ->
+                _otherExercises.value = exercises
             }
         }
     }
@@ -441,4 +450,29 @@ class WorkoutViewModel(
     fun getDailyWorkoutsBetween(startDate: Long, endDate: Long): Flow<List<DailyWorkoutEntity>> {
         return repository.getDailyWorkoutsBetween(startDate, endDate)
     }
+    /**
+     * その他ワークアウトを保存
+     */
+    fun saveOtherWorkout(
+        exerciseId: Long,
+        durationMinutes: Int,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val exercise = _currentExercise.value ?: return@launch
+            val logicalDate = currentLogicalDate()
+
+            // セッションを作成/取得
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.OTHER)
+
+            // セッションを更新（時間と消費カロリーを保存）
+            val updatedSession = session.copy(
+                durationMinutes = durationMinutes,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+        }
+    }
+
 }

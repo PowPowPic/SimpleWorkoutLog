@@ -42,10 +42,10 @@ fun BottomNavBar(navController: NavController) {
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = WorkoutColors.NavBarSelected,
-                    selectedTextColor = WorkoutColors.NavBarSelected,
-                    unselectedIconColor = WorkoutColors.NavBarUnselected,
-                    unselectedTextColor = WorkoutColors.NavBarUnselected,
+                    selectedIconColor = WorkoutColors.NavBarIconSelected,
+                    selectedTextColor = WorkoutColors.NavBarIconSelected,
+                    unselectedIconColor = WorkoutColors.NavBarIconUnselected,
+                    unselectedTextColor = WorkoutColors.NavBarIconUnselected,
                     indicatorColor = WorkoutColors.NavBarBackground
                 )
             )

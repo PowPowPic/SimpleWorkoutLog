@@ -298,16 +298,6 @@ fun SettingsScreen(
             )
         }
 
-        // 設定案内
-        Text(
-            text = stringResource(R.string.settings_hint),
-            style = MaterialTheme.typography.bodyMedium,
-            color = WorkoutColors.PureBlue,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
     }
 }
 

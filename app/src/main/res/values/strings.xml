@@ -37,8 +37,12 @@
     <string name="workout_cardio">Cardio</string>
     <string name="workout_interval">Interval Training</string>
     <string name="workout_studio">Studio</string>
+    <string name="workout_other">Other</string>
     <string name="add_workout_type">+ Add New Type</string>
     <string name="workout_type_name">Type Name</string>
+
+    <string name="no_exercises_yet">No exercises yet. Add one below!</string>
+
 
     <!-- Exercise Selection -->
     <string name="select_exercise">Select Exercise</string>
@@ -61,12 +65,17 @@
     <string name="delete_confirm_message">Are you sure you want to delete \"%1$s\"?</string>
 
     <!-- Cardio / Interval / Studio -->
-    <string name="duration_minutes">Duration (min)</string>
     <string name="distance">Distance</string>
     <string name="calories">Calories</string>
     <string name="kcal">kcal</string>
     <string name="cardio_coming_soon">Cardio screen - Coming Soon\nBasic time input available</string>
     <string name="interval_coming_soon">Interval screen - Coming Soon\nBasic time input available</string>
+
+    <!-- Other Screen -->
+    <string name="duration_minutes">Duration (minutes)</string>
+    <string name="calories_burned">Calories burned (kcal)</string>
+    <string name="saved_successfully">Saved successfully!</string>
+
 
     <!-- Exercise Names - Strength -->
     <string name="exercise_bench_press">Bench Press</string>
@@ -89,6 +98,12 @@
     <!-- Exercise Names - Studio -->
     <string name="exercise_yoga">Yoga</string>
     <string name="exercise_pilates">Pilates</string>
+
+    <!-- Exercise Names - Other -->
+    <string name="exercise_snowboarding">Snowboarding</string>
+    <string name="exercise_bass_fishing">Bass Fishing</string>
+    <string name="exercise_skiing">Skiing</string>
+    <string name="exercise_hiking">Hiking</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>

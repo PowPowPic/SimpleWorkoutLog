@@ -37,8 +37,13 @@
     <string name="workout_cardio">有酸素運動</string>
     <string name="workout_interval">インターバルトレーニング</string>
     <string name="workout_studio">スタジオ</string>
+    <!-- Workout Types -->
+    <string name="workout_other">その他</string>
     <string name="add_workout_type">＋ 新規タイプを追加</string>
     <string name="workout_type_name">タイプ名</string>
+
+    <string name="no_exercises_yet">種目がまだありません。下のボタンから追加してください！</string>
+
 
     <!-- Exercise Selection -->
     <string name="select_exercise">種目を選択</string>
@@ -81,6 +86,12 @@
     <string name="exercise_indoor_bike">室内バイク</string>
     <string name="exercise_cycling">サイクリング</string>
     <string name="exercise_swimming">水泳</string>
+
+    <!-- Exercise Names - Other -->
+    <string name="exercise_snowboarding">スノーボード</string>
+    <string name="exercise_bass_fishing">バスフィッシング</string>
+    <string name="exercise_skiing">スキー</string>
+    <string name="exercise_hiking">ハイキング</string>
     
     <!-- Exercise Names - Interval -->
     <string name="exercise_hiit">HIIT</string>
@@ -89,6 +100,12 @@
     <!-- Exercise Names - Studio -->
     <string name="exercise_yoga">ヨガ</string>
     <string name="exercise_pilates">ピラティス</string>
+
+    <!-- Other Screen -->
+
+    <string name="calories_burned">消費カロリー（kcal）</string>
+
+    <string name="saved_successfully">保存しました！</string>
 
     <!-- Settings -->
     <string name="settings_title">設定</string>

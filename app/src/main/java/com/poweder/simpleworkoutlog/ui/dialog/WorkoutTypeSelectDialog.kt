@@ -1,7 +1,6 @@
 package com.poweder.simpleworkoutlog.ui.dialog
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,7 +23,7 @@ fun WorkoutTypeSelectDialog(
     onCardioSelect: () -> Unit,
     onIntervalSelect: () -> Unit,
     onStudioSelect: () -> Unit = {},
-    onAddNewType: () -> Unit = {},
+    onOtherSelect: () -> Unit = {},
     onDismiss: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
@@ -43,7 +42,7 @@ fun WorkoutTypeSelectDialog(
                     color = WorkoutColors.TextPrimary,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-
+                
                 WorkoutTypeCard(stringResource(R.string.workout_strength), WorkoutColorType.STRENGTH, onStrengthSelect)
                 Spacer(modifier = Modifier.height(8.dp))
                 WorkoutTypeCard(stringResource(R.string.workout_cardio), WorkoutColorType.CARDIO, onCardioSelect)
@@ -52,56 +51,40 @@ fun WorkoutTypeSelectDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 WorkoutTypeCard(stringResource(R.string.workout_studio), WorkoutColorType.STUDIO, onStudioSelect)
                 Spacer(modifier = Modifier.height(8.dp))
-                WorkoutTypeCard(stringResource(R.string.empty_slot), WorkoutColorType.EMPTY, onAddNewType)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(WorkoutColors.AccentOrange.copy(alpha = 0.2f))
-                        .clickable { onAddNewType() }
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.add_workout_type),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = WorkoutColors.AccentOrange
-                    )
-                }
+                WorkoutTypeCard(stringResource(R.string.workout_other), WorkoutColorType.OTHER, onOtherSelect)
             }
         }
     }
 }
 
 private enum class WorkoutColorType {
-    STRENGTH, CARDIO, INTERVAL, STUDIO, EMPTY
+    STRENGTH, CARDIO, INTERVAL, STUDIO, OTHER
 }
 
 @Composable
 private fun WorkoutTypeCard(text: String, colorType: WorkoutColorType, onClick: () -> Unit) {
     val gradient = when (colorType) {
-        WorkoutColorType.STRENGTH -> Brush.horizontalGradient(listOf(WorkoutColors.StrengthCardStart, WorkoutColors.StrengthCardEnd, WorkoutColors.StrengthCardStart))
-        WorkoutColorType.CARDIO -> Brush.horizontalGradient(listOf(WorkoutColors.CardioCardStart, WorkoutColors.CardioCardEnd, WorkoutColors.CardioCardStart))
-        WorkoutColorType.INTERVAL -> Brush.horizontalGradient(listOf(WorkoutColors.IntervalCardStart, WorkoutColors.IntervalCardEnd, WorkoutColors.IntervalCardStart))
-        WorkoutColorType.STUDIO -> Brush.horizontalGradient(listOf(WorkoutColors.StudioCardStart, WorkoutColors.StudioCardEnd, WorkoutColors.StudioCardStart))
-        WorkoutColorType.EMPTY -> Brush.horizontalGradient(listOf(WorkoutColors.BackgroundMedium, WorkoutColors.BackgroundDark, WorkoutColors.BackgroundMedium))
+        WorkoutColorType.STRENGTH -> Brush.horizontalGradient(
+            listOf(WorkoutColors.StrengthCardStart, WorkoutColors.StrengthCardEnd, WorkoutColors.StrengthCardStart)
+        )
+        WorkoutColorType.CARDIO -> Brush.horizontalGradient(
+            listOf(WorkoutColors.CardioCardStart, WorkoutColors.CardioCardEnd, WorkoutColors.CardioCardStart)
+        )
+        WorkoutColorType.INTERVAL -> Brush.horizontalGradient(
+            listOf(WorkoutColors.IntervalCardStart, WorkoutColors.IntervalCardEnd, WorkoutColors.IntervalCardStart)
+        )
+        WorkoutColorType.STUDIO -> Brush.horizontalGradient(
+            listOf(WorkoutColors.StudioCardStart, WorkoutColors.StudioCardEnd, WorkoutColors.StudioCardStart)
+        )
+        WorkoutColorType.OTHER -> Brush.horizontalGradient(
+            listOf(WorkoutColors.OtherCardStart, WorkoutColors.OtherCardEnd, WorkoutColors.OtherCardStart)
+        )
     }
-
-    val borderModifier = if (colorType == WorkoutColorType.EMPTY) {
-        Modifier.border(1.dp, WorkoutColors.EmptySlotBorder, RoundedCornerShape(12.dp))
-    } else {
-        Modifier
-    }
-
+    
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .then(borderModifier)
             .background(gradient)
             .clickable { onClick() }
             .padding(vertical = 20.dp),
@@ -110,8 +93,8 @@ private fun WorkoutTypeCard(text: String, colorType: WorkoutColorType, onClick: 
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = if (colorType == WorkoutColorType.EMPTY) FontWeight.Normal else FontWeight.Bold,
-            color = if (colorType == WorkoutColorType.EMPTY) WorkoutColors.TextSecondary else WorkoutColors.TextPrimary
+            fontWeight = FontWeight.Bold,
+            color = WorkoutColors.TextPrimary
         )
     }
 }

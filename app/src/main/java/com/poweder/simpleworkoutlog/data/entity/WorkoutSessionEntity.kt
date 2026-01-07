@@ -26,9 +26,10 @@ data class WorkoutSessionEntity(
     val id: Long = 0,
     val exerciseId: Long,
     val logicalDate: Long,               // EpochDay
-    val workoutType: String,             // STRENGTH, CARDIO, INTERVAL
+    val workoutType: String,             // STRENGTH, CARDIO, INTERVAL, STUDIO, OTHER
     val totalWeight: Double = 0.0,       // 筋トレ用：総重量
-    val durationMinutes: Int = 0,        // 有酸素/インターバル用：時間
+    val durationMinutes: Int = 0,        // 有酸素/インターバル/その他用：時間
+    val caloriesBurned: Int = 0,         // その他用：消費カロリー ← 追加
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis()
 )

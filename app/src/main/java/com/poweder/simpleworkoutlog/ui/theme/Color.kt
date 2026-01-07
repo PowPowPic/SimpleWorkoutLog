@@ -2,67 +2,62 @@ package com.poweder.simpleworkoutlog.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-/**
- * SWL カラーパレット
- * - グレー系グラデーション背景（バーベル/プレートのメタル感）
- * - 筋トレ系：寒色寄りグレー
- * - 有酸素：暖色寄りグレー（薄め）
- * - インターバル：暖色寄りグレー（濃いめ）
- * - スタジオ：紫混じりのグレー
- * - アクセント：控えめなオレンジ
- */
 object WorkoutColors {
-    // 背景グラデーション（左→右：濃→薄）
-    val BackgroundDark = Color(0xFF2D2D2D)      // ダークグレー
-    val BackgroundMedium = Color(0xFF4A4A4A)    // ミディアムグレー
+    // 背景色（ダークグレイ → シルバー の強いグラデーション用）
+    val BackgroundDark = Color(0xFF1A1A1A)      // 濃いダークグレー
+    val BackgroundMedium = Color(0xFF8A8A8A)    // シルバーグレー
+    val DialogBackground = Color(0xFF2D2D2D)    // ダイアログ背景
     
-    // カード色 - 筋トレ系（寒色寄りグレー）
-    val StrengthCardStart = Color(0xFF5A6066)   // 青みがかったグレー
-    val StrengthCardEnd = Color(0xFF7A8288)     // 明るめの寒色グレー
+    // テキスト色
+    val TextPrimary = Color(0xFFFFFFFF)         // 白
+    val TextSecondary = Color(0xFFB0B0B0)       // グレー
     
-    // カード色 - 有酸素系（暖色寄りグレー・薄め）
-    val CardioCardStart = Color(0xFF6B5D55)     // オレンジ混じりのグレー
-    val CardioCardEnd = Color(0xFF8A7A70)       // 明るめの暖色グレー
+    // アクセントカラー
+    val AccentOrange = Color(0xFFFF9800)        // オレンジ
+    val AccentOrangeLight = Color(0xFFFFB74D)   // 明るいオレンジ
+    val PureRed = Color(0xFFE53935)             // 赤
+    val PureBlue = Color(0xFF0000FF)            // 青（案内文用）
+    val LinkBlue = Color(0xFF2196F3)            // リンク青
     
-    // カード色 - インターバル系（暖色寄りグレー・濃いめ）
-    val IntervalCardStart = Color(0xFF7A5A45)   // 濃いめのオレンジ混じりグレー
-    val IntervalCardEnd = Color(0xFF9A7A65)     // 明るめの濃いウォームグレー
+    // 筋トレカード（グレー系グラデーション）
+    val StrengthCardStart = Color(0xFF616161)   // 濃いグレー
+    val StrengthCardEnd = Color(0xFFBDBDBD)     // 明るいグレー
     
-    // カード色 - スタジオ系（紫混じりのグレー）
-    val StudioCardStart = Color(0xFF5D5570)     // 紫混じりのグレー
-    val StudioCardEnd = Color(0xFF7D7590)       // 明るめの紫グレー
+    // 有酸素カード（茶色系グラデーション）
+    val CardioCardStart = Color(0xFF5D4037)     // 濃いブラウン
+    val CardioCardEnd = Color(0xFFA1887F)       // 明るいブラウン
     
-    // アクセントカラー（オレンジ系）
-    val AccentOrange = Color(0xFFE07B3C)        // メインアクセント
-    val AccentOrangeLight = Color(0xFFF5A060)   // ライトアクセント
+    // インターバルカード（オレンジ系グラデーション）
+    val IntervalCardStart = Color(0xFF8D6E63)   // 濃いオレンジブラウン
+    val IntervalCardEnd = Color(0xFFD7CCC8)     // 明るいベージュ
     
-    // テキストカラー
-    val TextPrimary = Color(0xFFFFFFFF)         // 白（主要テキスト）
-    val TextSecondary = Color(0xFFB0B0B0)       // グレー（補助テキスト）
-    val TextOnLight = Color(0xFF2D2D2D)         // 明るい背景用
+    // スタジオカード（紫系グラデーション）
+    val StudioCardStart = Color(0xFF5E5370)     // 濃い紫グレー
+    val StudioCardEnd = Color(0xFFB0A4C4)       // 明るいラベンダー
     
-    // ダイアログ背景
-    val DialogBackground = Color(0xFF3A3A3A)
+    // その他カード（青緑系グラデーション）
+    val OtherCardStart = Color(0xFF00695C)      // 濃いティール
+    val OtherCardEnd = Color(0xFF80CBC4)        // 明るいティール
     
-    // ボタン
-    val ButtonConfirm = AccentOrange
-    val ButtonCancel = Color(0xFF666666)
+    // メインカード（ダーク系グレー）
+    val MainCardStart = Color(0xFF3D3D3D)       // 濃いグレー
+    val MainCardEnd = Color(0xFF5A5A5A)         // 少し明るいグレー
     
-    // 状態
-    val Checked = Color(0xFF888888)
-    val Unchecked = TextPrimary
+    // Today Grand Total 用
+    val GrandTotalBackground = Color(0xFF2D2D2D)
+    val GrandTotalText = Color(0xFFFF9800)      // オレンジ
     
-    // 特殊カラー
-    val PureBlue = Color(0xFF0000FF)            // 設定案内リンク
-    val PureRed = Color(0xFFFF4444)             // 削除など
-    val EmptySlotBorder = Color(0xFF606060)     // 空欄スロットの境界線
+    // ボタン色
+    val ButtonConfirm = Color(0xFF4CAF50)       // 緑
+    val ButtonCancel = Color(0xFF757575)        // グレー
     
-    // ナビバー
-    val NavBarBackground = Color(0xFF1E1E1E)
-    val NavBarSelected = AccentOrange
-    val NavBarUnselected = Color(0xFF888888)
+    // 空欄枠線
+    val EmptySlotBorder = Color(0xFF555555)
     
-    // Today Grand Total
-    val GrandTotalBackground = Color(0xFF3D3D3D)
-    val GrandTotalText = AccentOrange
+    // ナビバー（透明）
+    val NavBarBackground = Color.Transparent
+    
+    // ナビバーアイコン
+    val NavBarIconSelected = Color(0xFFFF9800)  // オレンジ
+    val NavBarIconUnselected = Color(0xFFB0B0B0) // グレー
 }

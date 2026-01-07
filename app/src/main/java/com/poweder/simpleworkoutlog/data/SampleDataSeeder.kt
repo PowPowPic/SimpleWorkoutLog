@@ -15,7 +15,7 @@ class SampleDataSeeder(
         // Flowなので最初の値を取得する必要がある
         // 初期化時は空の場合のみシード
     }
-    
+
     suspend fun seedSampleData() {
         // 筋トレ種目
         val strengthExercises = listOf(
@@ -55,7 +55,7 @@ class SampleDataSeeder(
                 isTemplate = true
             )
         )
-        
+
         // 有酸素運動種目
         val cardioExercises = listOf(
             ExerciseEntity(
@@ -80,7 +80,7 @@ class SampleDataSeeder(
                 isTemplate = true
             )
         )
-        
+
         // インターバル種目
         val intervalExercises = listOf(
             ExerciseEntity(
@@ -98,8 +98,59 @@ class SampleDataSeeder(
                 isTemplate = true
             )
         )
-        
-        (strengthExercises + cardioExercises + intervalExercises).forEach {
+
+        // スタジオ種目
+        val studioExercises = listOf(
+            ExerciseEntity(
+                name = "",
+                workoutType = WorkoutType.STUDIO,
+                sortOrder = 1,
+                nameResId = R.string.exercise_yoga,
+                isTemplate = true
+            ),
+            ExerciseEntity(
+                name = "",
+                workoutType = WorkoutType.STUDIO,
+                sortOrder = 2,
+                nameResId = R.string.exercise_pilates,
+                isTemplate = true
+            )
+        )
+
+        // その他種目 ← 追加
+        val otherExercises = listOf(
+            ExerciseEntity(
+                name = "",
+                workoutType = WorkoutType.OTHER,
+                sortOrder = 1,
+                nameResId = R.string.exercise_snowboarding,
+                isTemplate = true
+            ),
+            ExerciseEntity(
+                name = "",
+                workoutType = WorkoutType.OTHER,
+                sortOrder = 2,
+                nameResId = R.string.exercise_bass_fishing,
+                isTemplate = true
+            ),
+            ExerciseEntity(
+                name = "",
+                workoutType = WorkoutType.OTHER,
+                sortOrder = 3,
+                nameResId = R.string.exercise_skiing,
+                isTemplate = true
+            ),
+            ExerciseEntity(
+                name = "",
+                workoutType = WorkoutType.OTHER,
+                sortOrder = 4,
+                nameResId = R.string.exercise_hiking,
+                isTemplate = true
+            )
+        )
+
+        // ↓ otherExercises と studioExercises を追加
+        (strengthExercises + cardioExercises + intervalExercises + studioExercises + otherExercises).forEach {
             exerciseDao.insert(it)
         }
     }

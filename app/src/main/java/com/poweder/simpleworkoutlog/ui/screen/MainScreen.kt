@@ -4,20 +4,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -48,11 +48,12 @@ fun MainScreen(
     onNavigateToCardio: () -> Unit,
     onNavigateToInterval: () -> Unit,
     onNavigateToStudio: () -> Unit = {},
+    onNavigateToOther: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-
+    
     val todayTotalWeight by viewModel.todayTotalWeight.collectAsState()
     val weightUnit by viewModel.weightUnit.collectAsState()
     val adRemoved by viewModel.adRemoved.collectAsState()
@@ -60,33 +61,37 @@ fun MainScreen(
     val cardioExercises by viewModel.cardioExercises.collectAsState()
     val intervalExercises by viewModel.intervalExercises.collectAsState()
     val studioExercises by viewModel.studioExercises.collectAsState()
-
+    val otherExercises by viewModel.otherExercises.collectAsState()
+    
     var showWorkoutTypeDialog by remember { mutableStateOf(false) }
-    var showAddWorkoutTypeDialog by remember { mutableStateOf(false) }
-
+    
     // 筋トレ用ダイアログ
     var showStrengthExerciseDialog by remember { mutableStateOf(false) }
     var showAddStrengthExerciseDialog by remember { mutableStateOf(false) }
-
+    
     // 有酸素用ダイアログ
     var showCardioExerciseDialog by remember { mutableStateOf(false) }
     var showAddCardioExerciseDialog by remember { mutableStateOf(false) }
-
+    
     // インターバル用ダイアログ
     var showIntervalExerciseDialog by remember { mutableStateOf(false) }
     var showAddIntervalExerciseDialog by remember { mutableStateOf(false) }
-
+    
     // スタジオ用ダイアログ
     var showStudioExerciseDialog by remember { mutableStateOf(false) }
     var showAddStudioExerciseDialog by remember { mutableStateOf(false) }
-
+    
+    // その他用ダイアログ
+    var showOtherExerciseDialog by remember { mutableStateOf(false) }
+    var showAddOtherExerciseDialog by remember { mutableStateOf(false) }
+    
     // 名前変更用
     var exerciseToRename by remember { mutableStateOf<ExerciseEntity?>(null) }
     var currentWorkoutTypeForRename by remember { mutableStateOf<String?>(null) }
-
+    
     // 日付をライフサイクルに連動して更新
     var logicalDate by remember { mutableStateOf(currentLogicalDate()) }
-
+    
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -98,32 +103,12 @@ fun MainScreen(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-
-    // ロケールに応じた日付フォーマット
+    
     val dateFormatter = remember {
         DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
             .withLocale(Locale.getDefault())
     }
-
-    // ワークアウトタイプ追加ダイアログ（Coming Soon）
-    if (showAddWorkoutTypeDialog) {
-        AlertDialog(
-            onDismissRequest = { showAddWorkoutTypeDialog = false },
-            title = { Text(stringResource(R.string.add_workout_type)) },
-            text = {
-                Text(
-                    text = stringResource(R.string.coming_soon),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = { showAddWorkoutTypeDialog = false }) {
-                    Text(stringResource(R.string.common_ok))
-                }
-            }
-        )
-    }
-
+    
     // 名前変更ダイアログ
     exerciseToRename?.let { exercise ->
         RenameDialog(
@@ -132,12 +117,12 @@ fun MainScreen(
             onConfirm = { newName ->
                 viewModel.updateExercise(exercise.copy(customName = newName, nameResId = null))
                 exerciseToRename = null
-                // 元のダイアログに戻る
                 when (currentWorkoutTypeForRename) {
                     WorkoutType.STRENGTH -> showStrengthExerciseDialog = true
                     WorkoutType.CARDIO -> showCardioExerciseDialog = true
                     WorkoutType.INTERVAL -> showIntervalExerciseDialog = true
                     WorkoutType.STUDIO -> showStudioExerciseDialog = true
+                    WorkoutType.OTHER -> showOtherExerciseDialog = true
                 }
             },
             onDismiss = {
@@ -147,11 +132,12 @@ fun MainScreen(
                     WorkoutType.CARDIO -> showCardioExerciseDialog = true
                     WorkoutType.INTERVAL -> showIntervalExerciseDialog = true
                     WorkoutType.STUDIO -> showStudioExerciseDialog = true
+                    WorkoutType.OTHER -> showOtherExerciseDialog = true
                 }
             }
         )
     }
-
+    
     // 運動種別選択ダイアログ
     if (showWorkoutTypeDialog) {
         WorkoutTypeSelectDialog(
@@ -171,14 +157,14 @@ fun MainScreen(
                 showWorkoutTypeDialog = false
                 showStudioExerciseDialog = true
             },
-            onAddNewType = {
+            onOtherSelect = {
                 showWorkoutTypeDialog = false
-                showAddWorkoutTypeDialog = true
+                showOtherExerciseDialog = true
             },
             onDismiss = { showWorkoutTypeDialog = false }
         )
     }
-
+    
     // 筋トレ種目選択ダイアログ
     if (showStrengthExerciseDialog) {
         ExerciseSelectDialog(
@@ -205,7 +191,7 @@ fun MainScreen(
             onDismiss = { showStrengthExerciseDialog = false }
         )
     }
-
+    
     // 筋トレ種目追加ダイアログ
     if (showAddStrengthExerciseDialog) {
         AddExerciseDialog(
@@ -220,7 +206,7 @@ fun MainScreen(
             }
         )
     }
-
+    
     // 有酸素種目選択ダイアログ
     if (showCardioExerciseDialog) {
         ExerciseSelectDialog(
@@ -246,7 +232,7 @@ fun MainScreen(
             onDismiss = { showCardioExerciseDialog = false }
         )
     }
-
+    
     // 有酸素種目追加ダイアログ
     if (showAddCardioExerciseDialog) {
         AddExerciseDialog(
@@ -261,7 +247,7 @@ fun MainScreen(
             }
         )
     }
-
+    
     // インターバル種目選択ダイアログ
     if (showIntervalExerciseDialog) {
         ExerciseSelectDialog(
@@ -287,7 +273,7 @@ fun MainScreen(
             onDismiss = { showIntervalExerciseDialog = false }
         )
     }
-
+    
     // インターバル種目追加ダイアログ
     if (showAddIntervalExerciseDialog) {
         AddExerciseDialog(
@@ -302,7 +288,7 @@ fun MainScreen(
             }
         )
     }
-
+    
     // スタジオ種目選択ダイアログ
     if (showStudioExerciseDialog) {
         ExerciseSelectDialog(
@@ -328,7 +314,7 @@ fun MainScreen(
             onDismiss = { showStudioExerciseDialog = false }
         )
     }
-
+    
     // スタジオ種目追加ダイアログ
     if (showAddStudioExerciseDialog) {
         AddExerciseDialog(
@@ -343,24 +329,57 @@ fun MainScreen(
             }
         )
     }
-
-    // 背景グラデーション（左→右：濃→薄）
-    val backgroundGradient = Brush.horizontalGradient(
-        colors = listOf(
-            WorkoutColors.BackgroundDark,
-            WorkoutColors.BackgroundMedium
+    
+    // その他種目選択ダイアログ
+    if (showOtherExerciseDialog) {
+        ExerciseSelectDialog(
+            exercises = otherExercises,
+            workoutType = WorkoutType.OTHER,
+            onExerciseSelect = { exercise ->
+                showOtherExerciseDialog = false
+                viewModel.setCurrentExercise(exercise)
+                onNavigateToOther()
+            },
+            onAddNewExercise = {
+                showOtherExerciseDialog = false
+                showAddOtherExerciseDialog = true
+            },
+            onRenameExercise = { exercise ->
+                showOtherExerciseDialog = false
+                exerciseToRename = exercise
+                currentWorkoutTypeForRename = WorkoutType.OTHER
+            },
+            onDeleteExercise = { exercise ->
+                viewModel.deleteExercise(exercise.id)
+            },
+            onDismiss = { showOtherExerciseDialog = false }
         )
-    )
-
+    }
+    
+    // その他種目追加ダイアログ
+    if (showAddOtherExerciseDialog) {
+        AddExerciseDialog(
+            onConfirm = { name ->
+                viewModel.addExercise(name, WorkoutType.OTHER)
+                showAddOtherExerciseDialog = false
+                showOtherExerciseDialog = true
+            },
+            onDismiss = {
+                showAddOtherExerciseDialog = false
+                showOtherExerciseDialog = true
+            }
+        )
+    }
+    
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(backgroundGradient)
+            .background(Color.Transparent)
     ) {
-        // 広告バナー（または余白）
+        // 広告バナー
         TopBannerAd(showAd = !adRemoved)
-
-        // 日付表示（ロケール対応、小さめフォント）
+        
+        // 日付表示
         Text(
             text = logicalDate.format(dateFormatter),
             style = MaterialTheme.typography.bodySmall,
@@ -370,7 +389,7 @@ fun MainScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         )
-
+        
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -378,23 +397,23 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-
+            
             // Today Grand Total
             GrandTotalCard(
                 totalWeight = todayTotalWeight,
                 weightUnit = weightUnit
             )
-
+            
             Spacer(modifier = Modifier.height(24.dp))
-
+            
             // 今日のトレーニングメニューカード
             MainActionCard(
                 text = stringResource(R.string.card_today_menu),
                 onClick = { showWorkoutTypeDialog = true }
             )
-
+            
             Spacer(modifier = Modifier.height(8.dp))
-
+            
             // 深夜ルール説明
             Text(
                 text = stringResource(R.string.midnight_rule_note),
@@ -403,18 +422,20 @@ fun MainScreen(
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth()
             )
-
+            
             Spacer(modifier = Modifier.weight(1f))
-
-            // 設定案内（青文字、少し大きめ）
+            
+            // 設定案内（青文字、クリック可能）- メイン画面のみ
             Text(
                 text = stringResource(R.string.settings_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 fontSize = 14.sp,
                 color = WorkoutColors.PureBlue,
                 textAlign = TextAlign.Center,
+                textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable { onSettingsClick() }
                     .padding(bottom = 8.dp)
             )
         }
@@ -458,15 +479,14 @@ private fun MainActionCard(
     text: String,
     onClick: () -> Unit
 ) {
-    // スタイリッシュなグラデーション（左→右：濃→薄）
     val gradient = Brush.horizontalGradient(
         colors = listOf(
-            WorkoutColors.StrengthCardStart,
-            WorkoutColors.StrengthCardEnd,
-            WorkoutColors.StrengthCardStart
+            WorkoutColors.MainCardStart,
+            WorkoutColors.MainCardEnd,
+            WorkoutColors.MainCardStart
         )
     )
-
+    
     Box(
         modifier = Modifier
             .fillMaxWidth()

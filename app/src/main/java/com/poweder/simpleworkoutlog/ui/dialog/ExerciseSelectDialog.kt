@@ -2,7 +2,6 @@ package com.poweder.simpleworkoutlog.ui.dialog
 
 import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -62,7 +61,7 @@ fun ExerciseSelectDialog(
 ) {
     val context = LocalContext.current
     var exerciseToDelete by remember { mutableStateOf<ExerciseEntity?>(null) }
-
+    
     exerciseToDelete?.let { exercise ->
         DeleteConfirmDialog(
             itemName = exercise.getDisplayName(context),
@@ -73,15 +72,16 @@ fun ExerciseSelectDialog(
             onDismiss = { exerciseToDelete = null }
         )
     }
-
+    
     val colorType = when (workoutType) {
         WorkoutType.STRENGTH -> ExerciseColorType.STRENGTH
         WorkoutType.CARDIO -> ExerciseColorType.CARDIO
         WorkoutType.INTERVAL -> ExerciseColorType.INTERVAL
         WorkoutType.STUDIO -> ExerciseColorType.STUDIO
+        WorkoutType.OTHER -> ExerciseColorType.OTHER
         else -> ExerciseColorType.CARDIO
     }
-
+    
     Dialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
@@ -98,40 +98,44 @@ fun ExerciseSelectDialog(
                     color = WorkoutColors.TextPrimary,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.heightIn(max = 400.dp)
-                ) {
-                    items(exercises) { exercise ->
-                        ExerciseSlot(
-                            name = exercise.getDisplayName(context),
-                            isEmpty = false,
-                            colorType = colorType,
-                            onClick = { onExerciseSelect(exercise) },
-                            onEdit = { onRenameExercise(exercise) },
-                            onDelete = { exerciseToDelete = exercise }
-                        )
+                
+                // 種目がある場合のみグリッド表示
+                if (exercises.isNotEmpty()) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.heightIn(max = 450.dp)
+                    ) {
+                        items(
+                            items = exercises,
+                            key = { it.id }
+                        ) { exercise ->
+                            ExerciseSlot(
+                                name = exercise.getDisplayName(context),
+                                colorType = colorType,
+                                onClick = { onExerciseSelect(exercise) },
+                                onEdit = { onRenameExercise(exercise) },
+                                onDelete = { exerciseToDelete = exercise }
+                            )
+                        }
                     }
-
-                    val totalSlots = 6
-                    val emptyCount = (totalSlots - exercises.size).coerceAtLeast(1)
-                    items(emptyCount) {
-                        ExerciseSlot(
-                            name = stringResource(R.string.empty_slot),
-                            isEmpty = true,
-                            colorType = colorType,
-                            onClick = onAddNewExercise,
-                            onEdit = null,
-                            onDelete = null
-                        )
-                    }
+                } else {
+                    // 種目がない場合のメッセージ
+                    Text(
+                        text = stringResource(R.string.no_exercises_yet),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = WorkoutColors.TextSecondary,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 24.dp)
+                    )
                 }
-
+                
                 Spacer(modifier = Modifier.height(16.dp))
-
+                
+                // + 新規種目を追加 ボタン
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -148,9 +152,9 @@ fun ExerciseSelectDialog(
                         color = WorkoutColors.AccentOrange
                     )
                 }
-
+                
                 Spacer(modifier = Modifier.height(8.dp))
-
+                
                 TextButton(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
@@ -166,54 +170,43 @@ fun ExerciseSelectDialog(
 }
 
 private enum class ExerciseColorType {
-    STRENGTH, CARDIO, INTERVAL, STUDIO
+    STRENGTH, CARDIO, INTERVAL, STUDIO, OTHER
 }
 
 @Composable
 private fun ExerciseSlot(
     name: String,
-    isEmpty: Boolean,
     colorType: ExerciseColorType,
     onClick: () -> Unit,
-    onEdit: (() -> Unit)?,
-    onDelete: (() -> Unit)?
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
-    val gradient = if (isEmpty) {
-        Brush.horizontalGradient(
-            colors = listOf(
-                WorkoutColors.BackgroundMedium,
-                WorkoutColors.BackgroundDark
-            )
+    val gradient = when (colorType) {
+        ExerciseColorType.STRENGTH -> Brush.horizontalGradient(
+            colors = listOf(WorkoutColors.StrengthCardStart, WorkoutColors.StrengthCardEnd)
         )
-    } else {
-        when (colorType) {
-            ExerciseColorType.STRENGTH -> Brush.horizontalGradient(
-                colors = listOf(WorkoutColors.StrengthCardStart, WorkoutColors.StrengthCardEnd)
-            )
-            ExerciseColorType.CARDIO -> Brush.horizontalGradient(
-                colors = listOf(WorkoutColors.CardioCardStart, WorkoutColors.CardioCardEnd)
-            )
-            ExerciseColorType.INTERVAL -> Brush.horizontalGradient(
-                colors = listOf(WorkoutColors.IntervalCardStart, WorkoutColors.IntervalCardEnd)
-            )
-            ExerciseColorType.STUDIO -> Brush.horizontalGradient(
-                colors = listOf(WorkoutColors.StudioCardStart, WorkoutColors.StudioCardEnd)
-            )
-        }
+        ExerciseColorType.CARDIO -> Brush.horizontalGradient(
+            colors = listOf(WorkoutColors.CardioCardStart, WorkoutColors.CardioCardEnd)
+        )
+        ExerciseColorType.INTERVAL -> Brush.horizontalGradient(
+            colors = listOf(WorkoutColors.IntervalCardStart, WorkoutColors.IntervalCardEnd)
+        )
+        ExerciseColorType.STUDIO -> Brush.horizontalGradient(
+            colors = listOf(WorkoutColors.StudioCardStart, WorkoutColors.StudioCardEnd)
+        )
+        ExerciseColorType.OTHER -> Brush.horizontalGradient(
+            colors = listOf(WorkoutColors.OtherCardStart, WorkoutColors.OtherCardEnd)
+        )
     }
-
-    val borderModifier = if (isEmpty) {
-        Modifier.border(1.dp, WorkoutColors.EmptySlotBorder, RoundedCornerShape(12.dp))
-    } else {
-        Modifier
-    }
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(bottom = 8.dp)
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
-                .then(borderModifier)
                 .background(gradient)
                 .clickable { onClick() }
                 .padding(vertical = 24.dp, horizontal = 8.dp),
@@ -222,30 +215,39 @@ private fun ExerciseSlot(
             Text(
                 text = name,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (isEmpty) FontWeight.Normal else FontWeight.Bold,
-                color = if (isEmpty) WorkoutColors.TextSecondary else WorkoutColors.TextPrimary,
+                fontWeight = FontWeight.Bold,
+                color = WorkoutColors.TextPrimary,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
         }
-
-        if (!isEmpty && onEdit != null && onDelete != null) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
-                    Icon(Icons.Default.Edit, stringResource(R.string.edit), tint = WorkoutColors.TextSecondary, modifier = Modifier.size(18.dp))
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
-                    Icon(Icons.Default.Delete, stringResource(R.string.delete), tint = WorkoutColors.PureRed.copy(alpha = 0.7f), modifier = Modifier.size(18.dp))
-                }
+        
+        // 編集/削除アイコン（常に表示）
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
+                Icon(
+                    Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.edit),
+                    tint = WorkoutColors.TextSecondary,
+                    modifier = Modifier.size(18.dp)
+                )
             }
-        } else {
-            Spacer(modifier = Modifier.height(36.dp))
+            Spacer(modifier = Modifier.width(8.dp))
+            IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.delete),
+                    tint = WorkoutColors.PureRed.copy(alpha = 0.7f),
+                    modifier = Modifier.size(18.dp)
+                )
+            }
         }
     }
 }

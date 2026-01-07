@@ -6,8 +6,11 @@
         <item name="colorPrimaryDark">@color/orange_700</item>
         <item name="colorAccent">@color/orange_500</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/background_dark</item>
-        <!-- Navigation bar color. -->
-        <item name="android:navigationBarColor">@color/background_dark</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Navigation bar color - transparent -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Enable edge-to-edge -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
     </style>
 </resources>

@@ -1,11 +1,12 @@
 package com.poweder.simpleworkoutlog.data.entity
 
 /**
- * 運動種別タイプ定数
+ * ワークアウトタイプの定数
  */
 object WorkoutType {
-    const val STRENGTH = "STRENGTH"       // 筋トレ
-    const val CARDIO = "CARDIO"           // 有酸素運動
-    const val INTERVAL = "INTERVAL"       // インターバルトレーニング
-    const val STUDIO = "STUDIO"           // スタジオ（ヨガ、ピラティス等）
+    const val STRENGTH = "strength"     // 筋トレ
+    const val CARDIO = "cardio"         // 有酸素運動
+    const val INTERVAL = "interval"     // インターバルトレーニング
+    const val STUDIO = "studio"         // スタジオ
+    const val OTHER = "other"           // その他
 }
