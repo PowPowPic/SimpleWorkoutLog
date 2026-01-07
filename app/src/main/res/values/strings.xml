@@ -71,6 +71,36 @@
     <string name="cardio_coming_soon">Cardio screen - Coming Soon\nBasic time input available</string>
     <string name="interval_coming_soon">Interval screen - Coming Soon\nBasic time input available</string>
 
+    <!-- Add these to res/values/strings.xml -->
+
+    <!-- Interval Timer Settings -->
+    <string name="interval_timer_settings">Timer Settings</string>
+    <string name="preset_tabata">Tabata</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">Warm-up (seconds)</string>
+    <string name="training_seconds">Training (seconds)</string>
+    <string name="rest_seconds">Rest (seconds)</string>
+    <string name="number_of_sets">Number of sets</string>
+    <string name="cooldown_seconds">Cool-down (seconds)</string>
+    <string name="total_time_format">Total: %s</string>
+    <string name="start_timer">Start</string>
+
+    <!-- Interval Timer Phases -->
+    <string name="phase_warmup">WARM-UP</string>
+    <string name="phase_training">TRAINING</string>
+    <string name="phase_rest">REST</string>
+    <string name="phase_cooldown">COOL-DOWN</string>
+    <string name="phase_finished">FINISHED</string>
+
+    <!-- Interval Timer UI -->
+    <string name="set_progress">Set %1$d / %2$d</string>
+    <string name="workout_complete">Workout Complete!</string>
+    <string name="total_time_result">Total time: %s</string>
+    <string name="back_to_home">Back to Home</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="stop">Stop</string>
+
     <!-- Other Screen -->
     <string name="duration_minutes">Duration (minutes)</string>
     <string name="calories_burned">Calories burned (kcal)</string>

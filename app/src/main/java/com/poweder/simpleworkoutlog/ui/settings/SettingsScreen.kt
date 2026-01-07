@@ -387,7 +387,7 @@ private fun LanguageSettingDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { onLanguageSelected(code) }
-                            .padding(vertical = 12.dp, horizontal = 4.dp),
+                            .padding(vertical = 10.dp, horizontal = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
@@ -395,12 +395,13 @@ private fun LanguageSettingDialog(
                             onClick = { onLanguageSelected(code) },
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = WorkoutColors.AccentOrange
-                            )
+                            ),
+                            modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = name,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                         )
                     }

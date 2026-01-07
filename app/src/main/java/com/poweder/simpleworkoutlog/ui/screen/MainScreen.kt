@@ -31,6 +31,7 @@ import com.poweder.simpleworkoutlog.ui.dialog.ExerciseSelectDialog
 import com.poweder.simpleworkoutlog.ui.dialog.RenameDialog
 import com.poweder.simpleworkoutlog.ui.dialog.WorkoutTypeSelectDialog
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
+import com.poweder.simpleworkoutlog.ui.interval.IntervalExerciseSelectDialog
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.WeightUnit
@@ -53,45 +54,43 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    
+
     val todayTotalWeight by viewModel.todayTotalWeight.collectAsState()
     val weightUnit by viewModel.weightUnit.collectAsState()
     val adRemoved by viewModel.adRemoved.collectAsState()
     val strengthExercises by viewModel.strengthExercises.collectAsState()
     val cardioExercises by viewModel.cardioExercises.collectAsState()
-    val intervalExercises by viewModel.intervalExercises.collectAsState()
     val studioExercises by viewModel.studioExercises.collectAsState()
     val otherExercises by viewModel.otherExercises.collectAsState()
-    
+
     var showWorkoutTypeDialog by remember { mutableStateOf(false) }
-    
+
     // 筋トレ用ダイアログ
     var showStrengthExerciseDialog by remember { mutableStateOf(false) }
     var showAddStrengthExerciseDialog by remember { mutableStateOf(false) }
-    
+
     // 有酸素用ダイアログ
     var showCardioExerciseDialog by remember { mutableStateOf(false) }
     var showAddCardioExerciseDialog by remember { mutableStateOf(false) }
-    
-    // インターバル用ダイアログ
+
+    // インターバル用ダイアログ（専用：HIIT/TABATAのみ）
     var showIntervalExerciseDialog by remember { mutableStateOf(false) }
-    var showAddIntervalExerciseDialog by remember { mutableStateOf(false) }
-    
+
     // スタジオ用ダイアログ
     var showStudioExerciseDialog by remember { mutableStateOf(false) }
     var showAddStudioExerciseDialog by remember { mutableStateOf(false) }
-    
+
     // その他用ダイアログ
     var showOtherExerciseDialog by remember { mutableStateOf(false) }
     var showAddOtherExerciseDialog by remember { mutableStateOf(false) }
-    
+
     // 名前変更用
     var exerciseToRename by remember { mutableStateOf<ExerciseEntity?>(null) }
     var currentWorkoutTypeForRename by remember { mutableStateOf<String?>(null) }
-    
+
     // 日付をライフサイクルに連動して更新
     var logicalDate by remember { mutableStateOf(currentLogicalDate()) }
-    
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -103,12 +102,12 @@ fun MainScreen(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-    
+
     val dateFormatter = remember {
         DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
             .withLocale(Locale.getDefault())
     }
-    
+
     // 名前変更ダイアログ
     exerciseToRename?.let { exercise ->
         RenameDialog(
@@ -120,7 +119,6 @@ fun MainScreen(
                 when (currentWorkoutTypeForRename) {
                     WorkoutType.STRENGTH -> showStrengthExerciseDialog = true
                     WorkoutType.CARDIO -> showCardioExerciseDialog = true
-                    WorkoutType.INTERVAL -> showIntervalExerciseDialog = true
                     WorkoutType.STUDIO -> showStudioExerciseDialog = true
                     WorkoutType.OTHER -> showOtherExerciseDialog = true
                 }
@@ -130,14 +128,13 @@ fun MainScreen(
                 when (currentWorkoutTypeForRename) {
                     WorkoutType.STRENGTH -> showStrengthExerciseDialog = true
                     WorkoutType.CARDIO -> showCardioExerciseDialog = true
-                    WorkoutType.INTERVAL -> showIntervalExerciseDialog = true
                     WorkoutType.STUDIO -> showStudioExerciseDialog = true
                     WorkoutType.OTHER -> showOtherExerciseDialog = true
                 }
             }
         )
     }
-    
+
     // 運動種別選択ダイアログ
     if (showWorkoutTypeDialog) {
         WorkoutTypeSelectDialog(
@@ -151,7 +148,7 @@ fun MainScreen(
             },
             onIntervalSelect = {
                 showWorkoutTypeDialog = false
-                showIntervalExerciseDialog = true
+                showIntervalExerciseDialog = true  // 専用ダイアログへ
             },
             onStudioSelect = {
                 showWorkoutTypeDialog = false
@@ -164,7 +161,7 @@ fun MainScreen(
             onDismiss = { showWorkoutTypeDialog = false }
         )
     }
-    
+
     // 筋トレ種目選択ダイアログ
     if (showStrengthExerciseDialog) {
         ExerciseSelectDialog(
@@ -191,7 +188,7 @@ fun MainScreen(
             onDismiss = { showStrengthExerciseDialog = false }
         )
     }
-    
+
     // 筋トレ種目追加ダイアログ
     if (showAddStrengthExerciseDialog) {
         AddExerciseDialog(
@@ -206,7 +203,7 @@ fun MainScreen(
             }
         )
     }
-    
+
     // 有酸素種目選択ダイアログ
     if (showCardioExerciseDialog) {
         ExerciseSelectDialog(
@@ -232,7 +229,7 @@ fun MainScreen(
             onDismiss = { showCardioExerciseDialog = false }
         )
     }
-    
+
     // 有酸素種目追加ダイアログ
     if (showAddCardioExerciseDialog) {
         AddExerciseDialog(
@@ -247,48 +244,26 @@ fun MainScreen(
             }
         )
     }
-    
-    // インターバル種目選択ダイアログ
+
+    // インターバル種目選択ダイアログ（専用：HIIT/TABATAのみ）
     if (showIntervalExerciseDialog) {
-        ExerciseSelectDialog(
-            exercises = intervalExercises,
-            workoutType = WorkoutType.INTERVAL,
-            onExerciseSelect = { exercise ->
+        IntervalExerciseSelectDialog(
+            onHiitSelect = {
                 showIntervalExerciseDialog = false
-                viewModel.setCurrentExercise(exercise)
+                // HIITとして遷移（種目名を設定）
+                viewModel.setIntervalExerciseName("HIIT")
                 onNavigateToInterval()
             },
-            onAddNewExercise = {
+            onTabataSelect = {
                 showIntervalExerciseDialog = false
-                showAddIntervalExerciseDialog = true
-            },
-            onRenameExercise = { exercise ->
-                showIntervalExerciseDialog = false
-                exerciseToRename = exercise
-                currentWorkoutTypeForRename = WorkoutType.INTERVAL
-            },
-            onDeleteExercise = { exercise ->
-                viewModel.deleteExercise(exercise.id)
+                // Tabataとして遷移（種目名を設定）
+                viewModel.setIntervalExerciseName("Tabata")
+                onNavigateToInterval()
             },
             onDismiss = { showIntervalExerciseDialog = false }
         )
     }
-    
-    // インターバル種目追加ダイアログ
-    if (showAddIntervalExerciseDialog) {
-        AddExerciseDialog(
-            onConfirm = { name ->
-                viewModel.addExercise(name, WorkoutType.INTERVAL)
-                showAddIntervalExerciseDialog = false
-                showIntervalExerciseDialog = true
-            },
-            onDismiss = {
-                showAddIntervalExerciseDialog = false
-                showIntervalExerciseDialog = true
-            }
-        )
-    }
-    
+
     // スタジオ種目選択ダイアログ
     if (showStudioExerciseDialog) {
         ExerciseSelectDialog(
@@ -314,7 +289,7 @@ fun MainScreen(
             onDismiss = { showStudioExerciseDialog = false }
         )
     }
-    
+
     // スタジオ種目追加ダイアログ
     if (showAddStudioExerciseDialog) {
         AddExerciseDialog(
@@ -329,7 +304,7 @@ fun MainScreen(
             }
         )
     }
-    
+
     // その他種目選択ダイアログ
     if (showOtherExerciseDialog) {
         ExerciseSelectDialog(
@@ -355,7 +330,7 @@ fun MainScreen(
             onDismiss = { showOtherExerciseDialog = false }
         )
     }
-    
+
     // その他種目追加ダイアログ
     if (showAddOtherExerciseDialog) {
         AddExerciseDialog(
@@ -370,7 +345,7 @@ fun MainScreen(
             }
         )
     }
-    
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -378,7 +353,7 @@ fun MainScreen(
     ) {
         // 広告バナー
         TopBannerAd(showAd = !adRemoved)
-        
+
         // 日付表示
         Text(
             text = logicalDate.format(dateFormatter),
@@ -389,7 +364,7 @@ fun MainScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         )
-        
+
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -397,23 +372,23 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Today Grand Total
             GrandTotalCard(
                 totalWeight = todayTotalWeight,
                 weightUnit = weightUnit
             )
-            
+
             Spacer(modifier = Modifier.height(24.dp))
-            
+
             // 今日のトレーニングメニューカード
             MainActionCard(
                 text = stringResource(R.string.card_today_menu),
                 onClick = { showWorkoutTypeDialog = true }
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // 深夜ルール説明
             Text(
                 text = stringResource(R.string.midnight_rule_note),
@@ -422,9 +397,9 @@ fun MainScreen(
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth()
             )
-            
+
             Spacer(modifier = Modifier.weight(1f))
-            
+
             // 設定案内（青文字、クリック可能）- メイン画面のみ
             Text(
                 text = stringResource(R.string.settings_hint),
@@ -486,7 +461,7 @@ private fun MainActionCard(
             WorkoutColors.MainCardStart
         )
     )
-    
+
     Box(
         modifier = Modifier
             .fillMaxWidth()

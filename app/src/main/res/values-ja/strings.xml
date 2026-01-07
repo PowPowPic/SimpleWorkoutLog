@@ -73,6 +73,37 @@
     <string name="cardio_coming_soon">有酸素運動画面 - 準備中\n基本的な時間入力のみ</string>
     <string name="interval_coming_soon">インターバル画面 - 準備中\n基本的な時間入力のみ</string>
 
+    <!-- Add these to res/values-ja/strings.xml -->
+
+    <!-- Interval Timer Settings -->
+    <string name="interval_timer_settings">タイマー設定</string>
+    <string name="preset_tabata">タバタ式</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">ウォームアップ（秒）</string>
+    <string name="training_seconds">トレーニング（秒）</string>
+    <string name="rest_seconds">インターバル（秒）</string>
+    <string name="number_of_sets">セット数</string>
+    <string name="cooldown_seconds">クールダウン（秒）</string>
+    <string name="total_time_format">合計: %s</string>
+    <string name="start_timer">スタート</string>
+
+    <!-- Interval Timer Phases -->
+    <string name="phase_warmup">ウォームアップ</string>
+    <string name="phase_training">トレーニング</string>
+    <string name="phase_rest">インターバル</string>
+    <string name="phase_cooldown">クールダウン</string>
+    <string name="phase_finished">完了</string>
+
+    <!-- Interval Timer UI -->
+    <string name="set_progress">セット %1$d / %2$d</string>
+    <string name="workout_complete">ワークアウト完了！</string>
+    <string name="total_time_result">合計時間: %s</string>
+    <string name="back_to_home">ホームに戻る</string>
+    <string name="pause">一時停止</string>
+    <string name="resume">再開</string>
+    <string name="stop">停止</string>
+
+
     <!-- Exercise Names - Strength -->
     <string name="exercise_bench_press">ベンチプレス</string>
     <string name="exercise_squat">スクワット</string>
