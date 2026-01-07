@@ -32,4 +32,10 @@ interface WorkoutSessionDao {
     
     @Query("DELETE FROM workout_sessions")
     suspend fun deleteAll()
+
+    @Query("SELECT DISTINCT logicalDate FROM workout_sessions WHERE logicalDate BETWEEN :startDate AND :endDate ORDER BY logicalDate")
+    fun getSessionDatesBetween(startDate: Long, endDate: Long): Flow<List<Long>>
+
+    @Query("SELECT * FROM workout_sessions WHERE logicalDate BETWEEN :startDate AND :endDate ORDER BY logicalDate, createdAt")
+    fun getSessionsBetween(startDate: Long, endDate: Long): Flow<List<WorkoutSessionEntity>>
 }

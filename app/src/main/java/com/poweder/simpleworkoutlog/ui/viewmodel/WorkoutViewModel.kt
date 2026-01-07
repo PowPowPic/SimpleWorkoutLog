@@ -14,6 +14,7 @@ import com.poweder.simpleworkoutlog.data.model.SetItem
 import com.poweder.simpleworkoutlog.data.preferences.LastInputDataStore
 import com.poweder.simpleworkoutlog.data.preferences.SettingsDataStore
 import com.poweder.simpleworkoutlog.data.repository.WorkoutRepository
+import com.poweder.simpleworkoutlog.ui.screen.MonthlyStats
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
@@ -22,10 +23,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.YearMonth
 
 class WorkoutViewModel(
     private val repository: WorkoutRepository,
@@ -105,27 +109,47 @@ class WorkoutViewModel(
         }
     }
 
-    // ===== 今日のサマリー =====
+    // ===== 今日のサマリー（セッションから直接計算）=====
+
+    // 今日のセッション
+    private val todaySessions: StateFlow<List<WorkoutSessionEntity>> =
+        repository.getSessionsByDate(currentLogicalDate().toEpochDay())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    // 今日のセット
+    private val todaySets: StateFlow<List<WorkoutSetEntity>> =
+        repository.getSetsForDate(currentLogicalDate().toEpochDay())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    // 今日の総挙上重量（セットから直接計算）
+    val todayTotalWeight: StateFlow<Double> = todaySets.map { sets ->
+        sets.sumOf { it.weight * it.reps }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0.0)
+
+    // 今日の運動時間（分）（セッションから直接計算）
+    val todayTotalDuration: StateFlow<Int> = todaySessions.map { sessions ->
+        sessions.sumOf { it.durationMinutes }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    // 今日の消費カロリー（セッションから直接計算）
+    val todayTotalCalories: StateFlow<Int> = todaySessions.map { sessions ->
+        sessions.sumOf { it.caloriesBurned }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    // レガシー：DailyWorkoutEntity（互換性のために維持）
     val todayWorkout: StateFlow<DailyWorkoutEntity?> = repository.getTodayWorkout()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
-
-    val todayTotalWeight: StateFlow<Double> = repository.getTodayWorkout()
-        .map { it?.totalWeight ?: 0.0 }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0.0)
-
-    // 今日の運動時間（分）
-    val todayTotalDuration: StateFlow<Int> = repository.getTodayWorkout()
-        .map { it?.totalDuration ?: 0 }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    // 今日の消費カロリー
-    val todayTotalCalories: StateFlow<Int> = repository.getTodayWorkout()
-        .map { it?.totalCalories ?: 0 }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
     // ===== 種目操作 =====
     val allExercises: StateFlow<List<ExerciseEntity>> = repository.allExercises
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    /**
+     * 種目ID → 種目名のマップ
+     */
+    val exerciseNamesMap: StateFlow<Map<Long, String>> = repository.allExercises.map { exercises ->
+        exercises.associate { it.id to (it.customName ?: it.name) }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
 
     private val _strengthExercises = MutableStateFlow<List<ExerciseEntity>>(emptyList())
     val strengthExercises: StateFlow<List<ExerciseEntity>> = _strengthExercises.asStateFlow()
@@ -259,10 +283,10 @@ class WorkoutViewModel(
     val setItems: StateFlow<List<SetItem>> = _setItems.asStateFlow()
 
     /**
-     * 種目トータル（確定済みセットの合計）
+     * 種目トータル（有効なセットの合計）
      */
     val sessionTotal: StateFlow<Double> = _setItems.map { items ->
-        items.filter { it.isConfirmed }.sumOf { it.totalWeight }
+        items.filter { it.isValid }.sumOf { it.totalWeight }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0.0)
 
     /**
@@ -356,25 +380,29 @@ class WorkoutViewModel(
 
     /**
      * セッション完了＆保存（筋トレ用 - 運動時間と消費カロリー対応）
+     * 有効なセット（weight > 0 && reps > 0）は確定状態に関係なく全て保存
      */
     fun finishAndSave(durationMinutes: Int = 0, caloriesBurned: Int = 0) {
         viewModelScope.launch {
             val exercise = _currentExercise.value ?: return@launch
-            val confirmedSets = _setItems.value.filter { it.isConfirmed && it.isValid }
+            
+            // 有効なセット（weight > 0 && reps > 0）は全て保存対象
+            val validSets = _setItems.value.filter { it.isValid }
 
-            if (confirmedSets.isEmpty() && durationMinutes == 0 && caloriesBurned == 0) {
+            if (validSets.isEmpty() && durationMinutes == 0 && caloriesBurned == 0) {
                 clearSession()
                 return@launch
             }
 
             val session = repository.getOrCreateSession(exercise.id, exercise.workoutType)
 
-            confirmedSets.forEach { setItem ->
+            // 有効なセットを全て保存
+            validSets.forEach { setItem ->
                 repository.addSet(session.id, setItem.weight, setItem.reps)
             }
 
-            if (confirmedSets.isNotEmpty()) {
-                val lastSet = confirmedSets.last()
+            if (validSets.isNotEmpty()) {
+                val lastSet = validSets.last()
                 lastInputDataStore.saveLastInput(exercise.id, lastSet.weight, lastSet.reps)
             }
 
@@ -399,10 +427,10 @@ class WorkoutViewModel(
     }
 
     /**
-     * 未保存のセットがあるか
+     * 未保存の有効なセットがあるか
      */
     fun hasUnsavedSets(): Boolean {
-        return _setItems.value.any { it.isConfirmed && it.isValid }
+        return _setItems.value.any { it.isValid }
     }
 
     // ===== セッション操作（レガシー） =====
@@ -465,6 +493,83 @@ class WorkoutViewModel(
     }
 
     /**
+     * 指定日のセッションを取得
+     */
+    fun getSessionsForDate(date: LocalDate): Flow<List<WorkoutSessionEntity>> {
+        return repository.getSessionsByDate(date.toEpochDay())
+    }
+
+    /**
+     * 指定日のセッションを全削除
+     */
+    fun deleteSessionsByDate(date: LocalDate) {
+        viewModelScope.launch {
+            repository.deleteSessionsByDate(date.toEpochDay())
+        }
+    }
+
+    /**
+     * セッションを削除
+     */
+    fun deleteSession(sessionId: Long) {
+        viewModelScope.launch {
+            repository.deleteSession(sessionId)
+        }
+    }
+
+    /**
+     * 指定月のワークアウト日（セッションがある日）を取得
+     */
+    fun getWorkoutDatesForMonth(yearMonth: YearMonth): Flow<Set<LocalDate>> {
+        val startDate = yearMonth.atDay(1).toEpochDay()
+        val endDate = yearMonth.atEndOfMonth().toEpochDay()
+
+        return repository.getSessionDatesBetween(startDate, endDate).map { dates ->
+            dates.map { LocalDate.ofEpochDay(it) }.toSet()
+        }
+    }
+
+    /**
+     * 指定月の統計を取得（セットから重量計算）
+     */
+    fun getMonthlyStats(yearMonth: YearMonth): Flow<MonthlyStats> {
+        val startDate = yearMonth.atDay(1).toEpochDay()
+        val endDate = yearMonth.atEndOfMonth().toEpochDay()
+
+        return combine(
+            repository.getSessionsBetween(startDate, endDate),
+            repository.getSetsBetween(startDate, endDate)
+        ) { sessions, sets ->
+            if (sessions.isEmpty()) {
+                MonthlyStats()
+            } else {
+                // ワークアウト日数（ユニークな日付数）
+                val workoutDays = sessions.map { it.logicalDate }.distinct().size
+
+                // 総運動時間
+                val totalDuration = sessions.sumOf { it.durationMinutes }
+
+                // 平均運動時間
+                val averageDuration = if (workoutDays > 0) totalDuration / workoutDays else 0
+
+                // 総消費カロリー
+                val totalCalories = sessions.sumOf { it.caloriesBurned }
+
+                // 総挙上重量（セットから計算）
+                val totalWeight = sets.sumOf { it.weight * it.reps }
+
+                MonthlyStats(
+                    workoutDays = workoutDays,
+                    totalDuration = totalDuration,
+                    averageDuration = averageDuration,
+                    totalCalories = totalCalories,
+                    totalWeight = totalWeight
+                )
+            }
+        }
+    }
+
+    /**
      * その他ワークアウトを保存
      */
     fun saveOtherWorkout(
@@ -474,6 +579,48 @@ class WorkoutViewModel(
     ) {
         viewModelScope.launch {
             val session = repository.getOrCreateSession(exerciseId, WorkoutType.OTHER)
+
+            val updatedSession = session.copy(
+                durationMinutes = durationMinutes,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+        }
+    }
+
+    /**
+     * 有酸素ワークアウトを保存
+     */
+    fun saveCardioWorkout(
+        exerciseId: Long,
+        durationMinutes: Int,
+        distance: Double,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.CARDIO)
+
+            val updatedSession = session.copy(
+                durationMinutes = durationMinutes,
+                distance = distance,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+        }
+    }
+
+    /**
+     * スタジオワークアウトを保存
+     */
+    fun saveStudioWorkout(
+        exerciseId: Long,
+        durationMinutes: Int,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STUDIO)
 
             val updatedSession = session.copy(
                 durationMinutes = durationMinutes,
@@ -539,5 +686,12 @@ class WorkoutViewModel(
             )
             repository.updateSession(updatedSession)
         }
+    }
+
+    /**
+     * 指定日のセットを取得
+     */
+    fun getSetsForDate(date: LocalDate): Flow<List<WorkoutSetEntity>> {
+        return repository.getSetsForDate(date.toEpochDay())
     }
 }

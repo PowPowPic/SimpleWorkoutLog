@@ -158,4 +158,39 @@ class WorkoutRepository(
         dailyWorkoutDao.deleteAll()
         exerciseDao.deleteAll()
     }
+
+    /**
+     * 指定期間のセッション日付リストを取得
+     */
+    fun getSessionDatesBetween(startDate: Long, endDate: Long): Flow<List<Long>> {
+        return workoutSessionDao.getSessionDatesBetween(startDate, endDate)
+    }
+
+    /**
+     * 指定期間のセッションを取得
+     */
+    fun getSessionsBetween(startDate: Long, endDate: Long): Flow<List<WorkoutSessionEntity>> {
+        return workoutSessionDao.getSessionsBetween(startDate, endDate)
+    }
+
+    /**
+     * 指定日のセッションを全削除
+     */
+    suspend fun deleteSessionsByDate(date: Long) {
+        workoutSessionDao.deleteByDate(date)
+    }
+
+    /**
+     * 指定日のセットを取得
+     */
+    fun getSetsForDate(date: Long): Flow<List<WorkoutSetEntity>> {
+        return workoutSetDao.getSetsForDate(date)
+    }
+
+    /**
+     * 指定期間のセットを取得
+     */
+    fun getSetsBetween(startDate: Long, endDate: Long): Flow<List<WorkoutSetEntity>> {
+        return workoutSetDao.getSetsBetween(startDate, endDate)
+    }
 }

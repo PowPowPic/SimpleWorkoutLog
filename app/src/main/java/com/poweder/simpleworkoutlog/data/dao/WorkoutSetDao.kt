@@ -35,4 +35,18 @@ interface WorkoutSetDao {
     
     @Query("SELECT SUM(totalWeight) FROM workout_sets WHERE sessionId = :sessionId")
     suspend fun getTotalWeightBySession(sessionId: Long): Double?
+
+    @Query("""
+        SELECT ws.* FROM workout_sets ws
+        INNER JOIN workout_sessions s ON ws.sessionId = s.id
+        WHERE s.logicalDate = :date
+    """)
+    fun getSetsForDate(date: Long): Flow<List<WorkoutSetEntity>>
+
+    @Query("""
+        SELECT ws.* FROM workout_sets ws
+        INNER JOIN workout_sessions s ON ws.sessionId = s.id
+        WHERE s.logicalDate BETWEEN :startDate AND :endDate
+    """)
+    fun getSetsBetween(startDate: Long, endDate: Long): Flow<List<WorkoutSetEntity>>
 }

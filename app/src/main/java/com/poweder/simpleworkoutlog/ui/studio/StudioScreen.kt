@@ -198,7 +198,16 @@ fun StudioScreen(
                     .clip(RoundedCornerShape(12.dp))
                     .background(WorkoutColors.ButtonConfirm)
                     .clickable {
-                        // TODO: 保存処理
+                        currentExercise?.let { exercise ->
+                            val duration = durationMinutes.toIntOrNull() ?: 0
+                            val cal = calories.toIntOrNull() ?: 0
+                            
+                            viewModel.saveStudioWorkout(
+                                exerciseId = exercise.id,
+                                durationMinutes = duration,
+                                caloriesBurned = cal
+                            )
+                        }
                         onBack()
                     }
                     .padding(vertical = 14.dp),
