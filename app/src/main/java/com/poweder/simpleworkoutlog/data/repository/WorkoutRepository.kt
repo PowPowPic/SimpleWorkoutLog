@@ -20,11 +20,11 @@ class WorkoutRepository(
 ) {
     // ===== Exercise（種目）操作 =====
     val allExercises: Flow<List<ExerciseEntity>> = exerciseDao.getAllExercises()
-    
+
     fun getExercisesByType(type: String): Flow<List<ExerciseEntity>> {
         return exerciseDao.getExercisesByType(type)
     }
-    
+
     suspend fun insertExercise(name: String, type: String): Long {
         val maxOrder = exerciseDao.getMaxSortOrder(type) ?: 0
         val exercise = ExerciseEntity(
@@ -34,69 +34,69 @@ class WorkoutRepository(
         )
         return exerciseDao.insert(exercise)
     }
-    
+
     suspend fun updateExercise(exercise: ExerciseEntity) {
         exerciseDao.update(exercise)
     }
-    
+
     suspend fun deleteExercise(id: Long) {
         exerciseDao.deleteById(id)
     }
-    
+
     // ===== Daily Workout（日別サマリー）操作 =====
     fun getTodayWorkout(): Flow<DailyWorkoutEntity?> {
         return dailyWorkoutDao.getDailyWorkout(currentLogicalDate().toEpochDay())
     }
-    
-    fun getDailyWorkout(logicalDate: Long): Flow<DailyWorkoutEntity?> {
-        return dailyWorkoutDao.getDailyWorkout(logicalDate)
+
+    fun getDailyWorkout(date: Long): Flow<DailyWorkoutEntity?> {
+        return dailyWorkoutDao.getDailyWorkout(date)
     }
-    
+
     fun getDailyWorkoutsBetween(startDate: Long, endDate: Long): Flow<List<DailyWorkoutEntity>> {
         return dailyWorkoutDao.getDailyWorkoutsBetween(startDate, endDate)
     }
-    
+
     suspend fun updateDailyWorkout(dailyWorkout: DailyWorkoutEntity) {
         dailyWorkoutDao.insert(dailyWorkout)
     }
-    
+
     // ===== Workout Session（セッション）操作 =====
-    fun getSessionsByDate(logicalDate: Long): Flow<List<WorkoutSessionEntity>> {
-        return workoutSessionDao.getSessionsByDate(logicalDate)
+    fun getSessionsByDate(date: Long): Flow<List<WorkoutSessionEntity>> {
+        return workoutSessionDao.getSessionsByDate(date)
     }
-    
+
     suspend fun getOrCreateSession(exerciseId: Long, workoutType: String): WorkoutSessionEntity {
-        val logicalDate = currentLogicalDate().toEpochDay()
-        val existing = workoutSessionDao.getSessionByExerciseAndDate(exerciseId, logicalDate)
-        
+        val date = currentLogicalDate().toEpochDay()
+        val existing = workoutSessionDao.getSessionByExerciseAndDate(exerciseId, date)
+
         return existing ?: run {
             val newSession = WorkoutSessionEntity(
                 exerciseId = exerciseId,
-                logicalDate = logicalDate,
+                logicalDate = date,
                 workoutType = workoutType
             )
             val id = workoutSessionDao.insert(newSession)
             newSession.copy(id = id)
         }
     }
-    
+
     suspend fun updateSession(session: WorkoutSessionEntity) {
         workoutSessionDao.update(session.copy(updatedAt = System.currentTimeMillis()))
     }
-    
+
     suspend fun deleteSession(id: Long) {
         workoutSessionDao.deleteById(id)
     }
-    
+
     // ===== Workout Set（セット）操作 =====
     fun getSetsBySession(sessionId: Long): Flow<List<WorkoutSetEntity>> {
         return workoutSetDao.getSetsBySession(sessionId)
     }
-    
+
     suspend fun addSet(sessionId: Long, weight: Double, reps: Int): Long {
         val maxSetNumber = workoutSetDao.getMaxSetNumber(sessionId) ?: 0
         val totalWeight = weight * reps
-        
+
         val set = WorkoutSetEntity(
             sessionId = sessionId,
             setNumber = maxSetNumber + 1,
@@ -104,54 +104,53 @@ class WorkoutRepository(
             reps = reps,
             totalWeight = totalWeight
         )
-        
+
         val setId = workoutSetDao.insert(set)
-        
+
         // セッションの総重量を更新
         updateSessionTotalWeight(sessionId)
-        
+
         return setId
     }
-    
+
     suspend fun updateSet(set: WorkoutSetEntity) {
         val updatedSet = set.copy(totalWeight = set.weight * set.reps)
         workoutSetDao.update(updatedSet)
-        
+
         // セッションの総重量を更新
         updateSessionTotalWeight(set.sessionId)
     }
-    
+
     suspend fun deleteSet(set: WorkoutSetEntity) {
         workoutSetDao.delete(set)
-        
+
         // セッションの総重量を更新
         updateSessionTotalWeight(set.sessionId)
     }
-    
+
     private suspend fun updateSessionTotalWeight(sessionId: Long) {
         val session = workoutSessionDao.getSessionById(sessionId) ?: return
         val totalWeight = workoutSetDao.getTotalWeightBySession(sessionId) ?: 0.0
-        
+
         workoutSessionDao.update(session.copy(
             totalWeight = totalWeight,
             updatedAt = System.currentTimeMillis()
         ))
-        
+
         // 日別サマリーも更新
         updateDailyTotalWeight(session.logicalDate)
     }
-    
-    private suspend fun updateDailyTotalWeight(logicalDate: Long) {
+
+    private suspend fun updateDailyTotalWeight(date: Long) {
         // 今日のすべてのセッションから総重量を計算
-        // （簡易実装：本来はFlowで監視すべき）
         val dailyWorkout = DailyWorkoutEntity(
-            logicalDate = logicalDate,
+            date = date,
             totalWeight = 0.0, // TODO: 全セッションから計算
             updatedAt = System.currentTimeMillis()
         )
         dailyWorkoutDao.insert(dailyWorkout)
     }
-    
+
     // ===== 全データ削除 =====
     suspend fun deleteAllData() {
         workoutSetDao.deleteAll()

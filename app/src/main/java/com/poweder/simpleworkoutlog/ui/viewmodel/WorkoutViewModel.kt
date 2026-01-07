@@ -113,6 +113,16 @@ class WorkoutViewModel(
         .map { it?.totalWeight ?: 0.0 }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0.0)
 
+    // 今日の運動時間（分）
+    val todayTotalDuration: StateFlow<Int> = repository.getTodayWorkout()
+        .map { it?.totalDuration ?: 0 }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    // 今日の消費カロリー
+    val todayTotalCalories: StateFlow<Int> = repository.getTodayWorkout()
+        .map { it?.totalCalories ?: 0 }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
     // ===== 種目操作 =====
     val allExercises: StateFlow<List<ExerciseEntity>> = repository.allExercises
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -345,14 +355,14 @@ class WorkoutViewModel(
     }
 
     /**
-     * セッション完了＆保存
+     * セッション完了＆保存（筋トレ用 - 運動時間と消費カロリー対応）
      */
-    fun finishAndSave() {
+    fun finishAndSave(durationMinutes: Int = 0, caloriesBurned: Int = 0) {
         viewModelScope.launch {
             val exercise = _currentExercise.value ?: return@launch
             val confirmedSets = _setItems.value.filter { it.isConfirmed && it.isValid }
 
-            if (confirmedSets.isEmpty()) {
+            if (confirmedSets.isEmpty() && durationMinutes == 0 && caloriesBurned == 0) {
                 clearSession()
                 return@launch
             }
@@ -363,10 +373,18 @@ class WorkoutViewModel(
                 repository.addSet(session.id, setItem.weight, setItem.reps)
             }
 
-            val lastSet = confirmedSets.last()
-            lastInputDataStore.saveLastInput(exercise.id, lastSet.weight, lastSet.reps)
+            if (confirmedSets.isNotEmpty()) {
+                val lastSet = confirmedSets.last()
+                lastInputDataStore.saveLastInput(exercise.id, lastSet.weight, lastSet.reps)
+            }
 
-            repository.updateSession(session)
+            // 運動時間と消費カロリーを保存
+            val updatedSession = session.copy(
+                durationMinutes = durationMinutes,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
 
             clearSession()
         }
@@ -487,12 +505,13 @@ class WorkoutViewModel(
     }
 
     /**
-     * インターバルワークアウトを種目名で保存（HIIT/Tabata）
+     * インターバルワークアウトを種目名で保存（HIIT/Tabata）- 消費カロリー対応
      */
     fun saveIntervalWorkoutByName(
         exerciseName: String,
         durationSeconds: Int,
-        sets: Int
+        sets: Int,
+        caloriesBurned: Int = 0
     ) {
         viewModelScope.launch {
             val durationMinutes = durationSeconds / 60
@@ -502,7 +521,6 @@ class WorkoutViewModel(
             var exercise = exercises.find { it.name == exerciseName || it.customName == exerciseName }
 
             if (exercise == null) {
-                // 種目がなければ作成
                 val id = repository.insertExercise(exerciseName, WorkoutType.INTERVAL)
                 exercise = ExerciseEntity(
                     id = id,
@@ -512,12 +530,11 @@ class WorkoutViewModel(
                 )
             }
 
-            // セッションを作成/取得
             val session = repository.getOrCreateSession(exercise.id, WorkoutType.INTERVAL)
 
-            // セッションを更新
             val updatedSession = session.copy(
                 durationMinutes = durationMinutes,
+                caloriesBurned = caloriesBurned,
                 updatedAt = System.currentTimeMillis()
             )
             repository.updateSession(updatedSession)

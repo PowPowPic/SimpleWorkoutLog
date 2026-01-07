@@ -26,7 +26,6 @@
     <string name="rename">名前変更</string>
 
     <!-- Main Screen -->
-    <string name="today_grand_total">Today Grand Total</string>
     <string name="card_today_menu">今日のトレーニングメニュー</string>
     <string name="midnight_rule_note">午前0時から午前3時の記録は前日の記録として保存されます</string>
     <string name="settings_hint">言語とkg/lbs,km/mileは設定で変更できます</string>
@@ -160,4 +159,21 @@
 
     <!-- Language -->
     <string name="language_system_default">システム設定に従う</string>
+
+    <!-- Main Screen -->
+    <string name="today_grand_total">今日の挙上重量</string>
+    <string name="today_duration">今日の運動時間</string>
+    <string name="today_calories">今日の消費カロリー</string>
+
+    <!-- Interval Timer -->
+    <string name="complete">完了</string>
+    <string name="save_workout_result">ワークアウト結果を保存</string>
+
+    <!-- Strength Screen -->
+    <string name="exercise_duration">運動時間（分）</string>
+    <string name="exercise_calories">消費カロリー（kcal）</string>
+
+    <!-- Confirm Dialog -->
+    <string name="confirm_back_title">変更を破棄しますか？</string>
+    <string name="confirm_back_message">未保存のセットがあります。戻ってもよろしいですか？</string>
 </resources>

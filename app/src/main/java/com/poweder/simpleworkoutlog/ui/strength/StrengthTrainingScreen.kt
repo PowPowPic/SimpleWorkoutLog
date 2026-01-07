@@ -39,6 +39,7 @@ import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,19 +50,23 @@ fun StrengthTrainingScreen(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    
+
     val weightUnit by viewModel.weightUnit.collectAsState()
     val adRemoved by viewModel.adRemoved.collectAsState()
     val setItems by viewModel.setItems.collectAsState()
     val sessionTotal by viewModel.sessionTotal.collectAsState()
     val currentExercise by viewModel.currentExercise.collectAsState()
-    
+
+    // 運動時間と消費カロリー入力
+    var durationInput by remember { mutableStateOf("") }
+    var caloriesInput by remember { mutableStateOf("") }
+
     // 戻る確認ダイアログ
     var showBackConfirmDialog by remember { mutableStateOf(false) }
-    
+
     // 日付をライフサイクルに連動して更新
     var logicalDate by remember { mutableStateOf(currentLogicalDate()) }
-    
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -73,18 +78,25 @@ fun StrengthTrainingScreen(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-    
+
     val dateFormatter = remember {
         DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
             .withLocale(Locale.getDefault())
     }
-    
+
+    val backgroundGradient = Brush.verticalGradient(
+        colors = listOf(
+            WorkoutColors.BackgroundDark,
+            WorkoutColors.BackgroundMedium
+        )
+    )
+
     // 戻る確認ダイアログ
     if (showBackConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showBackConfirmDialog = false },
-            title = { Text(stringResource(R.string.discard_confirm_title)) },
-            text = { Text(stringResource(R.string.discard_confirm_message)) },
+            title = { Text(stringResource(R.string.confirm_back_title)) },
+            text = { Text(stringResource(R.string.confirm_back_message)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -93,7 +105,7 @@ fun StrengthTrainingScreen(
                         onBack()
                     }
                 ) {
-                    Text(stringResource(R.string.discard), color = WorkoutColors.PureRed)
+                    Text(stringResource(R.string.common_ok))
                 }
             },
             dismissButton = {
@@ -103,15 +115,7 @@ fun StrengthTrainingScreen(
             }
         )
     }
-    
-    // 背景グラデーション
-    val backgroundGradient = Brush.horizontalGradient(
-        colors = listOf(
-            WorkoutColors.BackgroundDark,
-            WorkoutColors.BackgroundMedium
-        )
-    )
-    
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -119,7 +123,7 @@ fun StrengthTrainingScreen(
     ) {
         // 広告バナー
         TopBannerAd(showAd = !adRemoved)
-        
+
         // 日付表示
         Text(
             text = logicalDate.format(dateFormatter),
@@ -130,125 +134,239 @@ fun StrengthTrainingScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         )
-        
-        // ヘッダー（種目名）
-        Text(
-            text = currentExercise?.getDisplayName(context) ?: stringResource(R.string.workout_strength),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = WorkoutColors.TextPrimary,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-        
-        // セット一覧（LazyColumn）
+
+        // 種目名
+        currentExercise?.let { exercise ->
+            Text(
+                text = exercise.getDisplayName(context),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = WorkoutColors.TextPrimary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+        }
+
+        // メインコンテンツ
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            itemsIndexed(
-                items = setItems,
-                key = { _, item -> item.id }
-            ) { index, setItem ->
-                SetInputRow(
-                    setItem = setItem,
-                    weightUnit = weightUnit,
-                    onWeightChange = { weight ->
-                        viewModel.updateSetItem(setItem.id, weight, setItem.reps)
-                    },
-                    onRepsChange = { reps ->
-                        viewModel.updateSetItem(setItem.id, setItem.weight, reps)
-                    },
-                    onConfirm = { viewModel.confirmSetItem(setItem.id) },
-                    onEdit = { viewModel.unconfirmSetItem(setItem.id) },
-                    onDelete = { viewModel.deleteSetItem(setItem.id) }
+            // 運動時間入力
+            item {
+                OutlinedTextField(
+                    value = durationInput,
+                    onValueChange = { durationInput = it.filter { c -> c.isDigit() } },
+                    label = { Text(stringResource(R.string.exercise_duration)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = WorkoutColors.TextPrimary,
+                        unfocusedTextColor = WorkoutColors.TextPrimary,
+                        focusedBorderColor = WorkoutColors.AccentOrange,
+                        unfocusedBorderColor = WorkoutColors.TextSecondary
+                    )
                 )
             }
-            
-            // ＋ Add New Set ボタン
+
+            // 消費カロリー入力
+            item {
+                OutlinedTextField(
+                    value = caloriesInput,
+                    onValueChange = { caloriesInput = it.filter { c -> c.isDigit() } },
+                    label = { Text(stringResource(R.string.exercise_calories)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = WorkoutColors.TextPrimary,
+                        unfocusedTextColor = WorkoutColors.TextPrimary,
+                        focusedBorderColor = WorkoutColors.AccentOrange,
+                        unfocusedBorderColor = WorkoutColors.TextSecondary
+                    )
+                )
+            }
+
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                AddNewSetButton(
+            }
+
+            // 種目トータル
+            item {
+                SessionTotalCard(
+                    total = sessionTotal,
+                    weightUnit = weightUnit
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
+            // セット一覧
+            itemsIndexed(setItems, key = { _, item -> item.id }) { index, setItem ->
+                SetItemCard(
+                    setItem = setItem,
+                    weightUnit = weightUnit,
+                    onUpdate = { weight, reps ->
+                        viewModel.updateSetItem(setItem.id, weight, reps)
+                    },
+                    onConfirm = {
+                        viewModel.confirmSetItem(setItem.id)
+                    },
+                    onUnconfirm = {
+                        viewModel.unconfirmSetItem(setItem.id)
+                    },
+                    onDelete = {
+                        viewModel.deleteSetItem(setItem.id)
+                    }
+                )
+            }
+
+            // 新しいセットを追加ボタン
+            item {
+                AddSetButton(
                     onClick = { viewModel.addNewSetItem() }
                 )
+            }
+
+            item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-        
-        // 種目トータル
-        SessionTotalBar(
-            total = sessionTotal,
-            weightUnit = weightUnit
-        )
-        
-        // 下部ボタン：Homeに戻る / Finish & Save
-        BottomActionButtons(
-            onGoHome = {
-                if (viewModel.hasUnsavedSets()) {
-                    showBackConfirmDialog = true
-                } else {
-                    viewModel.clearSession()
-                    onBack()
-                }
-            },
-            onFinishAndSave = {
-                viewModel.finishAndSave()
-                onBack()
-            }
-        )
-        
-        // 設定案内
-        Text(
-            text = stringResource(R.string.settings_hint),
-            style = MaterialTheme.typography.bodyMedium,
-            color = WorkoutColors.PureBlue,
-            textAlign = TextAlign.Center,
+
+        // 下部ボタン
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Homeに戻るボタン
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(WorkoutColors.ButtonCancel)
+                    .clickable {
+                        if (viewModel.hasUnsavedSets()) {
+                            showBackConfirmDialog = true
+                        } else {
+                            viewModel.clearSession()
+                            onBack()
+                        }
+                    }
+                    .padding(vertical = 14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.go_home),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = WorkoutColors.TextPrimary
+                )
+            }
+
+            // 保存して完了ボタン
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(WorkoutColors.ButtonConfirm)
+                    .clickable {
+                        val duration = durationInput.toIntOrNull() ?: 0
+                        val calories = caloriesInput.toIntOrNull() ?: 0
+                        viewModel.finishAndSave(duration, calories)
+                        onBack()
+                    }
+                    .padding(vertical = 14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.finish_and_save),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
     }
 }
 
-/**
- * セット入力行
- */
 @Composable
-private fun SetInputRow(
+private fun SessionTotalCard(
+    total: Double,
+    weightUnit: WeightUnit
+) {
+    val gradient = Brush.horizontalGradient(
+        colors = listOf(
+            WorkoutColors.StrengthCardStart,
+            WorkoutColors.StrengthCardEnd
+        )
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(gradient)
+            .padding(vertical = 16.dp, horizontal = 16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.session_total),
+                style = MaterialTheme.typography.bodyMedium,
+                color = WorkoutColors.TextSecondary
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = formatWeight(total, weightUnit),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = WorkoutColors.TextPrimary
+            )
+        }
+    }
+}
+
+@Composable
+private fun SetItemCard(
     setItem: SetItem,
     weightUnit: WeightUnit,
-    onWeightChange: (Double) -> Unit,
-    onRepsChange: (Int) -> Unit,
+    onUpdate: (Double, Int) -> Unit,
     onConfirm: () -> Unit,
-    onEdit: () -> Unit,
+    onUnconfirm: () -> Unit,
     onDelete: () -> Unit
 ) {
-    var weightText by remember(setItem.id, setItem.weight) { 
-        mutableStateOf(if (setItem.weight > 0) setItem.weight.toString() else "") 
+    var weightText by remember(setItem.id, setItem.weight) {
+        mutableStateOf(if (setItem.weight > 0) setItem.weight.toString() else "")
     }
-    var repsText by remember(setItem.id, setItem.reps) { 
-        mutableStateOf(if (setItem.reps > 0) setItem.reps.toString() else "") 
+    var repsText by remember(setItem.id, setItem.reps) {
+        mutableStateOf(if (setItem.reps > 0) setItem.reps.toString() else "")
     }
-    
+
     val cardGradient = Brush.horizontalGradient(
         colors = if (setItem.isConfirmed) {
             listOf(
-                WorkoutColors.StrengthCardStart.copy(alpha = 0.5f),
-                WorkoutColors.StrengthCardEnd.copy(alpha = 0.5f)
+                WorkoutColors.ButtonConfirm.copy(alpha = 0.3f),
+                WorkoutColors.ButtonConfirm.copy(alpha = 0.2f)
             )
         } else {
             listOf(
                 WorkoutColors.StrengthCardStart,
-                WorkoutColors.StrengthCardEnd,
-                WorkoutColors.StrengthCardStart
+                WorkoutColors.StrengthCardEnd
             )
         }
     )
-    
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -263,113 +381,77 @@ private fun SetInputRow(
         ) {
             // セット番号
             Text(
-                text = "${setItem.setNumber}.",
+                text = "${setItem.setNumber}",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = WorkoutColors.TextPrimary,
-                modifier = Modifier.width(28.dp)
+                modifier = Modifier.width(24.dp)
             )
-            
-            if (setItem.isConfirmed) {
-                // 確定済み：表示のみ
-                Text(
-                    text = "${formatWeight(setItem.weight, weightUnit)} × ${setItem.reps}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = WorkoutColors.TextPrimary,
-                    modifier = Modifier.weight(1f)
+
+            // 重量入力
+            OutlinedTextField(
+                value = weightText,
+                onValueChange = {
+                    weightText = it
+                    val weight = it.toDoubleOrNull() ?: 0.0
+                    val reps = repsText.toIntOrNull() ?: 0
+                    onUpdate(weight, reps)
+                },
+                label = { Text(weightUnit.symbol) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                singleLine = true,
+                enabled = !setItem.isConfirmed,
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = WorkoutColors.TextPrimary,
+                    unfocusedTextColor = WorkoutColors.TextPrimary,
+                    disabledTextColor = WorkoutColors.TextPrimary
                 )
-                
-                // トータル
-                Text(
-                    text = "→ ${formatWeight(setItem.totalWeight, weightUnit)}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = WorkoutColors.AccentOrange
+            )
+
+            // 回数入力
+            OutlinedTextField(
+                value = repsText,
+                onValueChange = {
+                    repsText = it
+                    val weight = weightText.toDoubleOrNull() ?: 0.0
+                    val reps = it.toIntOrNull() ?: 0
+                    onUpdate(weight, reps)
+                },
+                label = { Text(stringResource(R.string.reps)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                singleLine = true,
+                enabled = !setItem.isConfirmed,
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = WorkoutColors.TextPrimary,
+                    unfocusedTextColor = WorkoutColors.TextPrimary,
+                    disabledTextColor = WorkoutColors.TextPrimary
                 )
-                
-                // 編集ボタン
-                IconButton(
-                    onClick = onEdit,
-                    modifier = Modifier.size(36.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.edit),
-                        tint = WorkoutColors.AccentOrangeLight
-                    )
-                }
-            } else {
-                // 未確定：入力フィールド
-                OutlinedTextField(
-                    value = weightText,
-                    onValueChange = { 
-                        val filtered = it.filter { c -> c.isDigit() || c == '.' }
-                        weightText = filtered
-                        filtered.toDoubleOrNull()?.let { w -> onWeightChange(w) }
-                    },
-                    modifier = Modifier.weight(1f),
-                    label = { Text(weightUnit.symbol) },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = WorkoutColors.TextPrimary,
-                        unfocusedTextColor = WorkoutColors.TextPrimary,
-                        focusedBorderColor = WorkoutColors.AccentOrange,
-                        unfocusedBorderColor = WorkoutColors.TextSecondary,
-                        focusedLabelColor = WorkoutColors.AccentOrange,
-                        unfocusedLabelColor = WorkoutColors.TextSecondary
-                    )
-                )
-                
-                Text(
-                    text = "×",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = WorkoutColors.TextPrimary
-                )
-                
-                OutlinedTextField(
-                    value = repsText,
-                    onValueChange = { 
-                        val filtered = it.filter { c -> c.isDigit() }
-                        repsText = filtered
-                        filtered.toIntOrNull()?.let { r -> onRepsChange(r) }
-                    },
-                    modifier = Modifier.weight(0.7f),
-                    label = { Text(stringResource(R.string.reps)) },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = WorkoutColors.TextPrimary,
-                        unfocusedTextColor = WorkoutColors.TextPrimary,
-                        focusedBorderColor = WorkoutColors.AccentOrange,
-                        unfocusedBorderColor = WorkoutColors.TextSecondary,
-                        focusedLabelColor = WorkoutColors.AccentOrange,
-                        unfocusedLabelColor = WorkoutColors.TextSecondary
-                    )
-                )
-                
-                // 確定ボタン
-                IconButton(
-                    onClick = onConfirm,
-                    enabled = setItem.isValid,
-                    modifier = Modifier.size(36.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(R.string.confirm),
-                        tint = if (setItem.isValid) WorkoutColors.AccentOrange else WorkoutColors.TextSecondary
-                    )
-                }
-            }
-            
-            // 削除ボタン（常に表示）
+            )
+
+            // 確定/編集ボタン
             IconButton(
-                onClick = onDelete,
-                modifier = Modifier.size(36.dp)
+                onClick = {
+                    if (setItem.isConfirmed) {
+                        onUnconfirm()
+                    } else {
+                        onConfirm()
+                    }
+                }
             ) {
                 Icon(
+                    imageVector = if (setItem.isConfirmed) Icons.Default.Edit else Icons.Default.Check,
+                    contentDescription = if (setItem.isConfirmed) "Edit" else "Confirm",
+                    tint = if (setItem.isConfirmed) WorkoutColors.AccentOrange else WorkoutColors.ButtonConfirm
+                )
+            }
+
+            // 削除ボタン
+            IconButton(onClick = onDelete) {
+                Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.delete),
+                    contentDescription = "Delete",
                     tint = WorkoutColors.PureRed
                 )
             }
@@ -377,111 +459,24 @@ private fun SetInputRow(
     }
 }
 
-/**
- * ＋ Add New Set ボタン
- */
 @Composable
-private fun AddNewSetButton(onClick: () -> Unit) {
+private fun AddSetButton(
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(WorkoutColors.AccentOrange)
+            .background(WorkoutColors.BackgroundMedium.copy(alpha = 0.5f))
             .clickable { onClick() }
             .padding(vertical = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = stringResource(R.string.add_new_set),
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = WorkoutColors.TextPrimary
+            color = WorkoutColors.AccentOrange
         )
-    }
-}
-
-/**
- * 種目トータル表示バー
- */
-@Composable
-private fun SessionTotalBar(
-    total: Double,
-    weightUnit: WeightUnit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(WorkoutColors.GrandTotalBackground)
-            .padding(vertical = 16.dp, horizontal = 16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.session_total),
-                style = MaterialTheme.typography.titleMedium,
-                color = WorkoutColors.TextSecondary
-            )
-            Text(
-                text = formatWeight(total, weightUnit),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = WorkoutColors.GrandTotalText
-            )
-        }
-    }
-}
-
-/**
- * 下部アクションボタン
- */
-@Composable
-private fun BottomActionButtons(
-    onGoHome: () -> Unit,
-    onFinishAndSave: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // Homeに戻るボタン
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
-                .background(WorkoutColors.ButtonCancel)
-                .clickable { onGoHome() }
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.go_home),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                color = WorkoutColors.TextPrimary
-            )
-        }
-        
-        // Finish & Save ボタン
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
-                .background(WorkoutColors.AccentOrange)
-                .clickable { onFinishAndSave() }
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.finish_and_save),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                color = WorkoutColors.TextPrimary
-            )
-        }
     }
 }

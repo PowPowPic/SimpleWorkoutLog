@@ -4,8 +4,8 @@ import android.os.SystemClock
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -13,17 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.poweder.simpleworkoutlog.R
-import com.poweder.simpleworkoutlog.data.entity.WorkoutType
-import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import kotlinx.coroutines.delay
@@ -36,8 +32,7 @@ fun IntervalScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val currentExercise by viewModel.currentExercise.collectAsState()
+    val intervalExerciseName by viewModel.intervalExerciseName.collectAsState()
     
     // タイマー設定
     var settings by remember { mutableStateOf(IntervalTimerSettings.tabataDefault()) }
@@ -53,8 +48,17 @@ fun IntervalScreen(
     var phaseStartTime by remember { mutableStateOf(0L) }
     var phaseDuration by remember { mutableStateOf(0) }
     
-    // 完了時の保存フラグ
+    // 完了後の入力画面表示フラグ
+    var showResultInput by remember { mutableStateOf(false) }
+    
+    // 消費カロリー入力
+    var caloriesInput by remember { mutableStateOf("") }
+    
+    // 保存完了フラグ
     var hasSaved by remember { mutableStateOf(false) }
+    
+    // 重複音防止用：最後にビープを鳴らした残り秒数
+    var lastBeepSecond by remember { mutableStateOf(-1) }
     
     // クリーンアップ
     DisposableEffect(Unit) {
@@ -76,14 +80,23 @@ fun IntervalScreen(
                     totalElapsedSeconds = timerState.totalElapsedSeconds + 1
                 )
                 
-                // サウンド再生（残り5秒から）
-                if (remaining in 1..5) {
-                    soundManager.playShortBeep()
+                // サウンド再生（残り秒が変わった時のみ鳴らす）
+                if (remaining != lastBeepSecond) {
+                    when (remaining) {
+                        5, 4, 3, 2, 1 -> {
+                            soundManager.playShortBeep()
+                            lastBeepSecond = remaining
+                        }
+                        0 -> {
+                            soundManager.playLongBeep()
+                            lastBeepSecond = remaining
+                        }
+                    }
                 }
                 
                 // フェーズ終了
                 if (remaining <= 0) {
-                    soundManager.playLongBeep()
+                    lastBeepSecond = -1
                     moveToNextPhase(
                         currentState = timerState,
                         settings = settings,
@@ -95,7 +108,7 @@ fun IntervalScreen(
                     )
                 }
                 
-                delay(1000L)
+                delay(200L)
             }
         }
     }
@@ -103,11 +116,15 @@ fun IntervalScreen(
     // 設定ダイアログ
     if (showSettingsDialog) {
         IntervalTimerSettingsDialog(
-            initialSettings = settings,
+            initialSettings = if (intervalExerciseName == "Tabata") {
+                IntervalTimerSettings.tabataDefault()
+            } else {
+                IntervalTimerSettings.hiitDefault()
+            },
             onConfirm = { newSettings ->
                 settings = newSettings
                 showSettingsDialog = false
-                // タイマー開始
+                lastBeepSecond = -1
                 startTimer(
                     settings = newSettings,
                     onStateChange = { newState, duration ->
@@ -124,48 +141,19 @@ fun IntervalScreen(
         )
     }
     
-    // 完了時の保存処理
-    LaunchedEffect(timerState.phase) {
-        if (timerState.phase == IntervalTimerPhase.FINISHED && !hasSaved) {
-            hasSaved = true
-            currentExercise?.let { exercise ->
-                viewModel.saveIntervalWorkout(
-                    exerciseId = exercise.id,
-                    durationSeconds = timerState.totalElapsedSeconds,
-                    sets = settings.sets
-                )
-            }
-        }
-    }
-    
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color.Transparent)
     ) {
-        // トップバー
+        // トップバー（種目名のみ表示、戻るボタンなし）
         TopAppBar(
             title = {
                 Text(
-                    text = currentExercise?.getDisplayName(context) ?: stringResource(R.string.workout_interval),
+                    text = intervalExerciseName,
                     fontWeight = FontWeight.Bold,
                     color = WorkoutColors.TextPrimary
                 )
-            },
-            navigationIcon = {
-                IconButton(onClick = {
-                    if (timerState.isRunning) {
-                        // タイマー実行中は確認なしで停止して戻る
-                        timerState = timerState.copy(isRunning = false)
-                    }
-                    onBack()
-                }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back),
-                        tint = WorkoutColors.TextPrimary
-                    )
-                }
             },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent
@@ -181,69 +169,67 @@ fun IntervalScreen(
             verticalArrangement = Arrangement.Center
         ) {
             if (!showSettingsDialog) {
-                // フェーズ表示
-                PhaseIndicator(phase = timerState.phase)
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                // セット表示
-                if (timerState.phase == IntervalTimerPhase.TRAINING || timerState.phase == IntervalTimerPhase.REST) {
-                    Text(
-                        text = stringResource(R.string.set_progress, timerState.currentSet, timerState.totalSets),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = WorkoutColors.TextPrimary
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-                
-                // 残り時間（大きく表示）
-                Text(
-                    text = formatTime(timerState.remainingSeconds),
-                    style = MaterialTheme.typography.displayLarge,
-                    fontSize = 80.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = getPhaseColor(timerState.phase)
-                )
-                
-                Spacer(modifier = Modifier.height(32.dp))
-                
-                // コントロールボタン
-                when (timerState.phase) {
-                    IntervalTimerPhase.FINISHED -> {
-                        // 完了画面
-                        Text(
-                            text = stringResource(R.string.workout_complete),
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = WorkoutColors.ButtonConfirm
+                when {
+                    // 結果入力画面
+                    showResultInput -> {
+                        ResultInputSection(
+                            totalSeconds = timerState.totalElapsedSeconds,
+                            caloriesInput = caloriesInput,
+                            onCaloriesChange = { caloriesInput = it },
+                            onSave = {
+                                if (!hasSaved) {
+                                    hasSaved = true
+                                    val calories = caloriesInput.toIntOrNull() ?: 0
+                                    viewModel.saveIntervalWorkoutByName(
+                                        exerciseName = intervalExerciseName,
+                                        durationSeconds = timerState.totalElapsedSeconds,
+                                        sets = settings.sets,
+                                        caloriesBurned = calories
+                                    )
+                                    onBack()
+                                }
+                            },
+                            onCancel = onBack
                         )
-                        
-                        Spacer(modifier = Modifier.height(8.dp))
-                        
-                        Text(
-                            text = stringResource(R.string.total_time_result, formatTime(timerState.totalElapsedSeconds)),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = WorkoutColors.TextSecondary
-                        )
-                        
-                        Spacer(modifier = Modifier.height(24.dp))
-                        
-                        Button(
-                            onClick = onBack,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = WorkoutColors.ButtonConfirm
-                            )
-                        ) {
-                            Text(stringResource(R.string.back_to_home))
-                        }
                     }
                     
-                    IntervalTimerPhase.IDLE -> {
-                        // 待機中（設定ダイアログ表示後）
+                    // タイマー完了画面
+                    timerState.phase == IntervalTimerPhase.FINISHED -> {
+                        FinishedSection(
+                            totalSeconds = timerState.totalElapsedSeconds,
+                            onComplete = { showResultInput = true }
+                        )
                     }
                     
+                    // タイマー実行中
                     else -> {
-                        // 実行中
+                        // フェーズ表示
+                        PhaseIndicator(phase = timerState.phase)
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        // セット表示
+                        if (timerState.phase == IntervalTimerPhase.TRAINING || timerState.phase == IntervalTimerPhase.REST) {
+                            Text(
+                                text = stringResource(R.string.set_progress, timerState.currentSet, timerState.totalSets),
+                                style = MaterialTheme.typography.titleLarge,
+                                color = WorkoutColors.TextPrimary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        
+                        // 残り時間（大きく表示）
+                        Text(
+                            text = formatTime(timerState.remainingSeconds),
+                            style = MaterialTheme.typography.displayLarge,
+                            fontSize = 80.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = getPhaseColor(timerState.phase)
+                        )
+                        
+                        Spacer(modifier = Modifier.height(32.dp))
+                        
+                        // コントロールボタン
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
@@ -253,17 +239,15 @@ fun IntervalScreen(
                                 color = if (timerState.isRunning) WorkoutColors.AccentOrange else WorkoutColors.ButtonConfirm,
                                 onClick = {
                                     if (timerState.isRunning) {
-                                        // 一時停止
                                         timerState = timerState.copy(isRunning = false)
                                     } else {
-                                        // 再開
                                         phaseStartTime = SystemClock.elapsedRealtime() - ((phaseDuration - timerState.remainingSeconds) * 1000L)
                                         timerState = timerState.copy(isRunning = true)
                                     }
                                 }
                             )
                             
-                            // 停止ボタン
+                            // 停止ボタン（途中停止 → 完了画面へ）
                             TimerControlButton(
                                 text = stringResource(R.string.stop),
                                 color = WorkoutColors.PureRed,
@@ -277,6 +261,138 @@ fun IntervalScreen(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+/**
+ * タイマー完了後の表示
+ */
+@Composable
+private fun FinishedSection(
+    totalSeconds: Int,
+    onComplete: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        PhaseIndicator(phase = IntervalTimerPhase.FINISHED)
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = formatTime(totalSeconds),
+            style = MaterialTheme.typography.displayLarge,
+            fontSize = 80.sp,
+            fontWeight = FontWeight.Bold,
+            color = getPhaseColor(IntervalTimerPhase.FINISHED)
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Text(
+            text = stringResource(R.string.workout_complete),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = WorkoutColors.ButtonConfirm
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Text(
+            text = stringResource(R.string.total_time_result, formatTime(totalSeconds)),
+            style = MaterialTheme.typography.titleMedium,
+            color = WorkoutColors.TextSecondary
+        )
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        // 完了ボタン → 結果入力画面へ
+        Button(
+            onClick = onComplete,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = WorkoutColors.ButtonConfirm
+            )
+        ) {
+            Text(stringResource(R.string.complete))
+        }
+    }
+}
+
+/**
+ * 結果入力画面（運動時間 + 消費カロリー）
+ */
+@Composable
+private fun ResultInputSection(
+    totalSeconds: Int,
+    caloriesInput: String,
+    onCaloriesChange: (String) -> Unit,
+    onSave: () -> Unit,
+    onCancel: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.save_workout_result),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = WorkoutColors.TextPrimary
+        )
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        // 運動時間（自動表示）
+        OutlinedTextField(
+            value = formatTime(totalSeconds),
+            onValueChange = { },
+            label = { Text(stringResource(R.string.duration_minutes)) },
+            readOnly = true,
+            modifier = Modifier.fillMaxWidth(0.8f),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = WorkoutColors.TextPrimary,
+                unfocusedTextColor = WorkoutColors.TextPrimary,
+                disabledTextColor = WorkoutColors.TextPrimary
+            )
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // 消費カロリー入力
+        OutlinedTextField(
+            value = caloriesInput,
+            onValueChange = { onCaloriesChange(it.filter { c -> c.isDigit() }) },
+            label = { Text(stringResource(R.string.calories_burned)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(0.8f),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = WorkoutColors.TextPrimary,
+                unfocusedTextColor = WorkoutColors.TextPrimary
+            )
+        )
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        // ボタン
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // キャンセル
+            OutlinedButton(onClick = onCancel) {
+                Text(stringResource(R.string.common_cancel))
+            }
+            
+            // 保存
+            Button(
+                onClick = onSave,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = WorkoutColors.ButtonConfirm
+                )
+            ) {
+                Text(stringResource(R.string.save))
             }
         }
     }
@@ -388,7 +504,6 @@ private fun moveToNextPhase(
 ) {
     when (currentState.phase) {
         IntervalTimerPhase.WARMUP -> {
-            // ウォームアップ → トレーニング
             onStateChange(
                 currentState.copy(
                     phase = IntervalTimerPhase.TRAINING,
@@ -401,7 +516,6 @@ private fun moveToNextPhase(
         
         IntervalTimerPhase.TRAINING -> {
             if (currentState.currentSet >= settings.sets) {
-                // 最後のセット → クールダウン or 完了
                 if (settings.cooldownSeconds > 0) {
                     onStateChange(
                         currentState.copy(
@@ -420,7 +534,6 @@ private fun moveToNextPhase(
                     )
                 }
             } else {
-                // トレーニング → インターバル
                 onStateChange(
                     currentState.copy(
                         phase = IntervalTimerPhase.REST,
@@ -432,7 +545,6 @@ private fun moveToNextPhase(
         }
         
         IntervalTimerPhase.REST -> {
-            // インターバル → 次のトレーニング
             onStateChange(
                 currentState.copy(
                     phase = IntervalTimerPhase.TRAINING,
@@ -444,7 +556,6 @@ private fun moveToNextPhase(
         }
         
         IntervalTimerPhase.COOLDOWN -> {
-            // クールダウン → 完了
             onStateChange(
                 currentState.copy(
                     phase = IntervalTimerPhase.FINISHED,

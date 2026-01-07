@@ -27,6 +27,8 @@
 
     <!-- Main Screen -->
     <string name="today_grand_total">Today Grand Total</string>
+    <string name="today_duration">Today\'s Exercise Time</string>
+    <string name="today_calories">Today\'s Calories Burned</string>
     <string name="card_today_menu">Today\'s Training Menu</string>
     <string name="midnight_rule_note">Records between 0:00-3:00 AM are saved as the previous day.</string>
     <string name="settings_hint">Language and kg/lbs, km/mile can be changed in Settings.</string>
@@ -157,4 +159,19 @@
 
     <!-- Language -->
     <string name="language_system_default">System Default</string>
+
+
+
+    <!-- Interval Timer -->
+    <string name="complete">Complete</string>
+    <string name="save_workout_result">Save Workout Result</string>
+
+    <!-- Strength Screen -->
+    <string name="exercise_duration">Exercise Time (min)</string>
+    <string name="exercise_calories">Calories Burned (kcal)</string>
+
+    <!-- Confirm Dialog -->
+    <string name="confirm_back_title">Discard Changes?</string>
+    <string name="confirm_back_message">You have unsaved sets. Are you sure you want to go back?</string>
+
 </resources>
