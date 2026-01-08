@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.poweder.simpleworkoutlog.data.dao.DailyDistance
+import com.poweder.simpleworkoutlog.data.dao.DailyMaxWeight
+import com.poweder.simpleworkoutlog.data.dao.DailySessionCount
 import com.poweder.simpleworkoutlog.data.entity.DailyWorkoutEntity
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.data.entity.WorkoutSessionEntity
@@ -385,7 +388,7 @@ class WorkoutViewModel(
     fun finishAndSave(durationMinutes: Int = 0, caloriesBurned: Int = 0) {
         viewModelScope.launch {
             val exercise = _currentExercise.value ?: return@launch
-            
+
             // 有効なセット（weight > 0 && reps > 0）は全て保存対象
             val validSets = _setItems.value.filter { it.isValid }
 
@@ -696,7 +699,7 @@ class WorkoutViewModel(
     }
 
     // ===== グラフ用 =====
-    
+
     /**
      * グラフリセット起点日
      */
@@ -724,5 +727,81 @@ class WorkoutViewModel(
      */
     fun getOldestSessionDate(): Flow<Long?> {
         return repository.getOldestSessionDate()
+    }
+
+    /**
+     * 指定種目の日別MAX weightを取得（グラフ用）
+     * @param exerciseId 種目ID
+     * @param startDate 開始日（EpochDay）。nullの場合は全期間
+     */
+    fun getDailyMaxWeightForExercise(exerciseId: Long, startDate: Long? = null): Flow<List<DailyMaxWeight>> {
+        val effectiveStartDate = startDate ?: 0L
+        return repository.getDailyMaxWeightForExercise(exerciseId, effectiveStartDate)
+    }
+
+    /**
+     * 指定Cardio種目の日別距離を取得（グラフ用）
+     */
+    fun getDailyDistanceForCardioExercise(exerciseId: Long, startDate: Long? = null): Flow<List<DailyDistance>> {
+        val effectiveStartDate = startDate ?: 0L
+        return repository.getDailyDistanceForCardioExercise(exerciseId, effectiveStartDate)
+    }
+
+    /**
+     * Studio全体の日別セッション数を取得（グラフ用）
+     */
+    fun getDailyStudioSessionCount(startDate: Long? = null): Flow<List<DailySessionCount>> {
+        val effectiveStartDate = startDate ?: 0L
+        return repository.getDailyStudioSessionCount(effectiveStartDate)
+    }
+
+    // ===== 下段グラフリセット機能 =====
+
+    /**
+     * 筋トレ種目別リセット日を取得
+     */
+    fun getStrengthGraphResetDate(exerciseId: Long): Flow<Long?> {
+        return settingsDataStore.getStrengthGraphResetDate(exerciseId)
+    }
+
+    /**
+     * 筋トレ種目別グラフをリセット
+     */
+    fun resetStrengthGraph(exerciseId: Long) {
+        viewModelScope.launch {
+            settingsDataStore.setStrengthGraphResetDate(exerciseId, currentLogicalDate().toEpochDay())
+        }
+    }
+
+    /**
+     * 有酸素種目別リセット日を取得
+     */
+    fun getCardioGraphResetDate(exerciseId: Long): Flow<Long?> {
+        return settingsDataStore.getCardioGraphResetDate(exerciseId)
+    }
+
+    /**
+     * 有酸素種目別グラフをリセット
+     */
+    fun resetCardioGraph(exerciseId: Long) {
+        viewModelScope.launch {
+            settingsDataStore.setCardioGraphResetDate(exerciseId, currentLogicalDate().toEpochDay())
+        }
+    }
+
+    /**
+     * スタジオカテゴリリセット日を取得
+     */
+    fun getStudioGraphResetDate(): Flow<Long?> {
+        return settingsDataStore.getStudioGraphResetDate()
+    }
+
+    /**
+     * スタジオカテゴリグラフをリセット
+     */
+    fun resetStudioGraph() {
+        viewModelScope.launch {
+            settingsDataStore.setStudioGraphResetDate(currentLogicalDate().toEpochDay())
+        }
     }
 }

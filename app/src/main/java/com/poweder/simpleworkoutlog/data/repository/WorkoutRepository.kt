@@ -1,5 +1,8 @@
 package com.poweder.simpleworkoutlog.data.repository
 
+import com.poweder.simpleworkoutlog.data.dao.DailyDistance
+import com.poweder.simpleworkoutlog.data.dao.DailyMaxWeight
+import com.poweder.simpleworkoutlog.data.dao.DailySessionCount
 import com.poweder.simpleworkoutlog.data.dao.DailyWorkoutDao
 import com.poweder.simpleworkoutlog.data.dao.ExerciseDao
 import com.poweder.simpleworkoutlog.data.dao.WorkoutSessionDao
@@ -199,5 +202,26 @@ class WorkoutRepository(
      */
     fun getOldestSessionDate(): Flow<Long?> {
         return workoutSessionDao.getOldestSessionDate()
+    }
+
+    /**
+     * 指定種目の日別MAX weightを取得（グラフ用）
+     */
+    fun getDailyMaxWeightForExercise(exerciseId: Long, startDate: Long): Flow<List<DailyMaxWeight>> {
+        return workoutSetDao.getDailyMaxWeightForExercise(exerciseId, startDate)
+    }
+
+    /**
+     * 指定Cardio種目の日別距離を取得（グラフ用）
+     */
+    fun getDailyDistanceForCardioExercise(exerciseId: Long, startDate: Long): Flow<List<DailyDistance>> {
+        return workoutSessionDao.getDailyDistanceForCardioExercise(exerciseId, startDate)
+    }
+
+    /**
+     * Studio全体の日別セッション数を取得（グラフ用）
+     */
+    fun getDailyStudioSessionCount(startDate: Long): Flow<List<DailySessionCount>> {
+        return workoutSessionDao.getDailyStudioSessionCount(startDate)
     }
 }

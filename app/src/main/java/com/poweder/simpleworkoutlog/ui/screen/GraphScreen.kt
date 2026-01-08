@@ -30,12 +30,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
+import com.poweder.simpleworkoutlog.data.dao.DailyDistance
+import com.poweder.simpleworkoutlog.data.dao.DailyMaxWeight
+import com.poweder.simpleworkoutlog.data.dao.DailySessionCount
+import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
+import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
+import com.poweder.simpleworkoutlog.util.DistanceUnit
+import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
 import java.text.NumberFormat
 import java.time.LocalDate
@@ -54,12 +63,21 @@ enum class GraphPeriod(val months: Int?, val labelKey: String) {
 }
 
 /**
- * グラフ種類（Phase0: 選択用enum）
+ * グラフ種類
  */
 enum class GraphType {
     STRENGTH,   // 筋トレ（最大kg推移）
     CARDIO,     // 有酸素（累積距離）
     STUDIO      // スタジオ（累積回数）
+}
+
+/**
+ * リセット対象
+ */
+sealed class ResetTarget {
+    data class Strength(val exerciseId: Long) : ResetTarget()
+    data class Cardio(val exerciseId: Long) : ResetTarget()
+    data object Studio : ResetTarget()
 }
 
 /**
@@ -73,6 +91,9 @@ fun GraphScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val adRemoved by viewModel.adRemoved.collectAsState()
     val graphResetDate by viewModel.graphResetDate.collectAsState()
+    val weightUnit by viewModel.weightUnit.collectAsState()
+    val distanceUnit by viewModel.distanceUnit.collectAsState()
+    val context = LocalContext.current
 
     // 日付をライフサイクルに連動して更新
     var logicalDate by remember { mutableStateOf(currentLogicalDate()) }
@@ -92,13 +113,34 @@ fun GraphScreen(
     // 期間選択
     var selectedPeriod by remember { mutableStateOf(GraphPeriod.ONE_MONTH) }
 
-    // リセット確認ダイアログ
+    // リセット確認ダイアログ（上段カロリーグラフ用）
     var showResetDialog by remember { mutableStateOf(false) }
 
-    // グラフ選択ダイアログ（Phase0）
+    // グラフ選択ダイアログ
     var showGraphPickerDialog by remember { mutableStateOf(false) }
-    var selectedGraphType by remember { mutableStateOf<GraphType?>(null) }
-    var showComingSoonDialog by remember { mutableStateOf(false) }
+
+    // Strength用状態
+    var showStrengthExercisePicker by remember { mutableStateOf(false) }
+    var selectedStrengthExerciseId by remember { mutableStateOf<Long?>(null) }
+    var selectedStrengthExerciseName by remember { mutableStateOf("") }
+    var showStrengthGraphDialog by remember { mutableStateOf(false) }
+
+    // Cardio用状態
+    var showCardioExercisePicker by remember { mutableStateOf(false) }
+    var selectedCardioExerciseId by remember { mutableStateOf<Long?>(null) }
+    var selectedCardioExerciseName by remember { mutableStateOf("") }
+    var showCardioGraphDialog by remember { mutableStateOf(false) }
+
+    // Studio用状態
+    var showStudioGraphDialog by remember { mutableStateOf(false) }
+
+    // 下段グラフ用リセット確認
+    var showGraphResetConfirmDialog by remember { mutableStateOf(false) }
+    var resetTarget by remember { mutableStateOf<ResetTarget?>(null) }
+
+    // 種目一覧
+    val strengthExercises by viewModel.strengthExercises.collectAsState()
+    val cardioExercises by viewModel.cardioExercises.collectAsState()
 
     // 最古のセッション日付（ALL用）
     val oldestDate by viewModel.getOldestSessionDate().collectAsState(initial = null)
@@ -111,7 +153,6 @@ fun GraphScreen(
             GraphPeriod.ONE_YEAR -> logicalDate.minusYears(1).plusDays(1)
             GraphPeriod.ALL -> oldestDate?.let { LocalDate.ofEpochDay(it) } ?: logicalDate.minusMonths(1)
         }
-        // グラフリセット日があれば、それより古い日付は使わない
         val resetStart = graphResetDate?.let { LocalDate.ofEpochDay(it) }
         if (resetStart != null && resetStart.isAfter(baseStart)) resetStart else baseStart
     }
@@ -120,7 +161,7 @@ fun GraphScreen(
     val sessions by viewModel.getSessionsBetweenDates(periodStartDate, logicalDate)
         .collectAsState(initial = emptyList())
 
-    // 日別カロリーを集計し、累積配列を生成（ALLのときは0開始点を追加）
+    // 累積カロリー配列
     val cumulativeData = remember(sessions, periodStartDate, logicalDate, selectedPeriod) {
         calculateCumulativeCalories(
             sessions = sessions,
@@ -130,25 +171,23 @@ fun GraphScreen(
         )
     }
 
-    // リセット確認ダイアログ
+    // ===== ダイアログ群 =====
+
+    // 上段カロリーグラフリセット確認
     if (showResetDialog) {
         AlertDialog(
             onDismissRequest = { showResetDialog = false },
             title = { Text(stringResource(R.string.graph_reset_title)) },
             text = { Text(stringResource(R.string.graph_reset_message)) },
             confirmButton = {
-                TextButton(
-                    onClick = {
-                        viewModel.resetGraph()
-                        showResetDialog = false
-                    }
-                ) {
-                    Text(text = stringResource(id = R.string.common_ok))
-                }
+                TextButton(onClick = {
+                    viewModel.resetGraph()
+                    showResetDialog = false
+                }) { Text(stringResource(R.string.common_ok)) }
             },
             dismissButton = {
                 TextButton(onClick = { showResetDialog = false }) {
-                    Text(text = stringResource(id = R.string.common_cancel))
+                    Text(stringResource(R.string.common_cancel))
                 }
             }
         )
@@ -159,33 +198,119 @@ fun GraphScreen(
         GraphPickerDialog(
             onDismiss = { showGraphPickerDialog = false },
             onSelect = { type ->
-                selectedGraphType = type
                 showGraphPickerDialog = false
-                showComingSoonDialog = true
-            }
-        )
-    }
-
-    // 次フェーズ実装予定ダイアログ
-    if (showComingSoonDialog) {
-        AlertDialog(
-            onDismissRequest = { showComingSoonDialog = false },
-            title = { Text(stringResource(R.string.coming_soon)) },
-            text = { Text(stringResource(R.string.graph_coming_soon)) },
-            confirmButton = {
-                TextButton(onClick = { showComingSoonDialog = false }) {
-                    Text(text = stringResource(id = R.string.common_close))
+                when (type) {
+                    GraphType.STRENGTH -> showStrengthExercisePicker = true
+                    GraphType.CARDIO -> showCardioExercisePicker = true
+                    GraphType.STUDIO -> showStudioGraphDialog = true
                 }
             }
         )
     }
 
+    // Strength種目選択
+    if (showStrengthExercisePicker) {
+        ExercisePickerDialog(
+            exercises = strengthExercises,
+            onDismiss = { showStrengthExercisePicker = false },
+            onSelect = { exercise ->
+                selectedStrengthExerciseId = exercise.id
+                selectedStrengthExerciseName = exercise.getDisplayName(context)
+                showStrengthExercisePicker = false
+                showStrengthGraphDialog = true
+            }
+        )
+    }
+
+    // Strengthグラフダイアログ
+    if (showStrengthGraphDialog && selectedStrengthExerciseId != null) {
+        StrengthGraphDialog(
+            exerciseId = selectedStrengthExerciseId!!,
+            exerciseName = selectedStrengthExerciseName,
+            viewModel = viewModel,
+            weightUnit = weightUnit,
+            onReset = {
+                resetTarget = ResetTarget.Strength(selectedStrengthExerciseId!!)
+                showGraphResetConfirmDialog = true
+            },
+            onDismiss = { showStrengthGraphDialog = false }
+        )
+    }
+
+    // Cardio種目選択
+    if (showCardioExercisePicker) {
+        ExercisePickerDialog(
+            exercises = cardioExercises,
+            onDismiss = { showCardioExercisePicker = false },
+            onSelect = { exercise ->
+                selectedCardioExerciseId = exercise.id
+                selectedCardioExerciseName = exercise.getDisplayName(context)
+                showCardioExercisePicker = false
+                showCardioGraphDialog = true
+            }
+        )
+    }
+
+    // Cardioグラフダイアログ
+    if (showCardioGraphDialog && selectedCardioExerciseId != null) {
+        CardioGraphDialog(
+            exerciseId = selectedCardioExerciseId!!,
+            exerciseName = selectedCardioExerciseName,
+            viewModel = viewModel,
+            distanceUnit = distanceUnit,
+            onReset = {
+                resetTarget = ResetTarget.Cardio(selectedCardioExerciseId!!)
+                showGraphResetConfirmDialog = true
+            },
+            onDismiss = { showCardioGraphDialog = false }
+        )
+    }
+
+    // Studioグラフダイアログ
+    if (showStudioGraphDialog) {
+        StudioGraphDialog(
+            viewModel = viewModel,
+            onReset = {
+                resetTarget = ResetTarget.Studio
+                showGraphResetConfirmDialog = true
+            },
+            onDismiss = { showStudioGraphDialog = false }
+        )
+    }
+
+    // 下段グラフ用リセット確認ダイアログ
+    if (showGraphResetConfirmDialog && resetTarget != null) {
+        AlertDialog(
+            onDismissRequest = { showGraphResetConfirmDialog = false },
+            title = { Text(stringResource(R.string.graph_reset_title)) },
+            text = { Text(stringResource(R.string.graph_reset_confirm)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    when (val target = resetTarget) {
+                        is ResetTarget.Strength -> viewModel.resetStrengthGraph(target.exerciseId)
+                        is ResetTarget.Cardio -> viewModel.resetCardioGraph(target.exerciseId)
+                        is ResetTarget.Studio -> viewModel.resetStudioGraph()
+                        null -> {}
+                    }
+                    showGraphResetConfirmDialog = false
+                    resetTarget = null
+                }) { Text(stringResource(R.string.common_ok)) }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showGraphResetConfirmDialog = false
+                    resetTarget = null
+                }) { Text(stringResource(R.string.common_cancel)) }
+            }
+        )
+    }
+
+    // ===== UI本体 =====
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color.Transparent)
     ) {
-        // 広告バナー
         TopBannerAd(showAd = !adRemoved)
 
         Column(
@@ -196,18 +321,13 @@ fun GraphScreen(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
-            // ===== 上段：累積カロリーグラフ =====
-
-            // 期間切替 + 現在ボタン + リセット
+            // 期間切替 + 現在ボタン
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // 期間切替チップ
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     GraphPeriod.entries.forEach { period ->
                         PeriodChip(
                             label = period.labelKey,
@@ -216,23 +336,16 @@ fun GraphScreen(
                         )
                     }
                 }
-
-                // 現在ボタン
                 TextButton(
                     onClick = { logicalDate = currentLogicalDate() },
                     contentPadding = PaddingValues(horizontal = 8.dp)
                 ) {
-                    Text(
-                        text = stringResource(R.string.now),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = WorkoutColors.AccentOrange
-                    )
+                    Text(stringResource(R.string.now), style = MaterialTheme.typography.labelMedium, color = WorkoutColors.AccentOrange)
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // グラフタイトル
             Text(
                 text = stringResource(R.string.cumulative_calories),
                 style = MaterialTheme.typography.titleMedium,
@@ -242,50 +355,33 @@ fun GraphScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // グラフ本体
-            CumulativeCaloriesChart(
-                data = cumulativeData,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-            )
+            CumulativeCaloriesChart(data = cumulativeData, modifier = Modifier.fillMaxWidth().height(250.dp))
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // リセットリンク
             Text(
                 text = stringResource(R.string.graph_reset_link),
                 style = MaterialTheme.typography.bodySmall,
                 color = WorkoutColors.TextSecondary,
-                modifier = Modifier
-                    .clickable { showResetDialog = true }
-                    .padding(vertical = 4.dp)
+                modifier = Modifier.clickable { showResetDialog = true }.padding(vertical = 4.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // ===== 下段：グラフ選択入口カード =====
-            GraphSelectionCard(
-                onClick = { showGraphPickerDialog = true }
-            )
+            // 下段：グラフ選択入口カード（アッシュグリーングラデーション）
+            GraphSelectionCard(onClick = { showGraphPickerDialog = true })
 
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
-/**
- * 期間選択チップ
- */
+// ========== 共通コンポーネント ==========
+
 @Composable
-private fun PeriodChip(
-    label: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
+private fun PeriodChip(label: String, isSelected: Boolean, onClick: () -> Unit) {
     val backgroundColor = if (isSelected) WorkoutColors.AccentOrange else WorkoutColors.BackgroundDark
     val textColor = if (isSelected) Color.White else WorkoutColors.TextSecondary
-
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
@@ -294,430 +390,515 @@ private fun PeriodChip(
             .padding(horizontal = 12.dp, vertical = 6.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-            color = textColor
-        )
+        Text(label, style = MaterialTheme.typography.labelMedium, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal, color = textColor)
     }
 }
 
-/**
- * 累積カロリーデータポイント
- */
-data class CumulativeDataPoint(
-    val date: LocalDate,
-    val dailyCalories: Int,
-    val cumulativeCalories: Int
-)
+data class CumulativeDataPoint(val date: LocalDate, val dailyCalories: Int, val cumulativeCalories: Int)
 
-/**
- * セッションから日別カロリーを集計し、累積配列を生成
- * @param forceZeroStart ALLモードのとき、開始点を0から始める
- */
 private fun calculateCumulativeCalories(
     sessions: List<com.poweder.simpleworkoutlog.data.entity.WorkoutSessionEntity>,
-    startDate: LocalDate,
-    endDate: LocalDate,
-    forceZeroStart: Boolean = false
+    startDate: LocalDate, endDate: LocalDate, forceZeroStart: Boolean = false
 ): List<CumulativeDataPoint> {
-    // 日別カロリーをマップ化
-    val dailyCaloriesMap = sessions
-        .groupBy { LocalDate.ofEpochDay(it.logicalDate) }
-        .mapValues { (_, daySessions) -> daySessions.sumOf { it.caloriesBurned } }
-
-    // 期間内の全日付で累積を計算
+    val dailyCaloriesMap = sessions.groupBy { LocalDate.ofEpochDay(it.logicalDate) }
+        .mapValues { (_, s) -> s.sumOf { it.caloriesBurned } }
     val result = mutableListOf<CumulativeDataPoint>()
     var cumulative = 0
     var currentDate = startDate
-
     while (!currentDate.isAfter(endDate)) {
         val daily = dailyCaloriesMap[currentDate] ?: 0
         cumulative += daily
         result.add(CumulativeDataPoint(currentDate, daily, cumulative))
         currentDate = currentDate.plusDays(1)
     }
-
-    // ALLモードかつデータがある場合、先頭に0開始点を明示的に追加
-    // （すでに開始日が0ならそのまま、そうでなければ0点を挿入）
     if (forceZeroStart && result.isNotEmpty() && result.first().cumulativeCalories > 0) {
-        // 開始日の前日に0点を挿入（視覚的に0から立ち上がるように）
-        val zeroPoint = CumulativeDataPoint(
-            date = startDate.minusDays(1),
-            dailyCalories = 0,
-            cumulativeCalories = 0
-        )
-        return listOf(zeroPoint) + result
+        return listOf(CumulativeDataPoint(startDate.minusDays(1), 0, 0)) + result
     }
-
     return result
 }
 
-/**
- * 累積カロリーグラフ（Canvas描画）
- */
 @Composable
-private fun CumulativeCaloriesChart(
-    data: List<CumulativeDataPoint>,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    val density = LocalDensity.current
-
-    // 最大値
+private fun CumulativeCaloriesChart(data: List<CumulativeDataPoint>, modifier: Modifier = Modifier) {
     val maxCumulative = data.maxOfOrNull { it.cumulativeCalories } ?: 0
-
-    // 節目の刻み幅を計算
     val milestoneStep = calculateMilestoneStep(maxCumulative)
-
-    // Y軸の最大値（節目の倍数に切り上げ）
-    val yAxisMax = if (maxCumulative == 0) {
-        1000
-    } else {
-        ((maxCumulative / milestoneStep) + 1) * milestoneStep
-    }
-
-    // 日付フォーマット（ロケール準拠）
-    val dateFormatter = remember {
-        DateTimeFormatter.ofPattern("M/d", Locale.getDefault())
-    }
-
-    // 数値フォーマット
+    val yAxisMax = if (maxCumulative == 0) 1000 else ((maxCumulative / milestoneStep) + 1) * milestoneStep
+    val dateFormatter = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
     val numberFormat = remember { NumberFormat.getNumberInstance(Locale.getDefault()) }
-
-    // X軸ラベル用の間引きインデックス（最大8個）
     val xLabelIndices = remember(data.size) {
-        if (data.size <= 8) {
-            data.indices.toList()
-        } else {
+        if (data.size <= 8) data.indices.toList() else {
             val step = data.size / 7
             (0 until data.size step step).toList().take(8)
         }
     }
 
-    // グラフカード：背景 + 薄い枠線で締める
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(WorkoutColors.BackgroundMedium)
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(12.dp)
-            )
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp))
             .padding(16.dp)
     ) {
         if (data.isEmpty() || maxCumulative == 0) {
-            // データなし
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.no_data),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = WorkoutColors.TextSecondary
-                )
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(stringResource(R.string.no_data), style = MaterialTheme.typography.bodyMedium, color = WorkoutColors.TextSecondary)
             }
         } else {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                val chartPaddingLeft = 60.dp.toPx()
-                val chartPaddingRight = 16.dp.toPx()
-                val chartPaddingTop = 20.dp.toPx()
-                val chartPaddingBottom = 40.dp.toPx()
-
-                val chartWidth = size.width - chartPaddingLeft - chartPaddingRight
-                val chartHeight = size.height - chartPaddingTop - chartPaddingBottom
-
-                // 節目ライン描画
-                drawMilestoneLines(
-                    milestoneStep = milestoneStep,
-                    yAxisMax = yAxisMax,
-                    chartPaddingLeft = chartPaddingLeft,
-                    chartPaddingTop = chartPaddingTop,
-                    chartWidth = chartWidth,
-                    chartHeight = chartHeight,
-                    numberFormat = numberFormat
-                )
-
-                // 折れ線グラフ描画
+                val pL = 60.dp.toPx(); val pR = 16.dp.toPx(); val pT = 20.dp.toPx(); val pB = 40.dp.toPx()
+                val cW = size.width - pL - pR; val cH = size.height - pT - pB
+                drawMilestoneLines(milestoneStep, yAxisMax, pL, pT, cW, cH, numberFormat)
                 if (data.size > 1) {
                     val path = Path()
-                    data.forEachIndexed { index, point ->
-                        val x = chartPaddingLeft + (index.toFloat() / (data.size - 1)) * chartWidth
-                        val y = chartPaddingTop + chartHeight - (point.cumulativeCalories.toFloat() / yAxisMax) * chartHeight
-
-                        if (index == 0) {
-                            path.moveTo(x, y)
-                        } else {
-                            path.lineTo(x, y)
-                        }
+                    data.forEachIndexed { i, p ->
+                        val x = pL + (i.toFloat() / (data.size - 1)) * cW
+                        val y = pT + cH - (p.cumulativeCalories.toFloat() / yAxisMax) * cH
+                        if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
                     }
-
-                    drawPath(
-                        path = path,
-                        color = WorkoutColors.AccentOrange,
-                        style = Stroke(width = 3.dp.toPx())
-                    )
+                    drawPath(path, WorkoutColors.AccentOrange, style = Stroke(width = 3.dp.toPx()))
                 }
-
-                // 今日の点と値を描画（強調：半径を大きく）
                 if (data.isNotEmpty()) {
-                    val lastPoint = data.last()
-                    val lastX = chartPaddingLeft + chartWidth
-                    val lastY = chartPaddingTop + chartHeight - (lastPoint.cumulativeCalories.toFloat() / yAxisMax) * chartHeight
-
-                    // 点（半径を8dpに強調）
-                    drawCircle(
-                        color = WorkoutColors.AccentOrange,
-                        radius = 8.dp.toPx(),
-                        center = Offset(lastX, lastY)
-                    )
-
-                    // 今日の累積値ラベル（ドットとの距離を+2dp）
-                    val todayLabel = "${numberFormat.format(lastPoint.cumulativeCalories)} kcal"
+                    val last = data.last()
+                    val lX = pL + cW; val lY = pT + cH - (last.cumulativeCalories.toFloat() / yAxisMax) * cH
+                    drawCircle(WorkoutColors.AccentOrange, 8.dp.toPx(), Offset(lX, lY))
+                    val label = "${numberFormat.format(last.cumulativeCalories)} kcal"
                     drawContext.canvas.nativeCanvas.apply {
                         val paint = android.graphics.Paint().apply {
                             color = android.graphics.Color.parseColor("#FF6B35")
-                            textSize = 14.sp.toPx()
-                            isFakeBoldText = true
-                            textAlign = android.graphics.Paint.Align.RIGHT
+                            textSize = 14.sp.toPx(); isFakeBoldText = true
+                            textAlign = if (lX + 80.dp.toPx() > size.width) android.graphics.Paint.Align.RIGHT else android.graphics.Paint.Align.LEFT
                         }
-                        // ラベル位置（はみ出す場合は左に、ドットとの距離+2dp）
-                        val labelX = if (lastX + 80.dp.toPx() > size.width) lastX - 12.dp.toPx() else lastX + 12.dp.toPx()
-                        val align = if (lastX + 80.dp.toPx() > size.width) android.graphics.Paint.Align.RIGHT else android.graphics.Paint.Align.LEFT
-                        paint.textAlign = align
-                        drawText(todayLabel, labelX, lastY - 12.dp.toPx(), paint)
+                        drawText(label, if (lX + 80.dp.toPx() > size.width) lX - 12.dp.toPx() else lX + 12.dp.toPx(), lY - 12.dp.toPx(), paint)
                     }
                 }
-
-                // X軸ラベル描画
-                drawXAxisLabels(
-                    data = data,
-                    labelIndices = xLabelIndices,
-                    dateFormatter = dateFormatter,
-                    chartPaddingLeft = chartPaddingLeft,
-                    chartPaddingTop = chartPaddingTop,
-                    chartWidth = chartWidth,
-                    chartHeight = chartHeight
-                )
+                drawXAxisLabels(data, xLabelIndices, dateFormatter, pL, pT, cW, cH)
             }
         }
     }
 }
 
-/**
- * 節目の刻み幅を計算
- */
-private fun calculateMilestoneStep(maxValue: Int): Int {
-    return when {
-        maxValue < 10_000 -> 1_000
-        maxValue < 50_000 -> 5_000
-        maxValue < 200_000 -> 10_000
-        else -> 50_000
-    }
+private fun calculateMilestoneStep(maxValue: Int): Int = when {
+    maxValue < 10_000 -> 1_000; maxValue < 50_000 -> 5_000; maxValue < 200_000 -> 10_000; else -> 50_000
 }
 
-/**
- * 節目ライン描画（Y軸ラベルを薄めに）
- */
-private fun DrawScope.drawMilestoneLines(
-    milestoneStep: Int,
-    yAxisMax: Int,
-    chartPaddingLeft: Float,
-    chartPaddingTop: Float,
-    chartWidth: Float,
-    chartHeight: Float,
-    numberFormat: NumberFormat
-) {
-    val milestoneColor = Color.Gray.copy(alpha = 0.3f)
-    // Y軸ラベルを薄く（alpha 0.6相当）
-    val textColor = android.graphics.Color.argb(153, 136, 136, 136) // #888888 with alpha 0.6
-
-    var milestone = 0
-    while (milestone <= yAxisMax) {
-        val y = chartPaddingTop + chartHeight - (milestone.toFloat() / yAxisMax) * chartHeight
-
-        // 横線
-        drawLine(
-            color = milestoneColor,
-            start = Offset(chartPaddingLeft, y),
-            end = Offset(chartPaddingLeft + chartWidth, y),
-            strokeWidth = 1.dp.toPx()
-        )
-
-        // ラベル（文字サイズを9spに縮小）
+private fun DrawScope.drawMilestoneLines(step: Int, yMax: Int, pL: Float, pT: Float, cW: Float, cH: Float, nf: NumberFormat) {
+    val mC = Color.Gray.copy(alpha = 0.3f); val tC = android.graphics.Color.argb(153, 136, 136, 136)
+    var m = 0
+    while (m <= yMax) {
+        val y = pT + cH - (m.toFloat() / yMax) * cH
+        drawLine(mC, Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
         drawContext.canvas.nativeCanvas.apply {
-            val paint = android.graphics.Paint().apply {
-                color = textColor
-                textSize = 9.sp.toPx()
-                textAlign = android.graphics.Paint.Align.RIGHT
-            }
-            val label = if (milestone >= 1000) {
-                "${milestone / 1000}k"
-            } else {
-                milestone.toString()
-            }
-            drawText(label, chartPaddingLeft - 8.dp.toPx(), y + 4.dp.toPx(), paint)
+            val p = android.graphics.Paint().apply { color = tC; textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
+            drawText(if (m >= 1000) "${m / 1000}k" else m.toString(), pL - 8.dp.toPx(), y + 4.dp.toPx(), p)
         }
-
-        milestone += milestoneStep
+        m += step
     }
 }
 
-/**
- * X軸ラベル描画
- */
-private fun DrawScope.drawXAxisLabels(
-    data: List<CumulativeDataPoint>,
-    labelIndices: List<Int>,
-    dateFormatter: DateTimeFormatter,
-    chartPaddingLeft: Float,
-    chartPaddingTop: Float,
-    chartWidth: Float,
-    chartHeight: Float
-) {
-    // X軸ラベルも薄めに
-    val textColor = android.graphics.Color.argb(153, 136, 136, 136) // #888888 with alpha 0.6
-
-    labelIndices.forEach { index ->
-        if (index < data.size) {
-            val point = data[index]
-            val x = chartPaddingLeft + (index.toFloat() / max(1, data.size - 1)) * chartWidth
-
+private fun DrawScope.drawXAxisLabels(data: List<CumulativeDataPoint>, indices: List<Int>, df: DateTimeFormatter, pL: Float, pT: Float, cW: Float, cH: Float) {
+    val tC = android.graphics.Color.argb(153, 136, 136, 136)
+    indices.forEach { i ->
+        if (i < data.size) {
+            val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
             drawContext.canvas.nativeCanvas.apply {
-                val paint = android.graphics.Paint().apply {
-                    color = textColor
-                    textSize = 9.sp.toPx()
-                    textAlign = android.graphics.Paint.Align.CENTER
-                }
-                drawText(
-                    point.date.format(dateFormatter),
-                    x,
-                    chartPaddingTop + chartHeight + 20.dp.toPx(),
-                    paint
-                )
+                val p = android.graphics.Paint().apply { color = tC; textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
+                drawText(data[i].date.format(df), x, pT + cH + 20.dp.toPx(), p)
             }
         }
     }
 }
 
-/**
- * グラフ選択入口カード（グラデーション背景）
- */
-@Composable
-private fun GraphSelectionCard(
-    onClick: () -> Unit
-) {
-    // グラデーション：背景に馴染みつつカードとして存在感が出る
-    val gradientBrush = Brush.horizontalGradient(
-        colors = listOf(
-            WorkoutColors.BackgroundDark.copy(alpha = 0.95f),
-            WorkoutColors.BackgroundMedium.copy(alpha = 0.95f)
-        )
-    )
+// ========== 入口カード（アッシュグリーングラデーション） ==========
 
+@Composable
+private fun GraphSelectionCard(onClick: () -> Unit) {
+    // アッシュグリーン #B0C2A7 を基調としたグラデーション
+    val ashGreenLight = Color(0xFFCCD9C4)  // 明るめ
+    val ashGreen = Color(0xFFB0C2A7)        // ベース
+    val ashGreenDark = Color(0xFF8FA085)   // 濃いめ
+
+    val gradientBrush = Brush.horizontalGradient(
+        colors = listOf(ashGreenDark, ashGreen, ashGreenLight)
+    )
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(brush = gradientBrush)
-            .border(
-                width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(12.dp)
-            )
+            .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp))
             .clickable { onClick() }
             .padding(20.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
             Text(
-                text = stringResource(R.string.which_graph_to_see),
+                stringResource(R.string.which_graph_to_see),
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.White
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF2D3A29) // ダークグリーン文字
             )
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = null,
-                tint = Color.White.copy(alpha = 0.8f)
-            )
+            Icon(Icons.AutoMirrored.Filled.ArrowForward, null, tint = Color(0xFF2D3A29))
         }
     }
 }
 
-/**
- * グラフ選択ダイアログ
- */
+// ========== グラフ選択ダイアログ ==========
+
 @Composable
-private fun GraphPickerDialog(
-    onDismiss: () -> Unit,
-    onSelect: (GraphType) -> Unit
-) {
+private fun GraphPickerDialog(onDismiss: () -> Unit, onSelect: (GraphType) -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = stringResource(R.string.graph_picker_title),
-                fontWeight = FontWeight.Bold
-            )
-        },
+        title = { Text(stringResource(R.string.graph_picker_title), fontWeight = FontWeight.Bold) },
         text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                // 筋トレ（最大kg推移）
-                GraphPickerItem(
-                    label = stringResource(R.string.graph_picker_strength),
-                    onClick = { onSelect(GraphType.STRENGTH) }
-                )
-                // 有酸素（累積距離）
-                GraphPickerItem(
-                    label = stringResource(R.string.graph_picker_cardio),
-                    onClick = { onSelect(GraphType.CARDIO) }
-                )
-                // スタジオ（累積回数）
-                GraphPickerItem(
-                    label = stringResource(R.string.graph_picker_studio),
-                    onClick = { onSelect(GraphType.STUDIO) }
-                )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                GraphPickerItem(stringResource(R.string.graph_picker_strength)) { onSelect(GraphType.STRENGTH) }
+                GraphPickerItem(stringResource(R.string.graph_picker_cardio)) { onSelect(GraphType.CARDIO) }
+                GraphPickerItem(stringResource(R.string.graph_picker_studio)) { onSelect(GraphType.STUDIO) }
             }
         },
         confirmButton = {},
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(id = R.string.common_cancel))
-            }
-        }
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) } }
     )
 }
 
-/**
- * グラフ選択アイテム
- */
 @Composable
-private fun GraphPickerItem(
-    label: String,
-    onClick: () -> Unit
-) {
+private fun GraphPickerItem(label: String, onClick: () -> Unit) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(WorkoutColors.BackgroundMedium)
-            .clickable { onClick() }
-            .padding(16.dp)
+        modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
+            .background(WorkoutColors.BackgroundMedium).clickable { onClick() }.padding(16.dp)
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = WorkoutColors.TextPrimary
-        )
+        Text(label, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = WorkoutColors.TextPrimary)
+    }
+}
+
+// ========== 種目選択ダイアログ（共通） ==========
+
+@Composable
+private fun ExercisePickerDialog(
+    exercises: List<ExerciseEntity>,
+    onDismiss: () -> Unit,
+    onSelect: (ExerciseEntity) -> Unit
+) {
+    val context = LocalContext.current
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.select_exercise), fontWeight = FontWeight.Bold) },
+        text = {
+            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (exercises.isEmpty()) {
+                    Text(stringResource(R.string.no_data), style = MaterialTheme.typography.bodyMedium, color = WorkoutColors.TextSecondary, modifier = Modifier.padding(16.dp))
+                } else {
+                    exercises.forEach { ex ->
+                        GraphPickerItem(ex.getDisplayName(context)) { onSelect(ex) }
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) } }
+    )
+}
+
+// ========== Strengthグラフダイアログ ==========
+
+@Composable
+private fun StrengthGraphDialog(
+    exerciseId: Long, exerciseName: String, viewModel: WorkoutViewModel,
+    weightUnit: WeightUnit, onReset: () -> Unit, onDismiss: () -> Unit
+) {
+    val resetDate by viewModel.getStrengthGraphResetDate(exerciseId).collectAsState(initial = null)
+    val startDate = resetDate ?: 0L
+    val data by viewModel.getDailyMaxWeightForExercise(exerciseId, startDate).collectAsState(initial = emptyList())
+
+    GraphDialogContainer(title = exerciseName, onDismiss = onDismiss, onReset = onReset) {
+        MaxWeightChart(data = data, weightUnit = weightUnit, modifier = Modifier.fillMaxWidth().height(280.dp))
+    }
+}
+
+@Composable
+private fun MaxWeightChart(data: List<DailyMaxWeight>, weightUnit: WeightUnit, modifier: Modifier = Modifier) {
+    val maxW = data.maxOfOrNull { it.maxWeight } ?: 0.0
+    val minW = data.minOfOrNull { it.maxWeight } ?: 0.0
+    val yRange = if (maxW == minW) 10.0 else (maxW - minW)
+    val yMin = (minW - yRange * 0.1).coerceAtLeast(0.0)
+    val yMax = maxW + yRange * 0.1
+    val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
+    val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
+
+    Box(modifier.clip(RoundedCornerShape(12.dp)).background(WorkoutColors.BackgroundMedium).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)).padding(16.dp)) {
+        if (data.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_data), color = WorkoutColors.TextSecondary) }
+        } else {
+            Canvas(Modifier.fillMaxSize()) {
+                val pL = 50.dp.toPx(); val pR = 16.dp.toPx(); val pT = 20.dp.toPx(); val pB = 40.dp.toPx()
+                val cW = size.width - pL - pR; val cH = size.height - pT - pB
+                // Y軸
+                val yStep = (yMax - yMin) / 4
+                for (i in 0..4) {
+                    val v = yMin + yStep * i
+                    val y = pT + cH - ((v - yMin) / (yMax - yMin)).toFloat() * cH
+                    drawLine(Color.Gray.copy(alpha = 0.3f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
+                    drawContext.canvas.nativeCanvas.apply {
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
+                        drawText("${v.toInt()}", pL - 8.dp.toPx(), y + 4.dp.toPx(), p)
+                    }
+                }
+                // 折れ線
+                if (data.size > 1) {
+                    val path = Path()
+                    data.forEachIndexed { i, pt ->
+                        val x = pL + (i.toFloat() / (data.size - 1)) * cW
+                        val y = pT + cH - ((pt.maxWeight - yMin) / (yMax - yMin)).toFloat() * cH
+                        if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                    }
+                    drawPath(path, WorkoutColors.AccentOrange, style = Stroke(width = 3.dp.toPx()))
+                }
+                // 点
+                data.forEachIndexed { i, pt ->
+                    val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
+                    val y = pT + cH - ((pt.maxWeight - yMin) / (yMax - yMin)).toFloat() * cH
+                    drawCircle(WorkoutColors.AccentOrange, 5.dp.toPx(), Offset(x, y))
+                }
+                // 最新点ラベル
+                if (data.isNotEmpty()) {
+                    val last = data.last()
+                    val lX = pL + cW; val lY = pT + cH - ((last.maxWeight - yMin) / (yMax - yMin)).toFloat() * cH
+                    drawCircle(WorkoutColors.AccentOrange, 8.dp.toPx(), Offset(lX, lY))
+                    val label = when (weightUnit) { WeightUnit.KG -> "${last.maxWeight.toInt()} kg"; WeightUnit.LB -> "${(last.maxWeight * 2.20462).toInt()} lbs" }
+                    drawContext.canvas.nativeCanvas.apply {
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FF6B35"); textSize = 14.sp.toPx(); isFakeBoldText = true; textAlign = android.graphics.Paint.Align.RIGHT }
+                        drawText(label, lX - 12.dp.toPx(), lY - 12.dp.toPx(), p)
+                    }
+                }
+                // X軸
+                xIdx.forEach { i ->
+                    if (i < data.size) {
+                        val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
+                        val d = LocalDate.ofEpochDay(data[i].date)
+                        drawContext.canvas.nativeCanvas.apply {
+                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
+                            drawText(d.format(df), x, pT + cH + 20.dp.toPx(), p)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ========== Cardioグラフダイアログ ==========
+
+@Composable
+private fun CardioGraphDialog(
+    exerciseId: Long, exerciseName: String, viewModel: WorkoutViewModel,
+    distanceUnit: DistanceUnit, onReset: () -> Unit, onDismiss: () -> Unit
+) {
+    val resetDate by viewModel.getCardioGraphResetDate(exerciseId).collectAsState(initial = null)
+    val startDate = resetDate ?: 0L
+    val dailyData by viewModel.getDailyDistanceForCardioExercise(exerciseId, startDate).collectAsState(initial = emptyList())
+
+    // 累積に変換
+    val cumulativeData = remember(dailyData) {
+        var running = 0.0
+        dailyData.sortedBy { it.date }.map { d ->
+            running += d.totalDistance
+            d.date to running
+        }
+    }
+
+    GraphDialogContainer(title = exerciseName, onDismiss = onDismiss, onReset = onReset) {
+        CumulativeDistanceChart(data = cumulativeData, distanceUnit = distanceUnit, modifier = Modifier.fillMaxWidth().height(280.dp))
+    }
+}
+
+@Composable
+private fun CumulativeDistanceChart(data: List<Pair<Long, Double>>, distanceUnit: DistanceUnit, modifier: Modifier = Modifier) {
+    val maxD = data.maxOfOrNull { it.second } ?: 0.0
+    val yMax = if (maxD == 0.0) 10.0 else maxD * 1.1
+    val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
+    val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
+
+    Box(modifier.clip(RoundedCornerShape(12.dp)).background(WorkoutColors.BackgroundMedium).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)).padding(16.dp)) {
+        if (data.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_data), color = WorkoutColors.TextSecondary) }
+        } else {
+            Canvas(Modifier.fillMaxSize()) {
+                val pL = 50.dp.toPx(); val pR = 16.dp.toPx(); val pT = 20.dp.toPx(); val pB = 40.dp.toPx()
+                val cW = size.width - pL - pR; val cH = size.height - pT - pB
+                // Y軸
+                val yStep = yMax / 4
+                for (i in 0..4) {
+                    val v = yStep * i
+                    val y = pT + cH - (v / yMax).toFloat() * cH
+                    drawLine(Color.Gray.copy(alpha = 0.3f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
+                    drawContext.canvas.nativeCanvas.apply {
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
+                        val displayVal = when (distanceUnit) { DistanceUnit.KM -> v; DistanceUnit.MILE -> v * 0.621371 }
+                        drawText("${displayVal.toInt()}", pL - 8.dp.toPx(), y + 4.dp.toPx(), p)
+                    }
+                }
+                // 折れ線
+                if (data.size > 1) {
+                    val path = Path()
+                    data.forEachIndexed { i, (_, cum) ->
+                        val x = pL + (i.toFloat() / (data.size - 1)) * cW
+                        val y = pT + cH - (cum / yMax).toFloat() * cH
+                        if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                    }
+                    drawPath(path, WorkoutColors.AccentOrange, style = Stroke(width = 3.dp.toPx()))
+                }
+                // 点
+                data.forEachIndexed { i, (_, cum) ->
+                    val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
+                    val y = pT + cH - (cum / yMax).toFloat() * cH
+                    drawCircle(WorkoutColors.AccentOrange, 5.dp.toPx(), Offset(x, y))
+                }
+                // 最新点ラベル
+                if (data.isNotEmpty()) {
+                    val (_, lastCum) = data.last()
+                    val lX = pL + cW; val lY = pT + cH - (lastCum / yMax).toFloat() * cH
+                    drawCircle(WorkoutColors.AccentOrange, 8.dp.toPx(), Offset(lX, lY))
+                    val label = when (distanceUnit) { DistanceUnit.KM -> "${String.format("%.1f", lastCum)} km"; DistanceUnit.MILE -> "${String.format("%.1f", lastCum * 0.621371)} mi" }
+                    drawContext.canvas.nativeCanvas.apply {
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FF6B35"); textSize = 14.sp.toPx(); isFakeBoldText = true; textAlign = android.graphics.Paint.Align.RIGHT }
+                        drawText(label, lX - 12.dp.toPx(), lY - 12.dp.toPx(), p)
+                    }
+                }
+                // X軸
+                xIdx.forEach { i ->
+                    if (i < data.size) {
+                        val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
+                        val d = LocalDate.ofEpochDay(data[i].first)
+                        drawContext.canvas.nativeCanvas.apply {
+                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
+                            drawText(d.format(df), x, pT + cH + 20.dp.toPx(), p)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ========== Studioグラフダイアログ ==========
+
+@Composable
+private fun StudioGraphDialog(viewModel: WorkoutViewModel, onReset: () -> Unit, onDismiss: () -> Unit) {
+    val resetDate by viewModel.getStudioGraphResetDate().collectAsState(initial = null)
+    val startDate = resetDate ?: 0L
+    val dailyData by viewModel.getDailyStudioSessionCount(startDate).collectAsState(initial = emptyList())
+
+    // 累積に変換
+    val cumulativeData = remember(dailyData) {
+        var running = 0
+        dailyData.sortedBy { it.date }.map { d ->
+            running += d.sessionCount
+            d.date to running
+        }
+    }
+
+    GraphDialogContainer(title = stringResource(R.string.graph_picker_studio), onDismiss = onDismiss, onReset = onReset) {
+        CumulativeSessionCountChart(data = cumulativeData, modifier = Modifier.fillMaxWidth().height(280.dp))
+    }
+}
+
+@Composable
+private fun CumulativeSessionCountChart(data: List<Pair<Long, Int>>, modifier: Modifier = Modifier) {
+    val maxC = data.maxOfOrNull { it.second } ?: 0
+    val yMax = if (maxC == 0) 10 else (maxC * 1.1).toInt()
+    val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
+    val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
+
+    Box(modifier.clip(RoundedCornerShape(12.dp)).background(WorkoutColors.BackgroundMedium).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)).padding(16.dp)) {
+        if (data.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_data), color = WorkoutColors.TextSecondary) }
+        } else {
+            Canvas(Modifier.fillMaxSize()) {
+                val pL = 50.dp.toPx(); val pR = 16.dp.toPx(); val pT = 20.dp.toPx(); val pB = 40.dp.toPx()
+                val cW = size.width - pL - pR; val cH = size.height - pT - pB
+                // Y軸
+                val yStep = yMax / 4
+                for (i in 0..4) {
+                    val v = yStep * i
+                    val y = pT + cH - (v.toFloat() / yMax) * cH
+                    drawLine(Color.Gray.copy(alpha = 0.3f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
+                    drawContext.canvas.nativeCanvas.apply {
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
+                        drawText("$v", pL - 8.dp.toPx(), y + 4.dp.toPx(), p)
+                    }
+                }
+                // 折れ線
+                if (data.size > 1) {
+                    val path = Path()
+                    data.forEachIndexed { i, (_, cum) ->
+                        val x = pL + (i.toFloat() / (data.size - 1)) * cW
+                        val y = pT + cH - (cum.toFloat() / yMax) * cH
+                        if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                    }
+                    drawPath(path, WorkoutColors.AccentOrange, style = Stroke(width = 3.dp.toPx()))
+                }
+                // 点
+                data.forEachIndexed { i, (_, cum) ->
+                    val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
+                    val y = pT + cH - (cum.toFloat() / yMax) * cH
+                    drawCircle(WorkoutColors.AccentOrange, 5.dp.toPx(), Offset(x, y))
+                }
+                // 最新点ラベル
+                if (data.isNotEmpty()) {
+                    val (_, lastCum) = data.last()
+                    val lX = pL + cW; val lY = pT + cH - (lastCum.toFloat() / yMax) * cH
+                    drawCircle(WorkoutColors.AccentOrange, 8.dp.toPx(), Offset(lX, lY))
+                    drawContext.canvas.nativeCanvas.apply {
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FF6B35"); textSize = 14.sp.toPx(); isFakeBoldText = true; textAlign = android.graphics.Paint.Align.RIGHT }
+                        drawText("$lastCum", lX - 12.dp.toPx(), lY - 12.dp.toPx(), p)
+                    }
+                }
+                // X軸
+                xIdx.forEach { i ->
+                    if (i < data.size) {
+                        val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
+                        val d = LocalDate.ofEpochDay(data[i].first)
+                        drawContext.canvas.nativeCanvas.apply {
+                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
+                            drawText(d.format(df), x, pT + cH + 20.dp.toPx(), p)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ========== グラフダイアログ共通コンテナ ==========
+
+@Composable
+private fun GraphDialogContainer(
+    title: String,
+    onDismiss: () -> Unit,
+    onReset: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .clip(RoundedCornerShape(16.dp))
+                .background(WorkoutColors.BackgroundDark)
+                .padding(16.dp)
+        ) {
+            Column {
+                Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
+                    Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = WorkoutColors.TextPrimary)
+                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_close), color = WorkoutColors.AccentOrange) }
+                }
+                Spacer(Modifier.height(16.dp))
+                content()
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = stringResource(R.string.graph_reset),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = WorkoutColors.TextSecondary,
+                    modifier = Modifier.clickable { onReset() }.padding(vertical = 4.dp)
+                )
+            }
+        }
     }
 }

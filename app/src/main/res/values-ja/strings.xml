@@ -184,7 +184,9 @@
     <string name="now">現在</string>
     <string name="no_data">データなし</string>
     <string name="graph_reset_link">グラフをリセットする</string>
+    <string name="graph_reset">グラフをリセットする</string>
     <string name="graph_reset_title">グラフをリセットしますか？</string>
+    <string name="graph_reset_confirm">これまでのグラフの記録が消えてしまいますが、よろしいですか？</string>
     <string name="graph_reset_message">これまでのグラフの記録が消えてしまいますがいいですか？\n（履歴・カレンダーの記録は残ります）</string>
     <string name="which_graph_to_see">どのグラフが見たいですか？</string>
 
