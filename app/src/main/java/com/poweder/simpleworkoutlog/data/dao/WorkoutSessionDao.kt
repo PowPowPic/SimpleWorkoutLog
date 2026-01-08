@@ -38,4 +38,7 @@ interface WorkoutSessionDao {
 
     @Query("SELECT * FROM workout_sessions WHERE logicalDate BETWEEN :startDate AND :endDate ORDER BY logicalDate, createdAt")
     fun getSessionsBetween(startDate: Long, endDate: Long): Flow<List<WorkoutSessionEntity>>
+
+    @Query("SELECT MIN(logicalDate) FROM workout_sessions")
+    fun getOldestSessionDate(): Flow<Long?>
 }

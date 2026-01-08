@@ -694,4 +694,35 @@ class WorkoutViewModel(
     fun getSetsForDate(date: LocalDate): Flow<List<WorkoutSetEntity>> {
         return repository.getSetsForDate(date.toEpochDay())
     }
+
+    // ===== グラフ用 =====
+    
+    /**
+     * グラフリセット起点日
+     */
+    val graphResetDate: StateFlow<Long?> = settingsDataStore.graphResetDateFlow
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    /**
+     * グラフをリセット（起点日を今日に設定）
+     */
+    fun resetGraph() {
+        viewModelScope.launch {
+            settingsDataStore.setGraphResetDate(currentLogicalDate().toEpochDay())
+        }
+    }
+
+    /**
+     * 指定期間のセッションを取得（グラフ用）
+     */
+    fun getSessionsBetweenDates(startDate: LocalDate, endDate: LocalDate): Flow<List<WorkoutSessionEntity>> {
+        return repository.getSessionsBetween(startDate.toEpochDay(), endDate.toEpochDay())
+    }
+
+    /**
+     * 最古のセッション日付を取得（ALL期間用）
+     */
+    fun getOldestSessionDate(): Flow<Long?> {
+        return repository.getOldestSessionDate()
+    }
 }

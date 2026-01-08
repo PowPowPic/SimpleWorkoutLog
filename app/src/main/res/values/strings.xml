@@ -179,4 +179,20 @@
     <string name="language_confirm_message">The app will restart to apply the new language setting.</string>
     <string name="applying_language">Applying language…</string>
 
+    <!-- Graph Screen -->
+    <string name="cumulative_calories">Cumulative Calories</string>
+    <string name="now">Now</string>
+    <string name="no_data">No data</string>
+    <string name="graph_reset_link">Reset graph</string>
+    <string name="graph_reset_title">Reset Graph?</string>
+    <string name="graph_reset_message">This will reset the graph start point to today. Your workout history will not be deleted.</string>
+    <string name="which_graph_to_see">Which graph would you like to see?</string>
+
+    <!-- Graph Picker (Phase0) -->
+    <string name="graph_picker_title">Select Graph</string>
+    <string name="graph_picker_strength">Strength (Max Weight)</string>
+    <string name="graph_picker_cardio">Cardio (Cumulative Distance)</string>
+    <string name="graph_picker_studio">Studio (Cumulative Sessions)</string>
+    <string name="graph_coming_soon">This graph will be available in the next update.</string>
+
 </resources>

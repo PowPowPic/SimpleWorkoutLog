@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.poweder.simpleworkoutlog.util.DistanceUnit
@@ -21,6 +22,7 @@ class SettingsDataStore(private val context: Context) {
         private val WEIGHT_UNIT_KEY = stringPreferencesKey("weight_unit")
         private val DISTANCE_UNIT_KEY = stringPreferencesKey("distance_unit")
         private val AD_REMOVED_KEY = booleanPreferencesKey("ad_removed")
+        private val GRAPH_RESET_DATE_KEY = longPreferencesKey("graph_reset_logical_date")
     }
     
     // 言語設定
@@ -70,6 +72,24 @@ class SettingsDataStore(private val context: Context) {
     suspend fun setAdRemoved(removed: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[AD_REMOVED_KEY] = removed
+        }
+    }
+    
+    // グラフリセット起点日（EpochDay）
+    // nullの場合は全期間対象
+    val graphResetDateFlow: Flow<Long?> = context.dataStore.data.map { preferences ->
+        preferences[GRAPH_RESET_DATE_KEY]
+    }
+    
+    suspend fun setGraphResetDate(epochDay: Long) {
+        context.dataStore.edit { preferences ->
+            preferences[GRAPH_RESET_DATE_KEY] = epochDay
+        }
+    }
+    
+    suspend fun clearGraphResetDate() {
+        context.dataStore.edit { preferences ->
+            preferences.remove(GRAPH_RESET_DATE_KEY)
         }
     }
 }

@@ -193,4 +193,11 @@ class WorkoutRepository(
     fun getSetsBetween(startDate: Long, endDate: Long): Flow<List<WorkoutSetEntity>> {
         return workoutSetDao.getSetsBetween(startDate, endDate)
     }
+
+    /**
+     * 最古のセッション日付を取得（グラフALL期間用）
+     */
+    fun getOldestSessionDate(): Flow<Long?> {
+        return workoutSessionDao.getOldestSessionDate()
+    }
 }

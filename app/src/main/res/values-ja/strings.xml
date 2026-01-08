@@ -179,4 +179,20 @@
     <string name="language_confirm_message">新しい言語設定を適用するためにアプリが再起動します。</string>
     <string name="applying_language">言語を適用しています…</string>
 
+    <!-- Graph Screen -->
+    <string name="cumulative_calories">累積消費カロリー</string>
+    <string name="now">現在</string>
+    <string name="no_data">データなし</string>
+    <string name="graph_reset_link">グラフをリセットする</string>
+    <string name="graph_reset_title">グラフをリセットしますか？</string>
+    <string name="graph_reset_message">これまでのグラフの記録が消えてしまいますがいいですか？\n（履歴・カレンダーの記録は残ります）</string>
+    <string name="which_graph_to_see">どのグラフが見たいですか？</string>
+
+    <!-- Graph Picker (Phase0) -->
+    <string name="graph_picker_title">グラフを選択</string>
+    <string name="graph_picker_strength">筋トレ（最大kg推移）</string>
+    <string name="graph_picker_cardio">有酸素（累積距離）</string>
+    <string name="graph_picker_studio">スタジオ（累積回数）</string>
+    <string name="graph_coming_soon">このグラフは次のフェーズで実装します</string>
+
 </resources>
