@@ -40,7 +40,7 @@ fun StudioScreen(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val adRemoved by viewModel.adRemoved.collectAsState()
-    val currentExercise by viewModel.currentExercise.collectAsState()
+    val currentExercise by viewModel.currentStudioExercise.collectAsState()
 
     // 入力値
     var durationMinutes by remember { mutableStateOf("") }
@@ -201,7 +201,7 @@ fun StudioScreen(
                         currentExercise?.let { exercise ->
                             val duration = durationMinutes.toIntOrNull() ?: 0
                             val cal = calories.toIntOrNull() ?: 0
-                            
+
                             viewModel.saveStudioWorkout(
                                 exerciseId = exercise.id,
                                 durationMinutes = duration,

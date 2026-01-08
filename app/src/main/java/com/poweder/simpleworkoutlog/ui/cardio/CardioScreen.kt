@@ -40,7 +40,7 @@ fun CardioScreen(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val adRemoved by viewModel.adRemoved.collectAsState()
-    val currentExercise by viewModel.currentExercise.collectAsState()
+    val currentExercise by viewModel.currentCardioExercise.collectAsState()
     val distanceUnit by viewModel.distanceUnit.collectAsState()
 
     // 入力値
@@ -212,7 +212,7 @@ fun CardioScreen(
                             val duration = durationMinutes.toIntOrNull() ?: 0
                             val dist = distance.toDoubleOrNull() ?: 0.0
                             val cal = calories.toIntOrNull() ?: 0
-                            
+
                             viewModel.saveCardioWorkout(
                                 exerciseId = exercise.id,
                                 durationMinutes = duration,

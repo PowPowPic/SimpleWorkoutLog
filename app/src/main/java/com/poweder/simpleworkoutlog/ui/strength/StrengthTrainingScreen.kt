@@ -55,7 +55,7 @@ fun StrengthTrainingScreen(
     val adRemoved by viewModel.adRemoved.collectAsState()
     val setItems by viewModel.setItems.collectAsState()
     val sessionTotal by viewModel.sessionTotal.collectAsState()
-    val currentExercise by viewModel.currentExercise.collectAsState()
+    val currentExercise by viewModel.currentStrengthExercise.collectAsState()
 
     // 運動時間と消費カロリー入力
     var durationInput by remember { mutableStateOf("") }
@@ -101,7 +101,7 @@ fun StrengthTrainingScreen(
                 TextButton(
                     onClick = {
                         showBackConfirmDialog = false
-                        viewModel.clearSession()
+                        viewModel.clearStrengthSession()
                         onBack()
                     }
                 ) {
@@ -257,7 +257,7 @@ fun StrengthTrainingScreen(
                         if (viewModel.hasUnsavedSets()) {
                             showBackConfirmDialog = true
                         } else {
-                            viewModel.clearSession()
+                            viewModel.clearStrengthSession()
                             onBack()
                         }
                     }
@@ -281,7 +281,14 @@ fun StrengthTrainingScreen(
                     .clickable {
                         val duration = durationInput.toIntOrNull() ?: 0
                         val calories = caloriesInput.toIntOrNull() ?: 0
-                        viewModel.finishAndSave(duration, calories)
+                        val exerciseId = currentExercise?.id
+                        if (exerciseId != null) {
+                            viewModel.finishAndSaveStrength(
+                                exerciseId = exerciseId,
+                                durationMinutes = duration,
+                                caloriesBurned = calories
+                            )
+                        }
                         onBack()
                     }
                     .padding(vertical = 14.dp),

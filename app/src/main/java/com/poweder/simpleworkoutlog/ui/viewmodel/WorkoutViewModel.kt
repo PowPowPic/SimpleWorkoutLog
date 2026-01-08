@@ -269,12 +269,29 @@ class WorkoutViewModel(
         _workoutTypes.value = _workoutTypes.value.filter { it.id != id }
     }
 
-    // ===== 現在の種目 =====
-    private val _currentExercise = MutableStateFlow<ExerciseEntity?>(null)
-    val currentExercise: StateFlow<ExerciseEntity?> = _currentExercise.asStateFlow()
+    // ===== 現在の種目（タイプ別に分離：重要） =====
+    private val _currentStrengthExercise = MutableStateFlow<ExerciseEntity?>(null)
+    val currentStrengthExercise: StateFlow<ExerciseEntity?> = _currentStrengthExercise.asStateFlow()
 
-    fun setCurrentExercise(exercise: ExerciseEntity) {
-        _currentExercise.value = exercise
+    private val _currentCardioExercise = MutableStateFlow<ExerciseEntity?>(null)
+    val currentCardioExercise: StateFlow<ExerciseEntity?> = _currentCardioExercise.asStateFlow()
+
+    private val _currentStudioExercise = MutableStateFlow<ExerciseEntity?>(null)
+    val currentStudioExercise: StateFlow<ExerciseEntity?> = _currentStudioExercise.asStateFlow()
+
+    private val _currentOtherExercise = MutableStateFlow<ExerciseEntity?>(null)
+    val currentOtherExercise: StateFlow<ExerciseEntity?> = _currentOtherExercise.asStateFlow()
+
+    /**
+     * 現在の種目を「タイプ別」にセットする（MainScreenから呼ぶ）
+     */
+    fun setCurrentExercise(workoutType: String, exercise: ExerciseEntity) {
+        when (workoutType) {
+            WorkoutType.STRENGTH -> _currentStrengthExercise.value = exercise
+            WorkoutType.CARDIO -> _currentCardioExercise.value = exercise
+            WorkoutType.STUDIO -> _currentStudioExercise.value = exercise
+            WorkoutType.OTHER -> _currentOtherExercise.value = exercise
+        }
     }
 
     fun setIntervalExerciseName(name: String) {
@@ -384,20 +401,19 @@ class WorkoutViewModel(
     /**
      * セッション完了＆保存（筋トレ用 - 運動時間と消費カロリー対応）
      * 有効なセット（weight > 0 && reps > 0）は確定状態に関係なく全て保存
+     * @param exerciseId 種目ID（他カテゴリの選択に影響されないよう引数で受け取る）
      */
-    fun finishAndSave(durationMinutes: Int = 0, caloriesBurned: Int = 0) {
+    fun finishAndSaveStrength(exerciseId: Long, durationMinutes: Int = 0, caloriesBurned: Int = 0) {
         viewModelScope.launch {
-            val exercise = _currentExercise.value ?: return@launch
-
             // 有効なセット（weight > 0 && reps > 0）は全て保存対象
             val validSets = _setItems.value.filter { it.isValid }
 
             if (validSets.isEmpty() && durationMinutes == 0 && caloriesBurned == 0) {
-                clearSession()
+                clearStrengthSession()
                 return@launch
             }
 
-            val session = repository.getOrCreateSession(exercise.id, exercise.workoutType)
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STRENGTH)
 
             // 有効なセットを全て保存
             validSets.forEach { setItem ->
@@ -406,7 +422,7 @@ class WorkoutViewModel(
 
             if (validSets.isNotEmpty()) {
                 val lastSet = validSets.last()
-                lastInputDataStore.saveLastInput(exercise.id, lastSet.weight, lastSet.reps)
+                lastInputDataStore.saveLastInput(exerciseId, lastSet.weight, lastSet.reps)
             }
 
             // 運動時間と消費カロリーを保存
@@ -417,16 +433,33 @@ class WorkoutViewModel(
             )
             repository.updateSession(updatedSession)
 
-            clearSession()
+            clearStrengthSession()
         }
     }
 
     /**
-     * セッションをクリア（保存せずにHomeへ戻る場合）
+     * 互換用（旧API）：
+     * 可能なら Screen から finishAndSaveStrength(exerciseId, ...) を直接呼ぶこと
+     */
+    fun finishAndSave(durationMinutes: Int = 0, caloriesBurned: Int = 0) {
+        val exerciseId = _currentStrengthExercise.value?.id ?: return
+        finishAndSaveStrength(exerciseId, durationMinutes, caloriesBurned)
+    }
+
+    /**
+     * 筋トレセッションをクリア（保存せずにHomeへ戻る場合）
+     */
+    fun clearStrengthSession() {
+        _currentStrengthExercise.value = null
+        _setItems.value = emptyList()
+    }
+
+    /**
+     * 互換用（旧API）：他画面が呼んでいても壊れないように残す
+     * ※ 可能なら StrengthTrainingScreen は clearStrengthSession() を呼ぶこと
      */
     fun clearSession() {
-        _currentExercise.value = null
-        _setItems.value = emptyList()
+        clearStrengthSession()
     }
 
     /**

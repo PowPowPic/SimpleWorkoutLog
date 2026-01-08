@@ -171,7 +171,7 @@ fun MainScreen(
             workoutType = WorkoutType.STRENGTH,
             onExerciseSelect = { exercise ->
                 showStrengthExerciseDialog = false
-                viewModel.setCurrentExercise(exercise)
+                viewModel.setCurrentExercise(WorkoutType.STRENGTH, exercise)
                 viewModel.initializeSetItems(exercise.id)
                 onNavigateToStrength()
             },
@@ -213,7 +213,7 @@ fun MainScreen(
             workoutType = WorkoutType.CARDIO,
             onExerciseSelect = { exercise ->
                 showCardioExerciseDialog = false
-                viewModel.setCurrentExercise(exercise)
+                viewModel.setCurrentExercise(WorkoutType.CARDIO, exercise)
                 onNavigateToCardio()
             },
             onAddNewExercise = {
@@ -271,7 +271,7 @@ fun MainScreen(
             workoutType = WorkoutType.STUDIO,
             onExerciseSelect = { exercise ->
                 showStudioExerciseDialog = false
-                viewModel.setCurrentExercise(exercise)
+                viewModel.setCurrentExercise(WorkoutType.STUDIO, exercise)
                 onNavigateToStudio()
             },
             onAddNewExercise = {
@@ -312,7 +312,7 @@ fun MainScreen(
             workoutType = WorkoutType.OTHER,
             onExerciseSelect = { exercise ->
                 showOtherExerciseDialog = false
-                viewModel.setCurrentExercise(exercise)
+                viewModel.setCurrentExercise(WorkoutType.OTHER, exercise)
                 onNavigateToOther()
             },
             onAddNewExercise = {

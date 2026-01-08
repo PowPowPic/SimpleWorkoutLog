@@ -32,12 +32,12 @@ fun OtherScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val currentExercise by viewModel.currentExercise.collectAsState()
-    
+    val currentExercise by viewModel.currentOtherExercise.collectAsState()
+
     var durationMinutes by remember { mutableStateOf("") }
     var caloriesBurned by remember { mutableStateOf("") }
     var showSavedMessage by remember { mutableStateOf(false) }
-    
+
     // カードのグラデーション
     val cardGradient = Brush.horizontalGradient(
         colors = listOf(
@@ -45,7 +45,7 @@ fun OtherScreen(
             WorkoutColors.OtherCardEnd
         )
     )
-    
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -73,7 +73,7 @@ fun OtherScreen(
                 containerColor = Color.Transparent
             )
         )
-        
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -81,7 +81,7 @@ fun OtherScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // 入力カード
             Box(
                 modifier = Modifier
@@ -102,9 +102,9 @@ fun OtherScreen(
                         color = WorkoutColors.TextPrimary,
                         textAlign = TextAlign.Center
                     )
-                    
+
                     Spacer(modifier = Modifier.height(24.dp))
-                    
+
                     // 時間入力
                     OutlinedTextField(
                         value = durationMinutes,
@@ -122,9 +122,9 @@ fun OtherScreen(
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
-                    
+
                     Spacer(modifier = Modifier.height(16.dp))
-                    
+
                     // 消費カロリー入力
                     OutlinedTextField(
                         value = caloriesBurned,
@@ -144,15 +144,15 @@ fun OtherScreen(
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(24.dp))
-            
+
             // 保存ボタン
             Button(
                 onClick = {
                     val duration = durationMinutes.toIntOrNull() ?: 0
                     val calories = caloriesBurned.toIntOrNull() ?: 0
-                    
+
                     currentExercise?.let { exercise ->
                         viewModel.saveOtherWorkout(
                             exerciseId = exercise.id,
@@ -178,7 +178,7 @@ fun OtherScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
-            
+
             // 保存完了メッセージ
             if (showSavedMessage) {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -188,7 +188,7 @@ fun OtherScreen(
                     color = WorkoutColors.ButtonConfirm,
                     textAlign = TextAlign.Center
                 )
-                
+
                 LaunchedEffect(showSavedMessage) {
                     kotlinx.coroutines.delay(2000)
                     showSavedMessage = false
