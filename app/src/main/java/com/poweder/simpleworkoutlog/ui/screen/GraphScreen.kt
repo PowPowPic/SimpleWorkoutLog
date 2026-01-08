@@ -23,11 +23,9 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -35,9 +33,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
-import com.poweder.simpleworkoutlog.data.dao.DailyDistance
 import com.poweder.simpleworkoutlog.data.dao.DailyMaxWeight
-import com.poweder.simpleworkoutlog.data.dao.DailySessionCount
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
@@ -51,6 +47,96 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.max
+
+// ========== グラデーション定義（統一感のため集約） ==========
+
+object GraphGradients {
+    // カロリーグラフ背景（強いグラデーション）
+    val caloriesChartBackground = Brush.linearGradient(
+        colors = listOf(
+            Color(0xFF2A2A2A),  // ダークグレー
+            Color(0xFF4A4A4A),  // ミディアムグレー
+            Color(0xFF6A6A6A)   // ライトグレー
+        ),
+        start = Offset(0f, 0f),
+        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+    )
+
+    // 入口カード（アッシュグリーン強調）
+    val entryCard = Brush.horizontalGradient(
+        colors = listOf(
+            Color(0xFF5A6B52),  // 濃いアッシュグリーン
+            Color(0xFF8FA085),  // ミディアムアッシュグリーン
+            Color(0xFFB0C2A7),  // ベースアッシュグリーン
+            Color(0xFFD4E4CC)   // 明るいアッシュグリーン
+        )
+    )
+
+    // 筋トレカード（グレー系グラデーション）
+    val strengthCard = Brush.horizontalGradient(
+        colors = listOf(
+            Color(0xFF4A4A4A),  // 濃いグレー
+            Color(0xFF6A6A6A),  // ミディアムグレー
+            Color(0xFF9A9A9A)   // 明るいグレー
+        )
+    )
+
+    // 有酸素カード（茶色系グラデーション）
+    val cardioCard = Brush.horizontalGradient(
+        colors = listOf(
+            Color(0xFF4A3228),  // 濃いブラウン
+            Color(0xFF6D4C41),  // ミディアムブラウン
+            Color(0xFFA1887F)   // 明るいブラウン
+        )
+    )
+
+    // スタジオカード（紫系グラデーション）
+    val studioCard = Brush.horizontalGradient(
+        colors = listOf(
+            Color(0xFF3D3654),  // 濃い紫グレー
+            Color(0xFF5E5370),  // ミディアム紫
+            Color(0xFF9182AB)   // 明るいラベンダー
+        )
+    )
+
+    // グラフダイアログ背景（筋トレ）
+    val strengthDialogBackground = Brush.verticalGradient(
+        colors = listOf(
+            Color(0xFF2A2A2A),
+            Color(0xFF3A3A3A),
+            Color(0xFF4A4A4A)
+        )
+    )
+
+    // グラフダイアログ背景（有酸素）
+    val cardioDialogBackground = Brush.verticalGradient(
+        colors = listOf(
+            Color(0xFF2A2520),
+            Color(0xFF3A3028),
+            Color(0xFF4A3830)
+        )
+    )
+
+    // グラフダイアログ背景（スタジオ）
+    val studioDialogBackground = Brush.verticalGradient(
+        colors = listOf(
+            Color(0xFF252030),
+            Color(0xFF302A3A),
+            Color(0xFF3A3444)
+        )
+    )
+
+    // グラフチャート背景（共通）
+    val chartBackground = Brush.linearGradient(
+        colors = listOf(
+            Color(0xFF3A3A3A),
+            Color(0xFF4A4A4A),
+            Color(0xFF5A5A5A)
+        ),
+        start = Offset(0f, 0f),
+        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+    )
+}
 
 /**
  * グラフ期間
@@ -212,6 +298,7 @@ fun GraphScreen(
     if (showStrengthExercisePicker) {
         ExercisePickerDialog(
             exercises = strengthExercises,
+            graphType = GraphType.STRENGTH,
             onDismiss = { showStrengthExercisePicker = false },
             onSelect = { exercise ->
                 selectedStrengthExerciseId = exercise.id
@@ -241,6 +328,7 @@ fun GraphScreen(
     if (showCardioExercisePicker) {
         ExercisePickerDialog(
             exercises = cardioExercises,
+            graphType = GraphType.CARDIO,
             onDismiss = { showCardioExercisePicker = false },
             onSelect = { exercise ->
                 selectedCardioExerciseId = exercise.id
@@ -368,7 +456,7 @@ fun GraphScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 下段：グラフ選択入口カード（アッシュグリーングラデーション）
+            // 下段：グラフ選択入口カード（アッシュグリーングラデーション強化）
             GraphSelectionCard(onClick = { showGraphPickerDialog = true })
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -434,8 +522,8 @@ private fun CumulativeCaloriesChart(data: List<CumulativeDataPoint>, modifier: M
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(WorkoutColors.BackgroundMedium)
-            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp))
+            .background(GraphGradients.caloriesChartBackground)
+            .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp))
             .padding(16.dp)
     ) {
         if (data.isEmpty() || maxCumulative == 0) {
@@ -481,7 +569,7 @@ private fun calculateMilestoneStep(maxValue: Int): Int = when {
 }
 
 private fun DrawScope.drawMilestoneLines(step: Int, yMax: Int, pL: Float, pT: Float, cW: Float, cH: Float, nf: NumberFormat) {
-    val mC = Color.Gray.copy(alpha = 0.3f); val tC = android.graphics.Color.argb(153, 136, 136, 136)
+    val mC = Color.White.copy(alpha = 0.2f); val tC = android.graphics.Color.argb(200, 200, 200, 200)
     var m = 0
     while (m <= yMax) {
         val y = pT + cH - (m.toFloat() / yMax) * cH
@@ -495,7 +583,7 @@ private fun DrawScope.drawMilestoneLines(step: Int, yMax: Int, pL: Float, pT: Fl
 }
 
 private fun DrawScope.drawXAxisLabels(data: List<CumulativeDataPoint>, indices: List<Int>, df: DateTimeFormatter, pL: Float, pT: Float, cW: Float, cH: Float) {
-    val tC = android.graphics.Color.argb(153, 136, 136, 136)
+    val tC = android.graphics.Color.argb(200, 200, 200, 200)
     indices.forEach { i ->
         if (i < data.size) {
             val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
@@ -507,24 +595,16 @@ private fun DrawScope.drawXAxisLabels(data: List<CumulativeDataPoint>, indices: 
     }
 }
 
-// ========== 入口カード（アッシュグリーングラデーション） ==========
+// ========== 入口カード（アッシュグリーングラデーション強化） ==========
 
 @Composable
 private fun GraphSelectionCard(onClick: () -> Unit) {
-    // アッシュグリーン #B0C2A7 を基調としたグラデーション
-    val ashGreenLight = Color(0xFFCCD9C4)  // 明るめ
-    val ashGreen = Color(0xFFB0C2A7)        // ベース
-    val ashGreenDark = Color(0xFF8FA085)   // 濃いめ
-
-    val gradientBrush = Brush.horizontalGradient(
-        colors = listOf(ashGreenDark, ashGreen, ashGreenLight)
-    )
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(brush = gradientBrush)
-            .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp))
+            .background(brush = GraphGradients.entryCard)
+            .border(1.dp, Color.White.copy(alpha = 0.25f), RoundedCornerShape(12.dp))
             .clickable { onClick() }
             .padding(20.dp)
     ) {
@@ -533,9 +613,9 @@ private fun GraphSelectionCard(onClick: () -> Unit) {
                 stringResource(R.string.which_graph_to_see),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF2D3A29) // ダークグリーン文字
+                color = Color(0xFF1A2518) // より濃いダークグリーン文字
             )
-            Icon(Icons.AutoMirrored.Filled.ArrowForward, null, tint = Color(0xFF2D3A29))
+            Icon(Icons.AutoMirrored.Filled.ArrowForward, null, tint = Color(0xFF1A2518))
         }
     }
 }
@@ -548,10 +628,27 @@ private fun GraphPickerDialog(onDismiss: () -> Unit, onSelect: (GraphType) -> Un
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.graph_picker_title), fontWeight = FontWeight.Bold) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                GraphPickerItem(stringResource(R.string.graph_picker_strength)) { onSelect(GraphType.STRENGTH) }
-                GraphPickerItem(stringResource(R.string.graph_picker_cardio)) { onSelect(GraphType.CARDIO) }
-                GraphPickerItem(stringResource(R.string.graph_picker_studio)) { onSelect(GraphType.STUDIO) }
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                // 筋トレカード（グレー系グラデーション）
+                GradientPickerItem(
+                    label = stringResource(R.string.graph_picker_strength),
+                    gradient = GraphGradients.strengthCard,
+                    textColor = Color.White
+                ) { onSelect(GraphType.STRENGTH) }
+
+                // 有酸素カード（茶色系グラデーション）
+                GradientPickerItem(
+                    label = stringResource(R.string.graph_picker_cardio),
+                    gradient = GraphGradients.cardioCard,
+                    textColor = Color.White
+                ) { onSelect(GraphType.CARDIO) }
+
+                // スタジオカード（紫系グラデーション）
+                GradientPickerItem(
+                    label = stringResource(R.string.graph_picker_studio),
+                    gradient = GraphGradients.studioCard,
+                    textColor = Color.White
+                ) { onSelect(GraphType.STUDIO) }
             }
         },
         confirmButton = {},
@@ -560,34 +657,62 @@ private fun GraphPickerDialog(onDismiss: () -> Unit, onSelect: (GraphType) -> Un
 }
 
 @Composable
-private fun GraphPickerItem(label: String, onClick: () -> Unit) {
+private fun GradientPickerItem(
+    label: String,
+    gradient: Brush,
+    textColor: Color,
+    onClick: () -> Unit
+) {
     Box(
-        modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
-            .background(WorkoutColors.BackgroundMedium).clickable { onClick() }.padding(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(gradient)
+            .border(1.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
+            .clickable { onClick() }
+            .padding(16.dp)
     ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = WorkoutColors.TextPrimary)
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = textColor
+        )
     }
 }
 
-// ========== 種目選択ダイアログ（共通） ==========
+// ========== 種目選択ダイアログ（共通・グラデーション対応） ==========
 
 @Composable
 private fun ExercisePickerDialog(
     exercises: List<ExerciseEntity>,
+    graphType: GraphType,
     onDismiss: () -> Unit,
     onSelect: (ExerciseEntity) -> Unit
 ) {
     val context = LocalContext.current
+
+    // グラフタイプに応じたグラデーション
+    val itemGradient = when (graphType) {
+        GraphType.STRENGTH -> GraphGradients.strengthCard
+        GraphType.CARDIO -> GraphGradients.cardioCard
+        GraphType.STUDIO -> GraphGradients.studioCard
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.select_exercise), fontWeight = FontWeight.Bold) },
         text = {
-            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 if (exercises.isEmpty()) {
                     Text(stringResource(R.string.no_data), style = MaterialTheme.typography.bodyMedium, color = WorkoutColors.TextSecondary, modifier = Modifier.padding(16.dp))
                 } else {
                     exercises.forEach { ex ->
-                        GraphPickerItem(ex.getDisplayName(context)) { onSelect(ex) }
+                        GradientPickerItem(
+                            label = ex.getDisplayName(context),
+                            gradient = itemGradient,
+                            textColor = Color.White
+                        ) { onSelect(ex) }
                     }
                 }
             }
@@ -608,7 +733,12 @@ private fun StrengthGraphDialog(
     val startDate = resetDate ?: 0L
     val data by viewModel.getDailyMaxWeightForExercise(exerciseId, startDate).collectAsState(initial = emptyList())
 
-    GraphDialogContainer(title = exerciseName, onDismiss = onDismiss, onReset = onReset) {
+    GraphDialogContainer(
+        title = exerciseName,
+        backgroundGradient = GraphGradients.strengthDialogBackground,
+        onDismiss = onDismiss,
+        onReset = onReset
+    ) {
         MaxWeightChart(data = data, weightUnit = weightUnit, modifier = Modifier.fillMaxWidth().height(280.dp))
     }
 }
@@ -623,7 +753,7 @@ private fun MaxWeightChart(data: List<DailyMaxWeight>, weightUnit: WeightUnit, m
     val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
     val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
 
-    Box(modifier.clip(RoundedCornerShape(12.dp)).background(WorkoutColors.BackgroundMedium).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)).padding(16.dp)) {
+    Box(modifier.clip(RoundedCornerShape(12.dp)).background(GraphGradients.chartBackground).border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp)).padding(16.dp)) {
         if (data.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_data), color = WorkoutColors.TextSecondary) }
         } else {
@@ -635,9 +765,9 @@ private fun MaxWeightChart(data: List<DailyMaxWeight>, weightUnit: WeightUnit, m
                 for (i in 0..4) {
                     val v = yMin + yStep * i
                     val y = pT + cH - ((v - yMin) / (yMax - yMin)).toFloat() * cH
-                    drawLine(Color.Gray.copy(alpha = 0.3f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
+                    drawLine(Color.White.copy(alpha = 0.2f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
                     drawContext.canvas.nativeCanvas.apply {
-                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(200, 200, 200, 200); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
                         drawText("${v.toInt()}", pL - 8.dp.toPx(), y + 4.dp.toPx(), p)
                     }
                 }
@@ -674,7 +804,7 @@ private fun MaxWeightChart(data: List<DailyMaxWeight>, weightUnit: WeightUnit, m
                         val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
                         val d = LocalDate.ofEpochDay(data[i].date)
                         drawContext.canvas.nativeCanvas.apply {
-                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
+                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(200, 200, 200, 200); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
                             drawText(d.format(df), x, pT + cH + 20.dp.toPx(), p)
                         }
                     }
@@ -704,7 +834,12 @@ private fun CardioGraphDialog(
         }
     }
 
-    GraphDialogContainer(title = exerciseName, onDismiss = onDismiss, onReset = onReset) {
+    GraphDialogContainer(
+        title = exerciseName,
+        backgroundGradient = GraphGradients.cardioDialogBackground,
+        onDismiss = onDismiss,
+        onReset = onReset
+    ) {
         CumulativeDistanceChart(data = cumulativeData, distanceUnit = distanceUnit, modifier = Modifier.fillMaxWidth().height(280.dp))
     }
 }
@@ -716,7 +851,7 @@ private fun CumulativeDistanceChart(data: List<Pair<Long, Double>>, distanceUnit
     val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
     val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
 
-    Box(modifier.clip(RoundedCornerShape(12.dp)).background(WorkoutColors.BackgroundMedium).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)).padding(16.dp)) {
+    Box(modifier.clip(RoundedCornerShape(12.dp)).background(GraphGradients.chartBackground).border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp)).padding(16.dp)) {
         if (data.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_data), color = WorkoutColors.TextSecondary) }
         } else {
@@ -728,9 +863,9 @@ private fun CumulativeDistanceChart(data: List<Pair<Long, Double>>, distanceUnit
                 for (i in 0..4) {
                     val v = yStep * i
                     val y = pT + cH - (v / yMax).toFloat() * cH
-                    drawLine(Color.Gray.copy(alpha = 0.3f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
+                    drawLine(Color.White.copy(alpha = 0.2f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
                     drawContext.canvas.nativeCanvas.apply {
-                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(200, 200, 200, 200); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
                         val displayVal = when (distanceUnit) { DistanceUnit.KM -> v; DistanceUnit.MILE -> v * 0.621371 }
                         drawText("${displayVal.toInt()}", pL - 8.dp.toPx(), y + 4.dp.toPx(), p)
                     }
@@ -768,7 +903,7 @@ private fun CumulativeDistanceChart(data: List<Pair<Long, Double>>, distanceUnit
                         val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
                         val d = LocalDate.ofEpochDay(data[i].first)
                         drawContext.canvas.nativeCanvas.apply {
-                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
+                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(200, 200, 200, 200); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
                             drawText(d.format(df), x, pT + cH + 20.dp.toPx(), p)
                         }
                     }
@@ -795,7 +930,12 @@ private fun StudioGraphDialog(viewModel: WorkoutViewModel, onReset: () -> Unit, 
         }
     }
 
-    GraphDialogContainer(title = stringResource(R.string.graph_picker_studio), onDismiss = onDismiss, onReset = onReset) {
+    GraphDialogContainer(
+        title = stringResource(R.string.graph_picker_studio),
+        backgroundGradient = GraphGradients.studioDialogBackground,
+        onDismiss = onDismiss,
+        onReset = onReset
+    ) {
         CumulativeSessionCountChart(data = cumulativeData, modifier = Modifier.fillMaxWidth().height(280.dp))
     }
 }
@@ -807,7 +947,7 @@ private fun CumulativeSessionCountChart(data: List<Pair<Long, Int>>, modifier: M
     val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
     val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
 
-    Box(modifier.clip(RoundedCornerShape(12.dp)).background(WorkoutColors.BackgroundMedium).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)).padding(16.dp)) {
+    Box(modifier.clip(RoundedCornerShape(12.dp)).background(GraphGradients.chartBackground).border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp)).padding(16.dp)) {
         if (data.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_data), color = WorkoutColors.TextSecondary) }
         } else {
@@ -819,9 +959,9 @@ private fun CumulativeSessionCountChart(data: List<Pair<Long, Int>>, modifier: M
                 for (i in 0..4) {
                     val v = yStep * i
                     val y = pT + cH - (v.toFloat() / yMax) * cH
-                    drawLine(Color.Gray.copy(alpha = 0.3f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
+                    drawLine(Color.White.copy(alpha = 0.2f), Offset(pL, y), Offset(pL + cW, y), 1.dp.toPx())
                     drawContext.canvas.nativeCanvas.apply {
-                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
+                        val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(200, 200, 200, 200); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.RIGHT }
                         drawText("$v", pL - 8.dp.toPx(), y + 4.dp.toPx(), p)
                     }
                 }
@@ -857,7 +997,7 @@ private fun CumulativeSessionCountChart(data: List<Pair<Long, Int>>, modifier: M
                         val x = pL + (i.toFloat() / max(1, data.size - 1)) * cW
                         val d = LocalDate.ofEpochDay(data[i].first)
                         drawContext.canvas.nativeCanvas.apply {
-                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(153, 136, 136, 136); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
+                            val p = android.graphics.Paint().apply { color = android.graphics.Color.argb(200, 200, 200, 200); textSize = 9.sp.toPx(); textAlign = android.graphics.Paint.Align.CENTER }
                             drawText(d.format(df), x, pT + cH + 20.dp.toPx(), p)
                         }
                     }
@@ -867,11 +1007,12 @@ private fun CumulativeSessionCountChart(data: List<Pair<Long, Int>>, modifier: M
     }
 }
 
-// ========== グラフダイアログ共通コンテナ ==========
+// ========== グラフダイアログ共通コンテナ（グラデーション対応） ==========
 
 @Composable
 private fun GraphDialogContainer(
     title: String,
+    backgroundGradient: Brush,
     onDismiss: () -> Unit,
     onReset: () -> Unit,
     content: @Composable () -> Unit
@@ -881,7 +1022,8 @@ private fun GraphDialogContainer(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .clip(RoundedCornerShape(16.dp))
-                .background(WorkoutColors.BackgroundDark)
+                .background(backgroundGradient)
+                .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(16.dp))
                 .padding(16.dp)
         ) {
             Column {

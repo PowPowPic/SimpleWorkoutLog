@@ -154,4 +154,27 @@ class SettingsDataStore(private val context: Context) {
             preferences[key] = epochDay
         }
     }
+
+    // ===== インタースティシャル広告の時間帯別表示記録 =====
+
+    /**
+     * 指定時間帯スロットの最終表示日を取得
+     * @param slot 0:0-6時, 1:6-12時, 2:12-18時, 3:18-24時
+     */
+    fun getInterstitialLastShownDate(slot: Int): Flow<Long?> {
+        val key = longPreferencesKey("interstitial_last_shown_slot_$slot")
+        return context.dataStore.data.map { preferences ->
+            preferences[key]
+        }
+    }
+
+    /**
+     * 指定時間帯スロットの最終表示日を設定
+     */
+    suspend fun setInterstitialLastShownDate(slot: Int, epochDay: Long) {
+        val key = longPreferencesKey("interstitial_last_shown_slot_$slot")
+        context.dataStore.edit { preferences ->
+            preferences[key] = epochDay
+        }
+    }
 }

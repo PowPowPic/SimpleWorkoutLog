@@ -6,21 +6,24 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 
+/**
+ * HorizontalPager連携版BottomNavBar
+ *
+ * @param currentPage 現在のPagerページ（0-4）
+ * @param onPageSelected タブクリック時のコールバック（ページ番号を渡す）
+ */
 @Composable
-fun BottomNavBar(navController: NavController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
+fun BottomNavBar(
+    currentPage: Int,
+    onPageSelected: (Int) -> Unit
+) {
     NavigationBar(
         containerColor = WorkoutColors.NavBarBackground
     ) {
-        Screen.bottomNavItems.forEach { screen ->
+        Screen.bottomNavItems.forEachIndexed { index, screen ->
             NavigationBarItem(
                 icon = {
                     Icon(
@@ -29,16 +32,10 @@ fun BottomNavBar(navController: NavController) {
                     )
                 },
                 label = { Text(stringResource(screen.resourceId)) },
-                selected = currentRoute == screen.route,
+                selected = currentPage == index,
                 onClick = {
-                    if (currentRoute != screen.route) {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                    if (currentPage != index) {
+                        onPageSelected(index)
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
