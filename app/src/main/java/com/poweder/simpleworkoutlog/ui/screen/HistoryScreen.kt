@@ -33,7 +33,7 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
-import com.poweder.simpleworkoutlog.util.formatDurationShort
+import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.LocalDate
@@ -47,6 +47,7 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
     onNavigateToStrengthEdit: (Long) -> Unit = {},
     onNavigateToCardioEdit: (Long) -> Unit = {},
+    onNavigateToIntervalEdit: (Long) -> Unit = {},
     onNavigateToStudioEdit: (Long) -> Unit = {},
     onNavigateToOtherEdit: (Long) -> Unit = {}
 ) {
@@ -150,9 +151,9 @@ fun HistoryScreen(
                 when (session.workoutType) {
                     WorkoutType.STRENGTH -> onNavigateToStrengthEdit(session.id)
                     WorkoutType.CARDIO -> onNavigateToCardioEdit(session.id)
+                    WorkoutType.INTERVAL -> onNavigateToIntervalEdit(session.id)
                     WorkoutType.STUDIO -> onNavigateToStudioEdit(session.id)
                     WorkoutType.OTHER -> onNavigateToOtherEdit(session.id)
-                    else -> {} // INTERVAL等は今回対象外
                 }
             },
             onDeleteSession = { session ->
@@ -546,7 +547,7 @@ private fun CategorySummaryCard(
                 }
                 if (categoryDurationSeconds > 0) {
                     Text(
-                        text = formatDurationShort(categoryDurationSeconds),
+                        text = formatHms(categoryDurationSeconds),
                         style = MaterialTheme.typography.bodyMedium,
                         color = WorkoutColors.TextPrimary
                     )

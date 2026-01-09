@@ -21,9 +21,8 @@
     <string name="save">保存</string>
     <string name="back">戻る</string>
     <string name="confirm">確定</string>
-    <string name="discard">破棄</string>
+    <string name="discard">はい</string>
     <string name="rename">名前変更</string>
-    <string name="coming_soon">準備中</string>
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
@@ -32,7 +31,7 @@
     <string name="today_calories">今日の消費カロリー</string>
     <string name="card_today_menu">今日のトレーニングメニュー</string>
     <string name="midnight_rule_note">午前0時から午前3時の記録は前日の記録として保存されます</string>
-    <string name="settings_hint">言語とkg/lbs,km/mileは設定で変更できます</string>
+
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">運動種別を選択</string>
@@ -47,7 +46,6 @@
     <!-- ==================== Exercise Selection ==================== -->
     <string name="select_exercise">種目を選択</string>
     <string name="no_exercises_yet">種目がまだありません。下のボタンから追加してください！</string>
-    <string name="empty_slot">空欄</string>
     <string name="add_new_exercise">＋ 新規種目を追加</string>
     <string name="exercise_name">種目名</string>
 
@@ -55,15 +53,11 @@
     <string name="exercise_bench_press">ベンチプレス</string>
     <string name="exercise_squat">スクワット</string>
     <string name="exercise_deadlift">デッドリフト</string>
-    <string name="exercise_overhead_press">オーバーヘッドプレス</string>
-    <string name="exercise_barbell_row">バーベルロウ</string>
 
     <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">ランニング</string>
     <string name="exercise_walking">ウォーキング</string>
     <string name="exercise_indoor_bike">室内バイク</string>
-    <string name="exercise_cycling">サイクリング</string>
-    <string name="exercise_swimming">水泳</string>
 
     <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
@@ -75,14 +69,12 @@
 
     <!-- ==================== Exercise Names - Other ==================== -->
     <string name="exercise_snowboarding">スノーボード</string>
-    <string name="exercise_skiing">スキー</string>
-    <string name="exercise_hiking">ハイキング</string>
-    <string name="exercise_bass_fishing">バスフィッシング</string>
+    <string name="exercise_golf">ゴルフ</string>
 
     <!-- ==================== Strength Training Screen ==================== -->
-    <string name="reps">reps</string>
+    <string name="reps">回</string>
     <string name="add_new_set">＋ 新たなセット</string>
-    <string name="session_total">total</string>
+    <string name="session_total">合計</string>
     <string name="exercise_duration">運動時間</string>
     <string name="exercise_calories">消費カロリー（kcal）</string>
     <string name="finish_training">トレーニング終了・保存</string>
@@ -98,11 +90,11 @@
     <string name="interval_timer_settings">タイマー設定</string>
     <string name="preset_tabata">タバタ式</string>
     <string name="preset_hiit">HIIT</string>
-    <string name="warmup_seconds">ウォームアップ（秒）</string>
-    <string name="training_seconds">トレーニング（秒）</string>
-    <string name="rest_seconds">インターバル（秒）</string>
+    <string name="warmup_seconds">ウォームアップ</string>
+    <string name="training_seconds">トレーニング</string>
+    <string name="rest_seconds">インターバル</string>
     <string name="number_of_sets">セット数</string>
-    <string name="cooldown_seconds">クールダウン（秒）</string>
+    <string name="cooldown_seconds">クールダウン</string>
     <string name="total_time_format">合計: %s</string>
     <string name="start_timer">スタート</string>
 
@@ -159,8 +151,8 @@
     <!-- ==================== Dialogs - Confirm ==================== -->
     <string name="confirm_back_title">変更しなくてもいいですか？</string>
     <string name="confirm_back_message">未保存のセットがあります。戻ってもよろしいですか？</string>
-    <string name="discard_confirm_title">変更を破棄しますか？</string>
-    <string name="discard_confirm_message">保存されていない確定済みセットがあります。破棄しますか？</string>
+    <string name="discard_confirm_title">変更しなくてもいいですか？</string>
+    <string name="discard_confirm_message">保存されていない確定済みセットがあります。</string>
 
     <!-- ==================== Dialogs - Delete ==================== -->
     <string name="delete_confirm_title">削除しますか？</string>

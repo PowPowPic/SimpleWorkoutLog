@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -71,7 +72,7 @@ fun DurationInputField(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = WorkoutColors.TextSecondary
+                    unfocusedBorderColor = Color.Black
                 ),
                 modifier = Modifier.weight(1f)
             )
@@ -105,7 +106,7 @@ fun DurationInputField(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = WorkoutColors.TextSecondary
+                    unfocusedBorderColor = Color.Black
                 ),
                 modifier = Modifier.weight(1f)
             )
@@ -139,7 +140,7 @@ fun DurationInputField(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = WorkoutColors.TextSecondary
+                    unfocusedBorderColor = Color.Black
                 ),
                 modifier = Modifier.weight(1f)
             )

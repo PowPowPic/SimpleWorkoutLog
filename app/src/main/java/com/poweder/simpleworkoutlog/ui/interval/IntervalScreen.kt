@@ -30,13 +30,18 @@ import kotlinx.coroutines.isActive
 fun IntervalScreen(
     viewModel: WorkoutViewModel,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sessionId: Long? = null  // null = 新規作成、値あり = 編集モード
 ) {
     val intervalExerciseName by viewModel.intervalExerciseName.collectAsState()
+    val editingSession by viewModel.editingSession.collectAsState()
+
+    // 編集モードかどうか
+    val isEditMode = sessionId != null
 
     // タイマー設定
     var settings by remember { mutableStateOf(IntervalTimerSettings.tabataDefault()) }
-    var showSettingsDialog by remember { mutableStateOf(true) }
+    var showSettingsDialog by remember { mutableStateOf(!isEditMode) }  // 編集モードでは設定画面をスキップ
 
     // タイマー状態
     var timerState by remember { mutableStateOf(IntervalTimerState()) }
@@ -44,25 +49,49 @@ fun IntervalScreen(
     // サウンドマネージャー
     val soundManager = remember { IntervalSoundManager() }
 
-    // フェーズ計測（残り時間算出用）
+    // タイマー開始時刻（SystemClock.elapsedRealtime()ベース）
     var phaseStartTime by remember { mutableStateOf(0L) }
     var phaseDuration by remember { mutableStateOf(0) }
 
-    // ✅ 全体経過時間（実測）用：累積方式
-    var workoutStartTime by remember { mutableStateOf(0L) }          // running中の開始時刻
-    var accumulatedElapsedMillis by remember { mutableStateOf(0L) }  // pause/stopまでの累積
-
     // 完了後の入力画面表示フラグ
-    var showResultInput by remember { mutableStateOf(false) }
+    var showResultInput by remember { mutableStateOf(isEditMode) }  // 編集モードでは最初から結果入力画面
 
     // 消費カロリー入力
     var caloriesInput by remember { mutableStateOf("") }
+
+    // 運動時間入力（編集モード用）
+    var durationMinutes by remember { mutableStateOf("") }
+    var durationSeconds by remember { mutableStateOf("") }
 
     // 保存完了フラグ
     var hasSaved by remember { mutableStateOf(false) }
 
     // 重複音防止用：最後にビープを鳴らした残り秒数
     var lastBeepSecond by remember { mutableStateOf(-1) }
+
+    // 編集モード初期化フラグ
+    var isEditInitialized by remember { mutableStateOf(false) }
+
+    // 編集モードの場合、セッションをロード
+    LaunchedEffect(sessionId) {
+        if (sessionId != null) {
+            viewModel.loadIntervalSessionForEdit(sessionId)
+        }
+    }
+
+    // 編集モードでセッションがロードされたらプリフィル
+    LaunchedEffect(editingSession, isEditMode) {
+        if (isEditMode && editingSession != null && !isEditInitialized) {
+            val session = editingSession!!
+            // 秒を分:秒に変換
+            val minutes = session.durationSeconds / 60
+            val seconds = session.durationSeconds % 60
+            durationMinutes = if (minutes > 0) minutes.toString() else ""
+            durationSeconds = if (seconds > 0) seconds.toString() else ""
+            caloriesInput = if (session.caloriesBurned > 0) session.caloriesBurned.toString() else ""
+            isEditInitialized = true
+        }
+    }
 
     // クリーンアップ
     DisposableEffect(Unit) {
@@ -71,30 +100,17 @@ fun IntervalScreen(
         }
     }
 
-    // ✅ 実測の総経過秒を返すヘルパー（休憩込みの実時間）
-    fun computeTotalElapsedSeconds(): Int {
-        val now = SystemClock.elapsedRealtime()
-        val runningMillis = if (workoutStartTime > 0L) (now - workoutStartTime) else 0L
-        return ((accumulatedElapsedMillis + runningMillis) / 1000L).toInt()
-    }
-
     // タイマーループ
     LaunchedEffect(timerState.isRunning, timerState.phase) {
-        if (timerState.isRunning &&
-            timerState.phase != IntervalTimerPhase.IDLE &&
-            timerState.phase != IntervalTimerPhase.FINISHED
-        ) {
+        if (timerState.isRunning && timerState.phase != IntervalTimerPhase.IDLE && timerState.phase != IntervalTimerPhase.FINISHED) {
             while (isActive && timerState.isRunning) {
-                // フェーズ残り（今まで通り phaseStartTime から算出）
-                val phaseElapsed = ((SystemClock.elapsedRealtime() - phaseStartTime) / 1000).toInt()
-                val remaining = (phaseDuration - phaseElapsed).coerceAtLeast(0)
+                val elapsed = ((SystemClock.elapsedRealtime() - phaseStartTime) / 1000).toInt()
+                val remaining = (phaseDuration - elapsed).coerceAtLeast(0)
 
-                // ✅ 総経過は「実測」から算出（delay回数で増やさない）
-                val totalElapsed = computeTotalElapsedSeconds()
-
+                // 残り時間を更新
                 timerState = timerState.copy(
                     remainingSeconds = remaining,
-                    totalElapsedSeconds = totalElapsed
+                    totalElapsedSeconds = timerState.totalElapsedSeconds + 1
                 )
 
                 // サウンド再生（残り秒が変わった時のみ鳴らす）
@@ -125,7 +141,6 @@ fun IntervalScreen(
                     )
                 }
 
-                // 200msは残り表示をなめらかにしたい意図だと思うので維持
                 delay(200L)
             }
         }
@@ -143,11 +158,6 @@ fun IntervalScreen(
                 settings = newSettings
                 showSettingsDialog = false
                 lastBeepSecond = -1
-
-                // ✅ 計測をリセット
-                accumulatedElapsedMillis = 0L
-                workoutStartTime = SystemClock.elapsedRealtime()
-
                 startTimer(
                     settings = newSettings,
                     onStateChange = { newState, duration ->
@@ -196,23 +206,49 @@ fun IntervalScreen(
                     // 結果入力画面
                     showResultInput -> {
                         ResultInputSection(
-                            totalSeconds = timerState.totalElapsedSeconds,
+                            totalSeconds = if (isEditMode) {
+                                // 編集モードでは入力値から計算
+                                (durationMinutes.toIntOrNull() ?: 0) * 60 + (durationSeconds.toIntOrNull() ?: 0)
+                            } else {
+                                timerState.totalElapsedSeconds
+                            },
                             caloriesInput = caloriesInput,
                             onCaloriesChange = { caloriesInput = it },
+                            isEditMode = isEditMode,
+                            durationMinutes = durationMinutes,
+                            durationSeconds = durationSeconds,
+                            onDurationMinutesChange = { durationMinutes = it },
+                            onDurationSecondsChange = { durationSeconds = it },
                             onSave = {
                                 if (!hasSaved) {
                                     hasSaved = true
                                     val calories = caloriesInput.toIntOrNull() ?: 0
-                                    viewModel.saveIntervalWorkoutByName(
-                                        exerciseName = intervalExerciseName,
-                                        durationSeconds = timerState.totalElapsedSeconds,
-                                        sets = settings.sets,
-                                        caloriesBurned = calories
-                                    )
+
+                                    if (isEditMode && sessionId != null) {
+                                        // 編集モード：UPDATE
+                                        val totalDurationSeconds = (durationMinutes.toIntOrNull() ?: 0) * 60 + (durationSeconds.toIntOrNull() ?: 0)
+                                        viewModel.updateIntervalSession(
+                                            sessionId = sessionId,
+                                            durationSeconds = totalDurationSeconds,
+                                            caloriesBurned = calories
+                                        )
+                                    } else {
+                                        // 新規モード：INSERT
+                                        viewModel.saveIntervalWorkoutByName(
+                                            exerciseName = intervalExerciseName,
+                                            durationSeconds = timerState.totalElapsedSeconds,
+                                            sets = settings.sets,
+                                            caloriesBurned = calories
+                                        )
+                                    }
+                                    viewModel.clearEditingSession()
                                     onBack()
                                 }
                             },
-                            onCancel = onBack
+                            onCancel = {
+                                viewModel.clearEditingSession()
+                                onBack()
+                            }
                         )
                     }
 
@@ -261,20 +297,10 @@ fun IntervalScreen(
                                 text = if (timerState.isRunning) stringResource(R.string.pause) else stringResource(R.string.resume),
                                 color = if (timerState.isRunning) WorkoutColors.AccentOrange else WorkoutColors.ButtonConfirm,
                                 onClick = {
-                                    val now = SystemClock.elapsedRealtime()
-
                                     if (timerState.isRunning) {
-                                        // ✅ pause：全体経過を累積確定
-                                        if (workoutStartTime > 0L) {
-                                            accumulatedElapsedMillis += (now - workoutStartTime)
-                                            workoutStartTime = 0L
-                                        }
                                         timerState = timerState.copy(isRunning = false)
                                     } else {
-                                        // ✅ resume：全体計測を再開
-                                        workoutStartTime = now
-                                        // フェーズ残りの補正（従来ロジック維持）
-                                        phaseStartTime = now - ((phaseDuration - timerState.remainingSeconds) * 1000L)
+                                        phaseStartTime = SystemClock.elapsedRealtime() - ((phaseDuration - timerState.remainingSeconds) * 1000L)
                                         timerState = timerState.copy(isRunning = true)
                                     }
                                 }
@@ -285,18 +311,9 @@ fun IntervalScreen(
                                 text = stringResource(R.string.stop),
                                 color = WorkoutColors.PureRed,
                                 onClick = {
-                                    val now = SystemClock.elapsedRealtime()
-
-                                    // ✅ stop：running中なら累積確定してからFINISHEDへ
-                                    if (workoutStartTime > 0L) {
-                                        accumulatedElapsedMillis += (now - workoutStartTime)
-                                        workoutStartTime = 0L
-                                    }
-
                                     timerState = timerState.copy(
                                         isRunning = false,
-                                        phase = IntervalTimerPhase.FINISHED,
-                                        totalElapsedSeconds = computeTotalElapsedSeconds()
+                                        phase = IntervalTimerPhase.FINISHED
                                     )
                                 }
                             )
@@ -371,14 +388,20 @@ private fun ResultInputSection(
     caloriesInput: String,
     onCaloriesChange: (String) -> Unit,
     onSave: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    // 編集モード用パラメータ
+    isEditMode: Boolean = false,
+    durationMinutes: String = "",
+    durationSeconds: String = "",
+    onDurationMinutesChange: (String) -> Unit = {},
+    onDurationSecondsChange: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.save_workout_result),
+            text = if (isEditMode) stringResource(R.string.edit) else stringResource(R.string.save_workout_result),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = WorkoutColors.TextPrimary
@@ -386,19 +409,61 @@ private fun ResultInputSection(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 運動時間（自動表示）
-        OutlinedTextField(
-            value = formatTime(totalSeconds),
-            onValueChange = { },
-            label = { Text(stringResource(R.string.duration_minutes)) }, // ※ラベル文字列は現状踏襲（中身はmm:ss表示）
-            readOnly = true,
-            modifier = Modifier.fillMaxWidth(0.8f),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = WorkoutColors.TextPrimary,
-                unfocusedTextColor = WorkoutColors.TextPrimary,
-                disabledTextColor = WorkoutColors.TextPrimary
+        // 運動時間（編集モードでは入力可能）
+        if (isEditMode) {
+            // 編集モード: 分・秒を入力可能
+            Row(
+                modifier = Modifier.fillMaxWidth(0.8f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = durationMinutes,
+                    onValueChange = { onDurationMinutesChange(it.filter { c -> c.isDigit() }) },
+                    label = { Text("分") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = WorkoutColors.TextPrimary,
+                        unfocusedTextColor = WorkoutColors.TextPrimary,
+                        focusedBorderColor = WorkoutColors.AccentOrange,
+                        unfocusedBorderColor = Color.Black
+                    )
+                )
+                Text(":", color = WorkoutColors.TextPrimary)
+                OutlinedTextField(
+                    value = durationSeconds,
+                    onValueChange = { onDurationSecondsChange(it.filter { c -> c.isDigit() }) },
+                    label = { Text("秒") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = WorkoutColors.TextPrimary,
+                        unfocusedTextColor = WorkoutColors.TextPrimary,
+                        focusedBorderColor = WorkoutColors.AccentOrange,
+                        unfocusedBorderColor = Color.Black
+                    )
+                )
+            }
+        } else {
+            // 新規モード: 自動表示（読み取り専用）
+            OutlinedTextField(
+                value = formatTime(totalSeconds),
+                onValueChange = { },
+                label = { Text(stringResource(R.string.duration_minutes)) },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth(0.8f),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = WorkoutColors.TextPrimary,
+                    unfocusedTextColor = WorkoutColors.TextPrimary,
+                    disabledTextColor = WorkoutColors.TextPrimary,
+                    focusedBorderColor = WorkoutColors.AccentOrange,
+                    unfocusedBorderColor = Color.Black
+                )
             )
-        )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -412,7 +477,9 @@ private fun ResultInputSection(
             modifier = Modifier.fillMaxWidth(0.8f),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = WorkoutColors.TextPrimary,
-                unfocusedTextColor = WorkoutColors.TextPrimary
+                unfocusedTextColor = WorkoutColors.TextPrimary,
+                focusedBorderColor = WorkoutColors.AccentOrange,
+                unfocusedBorderColor = Color.Black
             )
         )
 

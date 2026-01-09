@@ -41,6 +41,7 @@ fun CalendarScreen(
     modifier: Modifier = Modifier,
     onNavigateToStrengthEdit: (Long) -> Unit = {},
     onNavigateToCardioEdit: (Long) -> Unit = {},
+    onNavigateToIntervalEdit: (Long) -> Unit = {},
     onNavigateToStudioEdit: (Long) -> Unit = {},
     onNavigateToOtherEdit: (Long) -> Unit = {}
 ) {
@@ -106,9 +107,9 @@ fun CalendarScreen(
                     when (session.workoutType) {
                         com.poweder.simpleworkoutlog.data.entity.WorkoutType.STRENGTH -> onNavigateToStrengthEdit(session.id)
                         com.poweder.simpleworkoutlog.data.entity.WorkoutType.CARDIO -> onNavigateToCardioEdit(session.id)
+                        com.poweder.simpleworkoutlog.data.entity.WorkoutType.INTERVAL -> onNavigateToIntervalEdit(session.id)
                         com.poweder.simpleworkoutlog.data.entity.WorkoutType.STUDIO -> onNavigateToStudioEdit(session.id)
                         com.poweder.simpleworkoutlog.data.entity.WorkoutType.OTHER -> onNavigateToOtherEdit(session.id)
-                        else -> {} // INTERVAL等は今回対象外
                     }
                 },
                 onDeleteSession = { session ->

@@ -117,7 +117,7 @@ class SampleDataSeeder(
             )
         )
 
-        // その他種目 ← 追加
+        // その他種目
         val otherExercises = listOf(
             ExerciseEntity(
                 name = "",
@@ -130,20 +130,27 @@ class SampleDataSeeder(
                 name = "",
                 workoutType = WorkoutType.OTHER,
                 sortOrder = 2,
-                nameResId = R.string.exercise_bass_fishing,
+                nameResId = R.string.exercise_golf,
                 isTemplate = true
             ),
             ExerciseEntity(
                 name = "",
                 workoutType = WorkoutType.OTHER,
                 sortOrder = 3,
-                nameResId = R.string.exercise_skiing,
+                nameResId = R.string.exercise_bass_fishing,
                 isTemplate = true
             ),
             ExerciseEntity(
                 name = "",
                 workoutType = WorkoutType.OTHER,
                 sortOrder = 4,
+                nameResId = R.string.exercise_skiing,
+                isTemplate = true
+            ),
+            ExerciseEntity(
+                name = "",
+                workoutType = WorkoutType.OTHER,
+                sortOrder = 5,
                 nameResId = R.string.exercise_hiking,
                 isTemplate = true
             )

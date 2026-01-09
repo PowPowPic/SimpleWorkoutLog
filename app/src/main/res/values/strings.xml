@@ -32,7 +32,8 @@
     <string name="today_calories">Today\'s Calories Burned</string>
     <string name="card_today_menu">Today\'s Training Menu</string>
     <string name="midnight_rule_note">Records between 0:00-3:00 AM are saved as the previous day.</string>
-    <string name="settings_hint">Language and kg/lbs, km/mile can be changed in Settings.</string>
+    <string name="settings_hint" translatable="false">Language and kg/lbs, km/mile can be changed in Settings.</string>
+
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Select Workout Type</string>
@@ -75,6 +76,7 @@
 
     <!-- ==================== Exercise Names - Other ==================== -->
     <string name="exercise_snowboarding">Snowboarding</string>
+    <string name="exercise_golf">Golf</string>
     <string name="exercise_skiing">Skiing</string>
     <string name="exercise_hiking">Hiking</string>
     <string name="exercise_bass_fishing">Bass Fishing</string>

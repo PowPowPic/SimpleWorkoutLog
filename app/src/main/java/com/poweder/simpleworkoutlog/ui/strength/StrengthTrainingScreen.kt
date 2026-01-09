@@ -8,9 +8,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -218,7 +216,7 @@ fun StrengthTrainingScreen(
                         focusedTextColor = WorkoutColors.TextPrimary,
                         unfocusedTextColor = WorkoutColors.TextPrimary,
                         focusedBorderColor = WorkoutColors.AccentOrange,
-                        unfocusedBorderColor = WorkoutColors.TextSecondary
+                        unfocusedBorderColor = Color.Black
                     )
                 )
             }
@@ -246,12 +244,6 @@ fun StrengthTrainingScreen(
                     weightUnit = weightUnit,
                     onUpdate = { weight, reps ->
                         viewModel.updateSetItem(setItem.id, weight, reps)
-                    },
-                    onConfirm = {
-                        viewModel.confirmSetItem(setItem.id)
-                    },
-                    onUnconfirm = {
-                        viewModel.unconfirmSetItem(setItem.id)
                     },
                     onDelete = {
                         viewModel.deleteSetItem(setItem.id)
@@ -393,8 +385,6 @@ private fun SetItemCard(
     setItem: SetItem,
     weightUnit: WeightUnit,
     onUpdate: (Double, Int) -> Unit,
-    onConfirm: () -> Unit,
-    onUnconfirm: () -> Unit,
     onDelete: () -> Unit
 ) {
     var weightText by remember(setItem.id, setItem.weight) {
@@ -405,17 +395,10 @@ private fun SetItemCard(
     }
 
     val cardGradient = Brush.horizontalGradient(
-        colors = if (setItem.isConfirmed) {
-            listOf(
-                WorkoutColors.ButtonConfirm.copy(alpha = 0.3f),
-                WorkoutColors.ButtonConfirm.copy(alpha = 0.2f)
-            )
-        } else {
-            listOf(
-                WorkoutColors.StrengthCardStart,
-                WorkoutColors.StrengthCardEnd
-            )
-        }
+        colors = listOf(
+            WorkoutColors.StrengthCardStart,
+            WorkoutColors.StrengthCardEnd
+        )
     )
 
     Box(
@@ -451,12 +434,12 @@ private fun SetItemCard(
                 label = { Text(weightUnit.symbol) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 singleLine = true,
-                enabled = !setItem.isConfirmed,
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
-                    disabledTextColor = WorkoutColors.TextPrimary
+                    focusedBorderColor = WorkoutColors.AccentOrange,
+                    unfocusedBorderColor = Color.Black
                 )
             )
 
@@ -472,31 +455,14 @@ private fun SetItemCard(
                 label = { Text(stringResource(R.string.reps)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
-                enabled = !setItem.isConfirmed,
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
-                    disabledTextColor = WorkoutColors.TextPrimary
+                    focusedBorderColor = WorkoutColors.AccentOrange,
+                    unfocusedBorderColor = Color.Black
                 )
             )
-
-            // 確定/編集ボタン
-            IconButton(
-                onClick = {
-                    if (setItem.isConfirmed) {
-                        onUnconfirm()
-                    } else {
-                        onConfirm()
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = if (setItem.isConfirmed) Icons.Default.Edit else Icons.Default.Check,
-                    contentDescription = if (setItem.isConfirmed) "Edit" else "Confirm",
-                    tint = if (setItem.isConfirmed) WorkoutColors.AccentOrange else WorkoutColors.ButtonConfirm
-                )
-            }
 
             // 削除ボタン
             IconButton(onClick = onDelete) {

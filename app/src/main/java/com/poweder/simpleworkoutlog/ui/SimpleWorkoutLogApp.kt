@@ -136,7 +136,7 @@ fun SimpleWorkoutLogApp(
                                         navController.navigate(Screen.Cardio.createRoute(null))
                                     },
                                     onNavigateToInterval = {
-                                        navController.navigate(Screen.Interval.route)
+                                        navController.navigate(Screen.Interval.createRoute(null))
                                     },
                                     onNavigateToStudio = {
                                         navController.navigate(Screen.Studio.createRoute(null))
@@ -153,6 +153,9 @@ fun SimpleWorkoutLogApp(
                                     onNavigateToCardioEdit = { sessionId ->
                                         navController.navigate(Screen.Cardio.createRoute(sessionId))
                                     },
+                                    onNavigateToIntervalEdit = { sessionId ->
+                                        navController.navigate(Screen.Interval.createRoute(sessionId))
+                                    },
                                     onNavigateToStudioEdit = { sessionId ->
                                         navController.navigate(Screen.Studio.createRoute(sessionId))
                                     },
@@ -167,6 +170,9 @@ fun SimpleWorkoutLogApp(
                                     },
                                     onNavigateToCardioEdit = { sessionId ->
                                         navController.navigate(Screen.Cardio.createRoute(sessionId))
+                                    },
+                                    onNavigateToIntervalEdit = { sessionId ->
+                                        navController.navigate(Screen.Interval.createRoute(sessionId))
                                     },
                                     onNavigateToStudioEdit = { sessionId ->
                                         navController.navigate(Screen.Studio.createRoute(sessionId))
@@ -214,9 +220,14 @@ fun SimpleWorkoutLogApp(
                         )
                     }
 
-                    composable(Screen.Interval.route) {
+                    composable(
+                        route = Screen.Interval.route,
+                        arguments = listOf(navArgument("sessionId") { type = NavType.LongType })
+                    ) { backStackEntry ->
+                        val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: -1L
                         IntervalScreen(
                             viewModel = viewModel,
+                            sessionId = if (sessionId == -1L) null else sessionId,
                             onBack = { navController.popBackStack() }
                         )
                     }

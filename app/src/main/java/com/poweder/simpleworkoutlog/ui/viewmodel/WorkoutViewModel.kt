@@ -935,6 +935,23 @@ class WorkoutViewModel(
     }
 
     /**
+     * インターバルセッションを編集用にロード
+     */
+    fun loadIntervalSessionForEdit(sessionId: Long) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+            val exercise = repository.allExercises.first().find { it.id == session.exerciseId }
+
+            _editingSessionId.value = sessionId
+            _editingSession.value = session
+            // インターバル種目名を設定
+            exercise?.let {
+                _intervalExerciseName.value = it.customName ?: it.name
+            }
+        }
+    }
+
+    /**
      * 編集状態をクリア
      */
     fun clearEditingSession() {
@@ -1029,6 +1046,28 @@ class WorkoutViewModel(
      * その他セッションを更新保存（編集モード用）
      */
     fun updateOtherSession(
+        sessionId: Long,
+        durationSeconds: Int,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+
+            val updatedSession = session.copy(
+                durationSeconds = durationSeconds,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+
+            clearEditingSession()
+        }
+    }
+
+    /**
+     * インターバルセッションを更新保存（編集モード用）
+     */
+    fun updateIntervalSession(
         sessionId: Long,
         durationSeconds: Int,
         caloriesBurned: Int

@@ -34,7 +34,9 @@ sealed class Screen(
     object Cardio : Screen("cardio/{sessionId}") {
         fun createRoute(sessionId: Long? = null) = "cardio/${sessionId ?: -1}"
     }
-    object Interval : Screen("interval")
+    object Interval : Screen("interval/{sessionId}") {
+        fun createRoute(sessionId: Long? = null) = "interval/${sessionId ?: -1}"
+    }
     object Studio : Screen("studio/{sessionId}") {
         fun createRoute(sessionId: Long? = null) = "studio/${sessionId ?: -1}"
     }

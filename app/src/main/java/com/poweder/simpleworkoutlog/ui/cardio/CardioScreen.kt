@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -323,7 +324,7 @@ private fun InputField(
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = WorkoutColors.TextSecondary,
+                    unfocusedBorderColor = Color.Black,
                     cursorColor = WorkoutColors.AccentOrange,
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary

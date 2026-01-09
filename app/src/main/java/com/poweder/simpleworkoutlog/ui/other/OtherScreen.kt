@@ -165,8 +165,8 @@ fun OtherScreen(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = WorkoutColors.TextPrimary,
-                            unfocusedBorderColor = WorkoutColors.TextSecondary,
+                            focusedBorderColor = WorkoutColors.AccentOrange,
+                            unfocusedBorderColor = Color.Black,
                             focusedLabelColor = WorkoutColors.TextPrimary,
                             unfocusedLabelColor = WorkoutColors.TextSecondary,
                             focusedTextColor = WorkoutColors.TextPrimary,
