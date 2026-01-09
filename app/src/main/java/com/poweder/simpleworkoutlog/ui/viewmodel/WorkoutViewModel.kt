@@ -842,4 +842,208 @@ class WorkoutViewModel(
             settingsDataStore.setStudioGraphResetDate(currentLogicalDate().toEpochDay())
         }
     }
+
+    // ===== 編集用ロード関数 =====
+
+    /**
+     * 編集中のセッションID（null = 新規作成モード）
+     */
+    private val _editingSessionId = MutableStateFlow<Long?>(null)
+    val editingSessionId: StateFlow<Long?> = _editingSessionId.asStateFlow()
+
+    /**
+     * 編集中のセッション
+     */
+    private val _editingSession = MutableStateFlow<WorkoutSessionEntity?>(null)
+    val editingSession: StateFlow<WorkoutSessionEntity?> = _editingSession.asStateFlow()
+
+    /**
+     * 筋トレセッションを編集用にロード
+     * - セッション情報をロード
+     * - セットをSetItemsにプリフィル
+     * - 種目を設定
+     */
+    fun loadStrengthSessionForEdit(sessionId: Long) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+            val sets = repository.getSetsBySessionSync(sessionId)
+            val exercise = repository.allExercises.first().find { it.id == session.exerciseId }
+
+            _editingSessionId.value = sessionId
+            _editingSession.value = session
+            _currentStrengthExercise.value = exercise
+
+            // セットをSetItemsに変換してプリフィル
+            _setItems.value = if (sets.isNotEmpty()) {
+                sets.map { set ->
+                    SetItem(
+                        id = "edit_${set.id}",
+                        setNumber = set.setNumber,
+                        weight = set.weight,
+                        reps = set.reps,
+                        isConfirmed = true,
+                        dbId = set.id  // DB上のID（更新用）
+                    )
+                }
+            } else {
+                // セットがない場合はデフォルト1セット
+                listOf(SetItem(setNumber = 1, weight = 0.0, reps = 8, isConfirmed = false))
+            }
+        }
+    }
+
+    /**
+     * 有酸素セッションを編集用にロード
+     */
+    fun loadCardioSessionForEdit(sessionId: Long) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+            val exercise = repository.allExercises.first().find { it.id == session.exerciseId }
+
+            _editingSessionId.value = sessionId
+            _editingSession.value = session
+            _currentCardioExercise.value = exercise
+        }
+    }
+
+    /**
+     * スタジオセッションを編集用にロード
+     */
+    fun loadStudioSessionForEdit(sessionId: Long) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+            val exercise = repository.allExercises.first().find { it.id == session.exerciseId }
+
+            _editingSessionId.value = sessionId
+            _editingSession.value = session
+            _currentStudioExercise.value = exercise
+        }
+    }
+
+    /**
+     * その他セッションを編集用にロード
+     */
+    fun loadOtherSessionForEdit(sessionId: Long) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+            val exercise = repository.allExercises.first().find { it.id == session.exerciseId }
+
+            _editingSessionId.value = sessionId
+            _editingSession.value = session
+            _currentOtherExercise.value = exercise
+        }
+    }
+
+    /**
+     * 編集状態をクリア
+     */
+    fun clearEditingSession() {
+        _editingSessionId.value = null
+        _editingSession.value = null
+    }
+
+    /**
+     * 筋トレセッションを更新保存（編集モード用）
+     */
+    fun updateStrengthSession(
+        sessionId: Long,
+        durationSeconds: Int,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+
+            // 既存セットを削除してから新規追加（シンプルな実装）
+            val existingSets = repository.getSetsBySessionSync(sessionId)
+            existingSets.forEach { set ->
+                repository.deleteSet(set)
+            }
+
+            // 有効なセットを保存
+            val validSets = _setItems.value.filter { it.isValid }
+            validSets.forEach { setItem ->
+                repository.addSet(sessionId, setItem.weight, setItem.reps)
+            }
+
+            // セッション情報を更新
+            val updatedSession = session.copy(
+                durationSeconds = durationSeconds,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+
+            // 編集状態をクリア
+            clearEditingSession()
+            clearStrengthSession()
+        }
+    }
+
+    /**
+     * 有酸素セッションを更新保存（編集モード用）
+     */
+    fun updateCardioSession(
+        sessionId: Long,
+        durationSeconds: Int,
+        distance: Double,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+
+            val updatedSession = session.copy(
+                durationSeconds = durationSeconds,
+                distance = distance,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+
+            clearEditingSession()
+        }
+    }
+
+    /**
+     * スタジオセッションを更新保存（編集モード用）
+     */
+    fun updateStudioSession(
+        sessionId: Long,
+        durationSeconds: Int,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+
+            val updatedSession = session.copy(
+                durationSeconds = durationSeconds,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+
+            clearEditingSession()
+        }
+    }
+
+    /**
+     * その他セッションを更新保存（編集モード用）
+     */
+    fun updateOtherSession(
+        sessionId: Long,
+        durationSeconds: Int,
+        caloriesBurned: Int
+    ) {
+        viewModelScope.launch {
+            val session = repository.getSessionById(sessionId) ?: return@launch
+
+            val updatedSession = session.copy(
+                durationSeconds = durationSeconds,
+                caloriesBurned = caloriesBurned,
+                updatedAt = System.currentTimeMillis()
+            )
+            repository.updateSession(updatedSession)
+
+            clearEditingSession()
+        }
+    }
 }

@@ -129,14 +129,14 @@
     <string name="saved_successfully">保存しました！</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">日付サマリー</string>
+    <string name="day_summary">この日の記録</string>
     <string name="total_duration_label">時間</string>
     <string name="total_calories_label">カロリー</string>
     <string name="total_weight_label">重量</string>
     <string name="no_workout_data">この日のワークアウトデータはありません</string>
 
     <!-- ==================== Calendar Screen ==================== -->
-    <string name="monthly_summary">月間サマリー</string>
+    <string name="monthly_summary">月間記録</string>
     <string name="workout_days">ワークアウト日数</string>
     <string name="days_format">%1$d 日</string>
     <string name="average_duration">平均運動時間</string>
@@ -157,7 +157,7 @@
     <string name="language_system_default">システム設定に従う</string>
 
     <!-- ==================== Dialogs - Confirm ==================== -->
-    <string name="confirm_back_title">変更を破棄しますか？</string>
+    <string name="confirm_back_title">変更しなくてもいいですか？</string>
     <string name="confirm_back_message">未保存のセットがあります。戻ってもよろしいですか？</string>
     <string name="discard_confirm_title">変更を破棄しますか？</string>
     <string name="discard_confirm_message">保存されていない確定済みセットがあります。破棄しますか？</string>

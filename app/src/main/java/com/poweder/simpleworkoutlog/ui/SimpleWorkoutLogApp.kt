@@ -15,10 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.poweder.simpleworkoutlog.ui.ads.InterstitialAdManager
 import com.poweder.simpleworkoutlog.ui.cardio.CardioScreen
 import com.poweder.simpleworkoutlog.ui.interval.IntervalScreen
@@ -44,6 +46,10 @@ import kotlinx.coroutines.launch
  * - NavHost: "main_pager"（メイン5画面）と各種目画面（Strength, Cardio等）を管理
  * - HorizontalPager: メイン5画面間のスワイプ遷移
  * - BottomNavBar: タブクリックでPagerを操作（グラフタブのみ広告判定）
+ *
+ * 編集モード:
+ * - sessionId = -1 → 新規作成モード
+ * - sessionId > 0 → 編集モード（既存セッションをロード）
  */
 @Composable
 fun SimpleWorkoutLogApp(
@@ -123,23 +129,52 @@ fun SimpleWorkoutLogApp(
                                         }
                                     },
                                     onNavigateToStrength = {
-                                        navController.navigate(Screen.Strength.route)
+                                        // 新規作成（sessionId = -1）
+                                        navController.navigate(Screen.Strength.createRoute(null))
                                     },
                                     onNavigateToCardio = {
-                                        navController.navigate(Screen.Cardio.route)
+                                        navController.navigate(Screen.Cardio.createRoute(null))
                                     },
                                     onNavigateToInterval = {
                                         navController.navigate(Screen.Interval.route)
                                     },
                                     onNavigateToStudio = {
-                                        navController.navigate(Screen.Studio.route)
+                                        navController.navigate(Screen.Studio.createRoute(null))
                                     },
                                     onNavigateToOther = {
-                                        navController.navigate(Screen.Other.route)
+                                        navController.navigate(Screen.Other.createRoute(null))
                                     }
                                 )
-                                1 -> HistoryScreen(viewModel = viewModel)
-                                2 -> CalendarScreen(viewModel = viewModel)
+                                1 -> HistoryScreen(
+                                    viewModel = viewModel,
+                                    onNavigateToStrengthEdit = { sessionId ->
+                                        navController.navigate(Screen.Strength.createRoute(sessionId))
+                                    },
+                                    onNavigateToCardioEdit = { sessionId ->
+                                        navController.navigate(Screen.Cardio.createRoute(sessionId))
+                                    },
+                                    onNavigateToStudioEdit = { sessionId ->
+                                        navController.navigate(Screen.Studio.createRoute(sessionId))
+                                    },
+                                    onNavigateToOtherEdit = { sessionId ->
+                                        navController.navigate(Screen.Other.createRoute(sessionId))
+                                    }
+                                )
+                                2 -> CalendarScreen(
+                                    viewModel = viewModel,
+                                    onNavigateToStrengthEdit = { sessionId ->
+                                        navController.navigate(Screen.Strength.createRoute(sessionId))
+                                    },
+                                    onNavigateToCardioEdit = { sessionId ->
+                                        navController.navigate(Screen.Cardio.createRoute(sessionId))
+                                    },
+                                    onNavigateToStudioEdit = { sessionId ->
+                                        navController.navigate(Screen.Studio.createRoute(sessionId))
+                                    },
+                                    onNavigateToOtherEdit = { sessionId ->
+                                        navController.navigate(Screen.Other.createRoute(sessionId))
+                                    }
+                                )
                                 3 -> GraphScreen(viewModel = viewModel)
                                 4 -> SettingsScreen(
                                     viewModel = viewModel,
@@ -154,17 +189,27 @@ fun SimpleWorkoutLogApp(
                         }
                     }
 
-                    // 種目別画面（NavBarなし）
-                    composable(Screen.Strength.route) {
+                    // 種目別画面（NavBarなし）- sessionId対応
+                    composable(
+                        route = Screen.Strength.route,
+                        arguments = listOf(navArgument("sessionId") { type = NavType.LongType })
+                    ) { backStackEntry ->
+                        val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: -1L
                         StrengthTrainingScreen(
                             viewModel = viewModel,
+                            sessionId = if (sessionId == -1L) null else sessionId,
                             onBack = { navController.popBackStack() }
                         )
                     }
 
-                    composable(Screen.Cardio.route) {
+                    composable(
+                        route = Screen.Cardio.route,
+                        arguments = listOf(navArgument("sessionId") { type = NavType.LongType })
+                    ) { backStackEntry ->
+                        val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: -1L
                         CardioScreen(
                             viewModel = viewModel,
+                            sessionId = if (sessionId == -1L) null else sessionId,
                             onBack = { navController.popBackStack() }
                         )
                     }
@@ -176,16 +221,26 @@ fun SimpleWorkoutLogApp(
                         )
                     }
 
-                    composable(Screen.Studio.route) {
+                    composable(
+                        route = Screen.Studio.route,
+                        arguments = listOf(navArgument("sessionId") { type = NavType.LongType })
+                    ) { backStackEntry ->
+                        val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: -1L
                         StudioScreen(
                             viewModel = viewModel,
+                            sessionId = if (sessionId == -1L) null else sessionId,
                             onBack = { navController.popBackStack() }
                         )
                     }
 
-                    composable(Screen.Other.route) {
+                    composable(
+                        route = Screen.Other.route,
+                        arguments = listOf(navArgument("sessionId") { type = NavType.LongType })
+                    ) { backStackEntry ->
+                        val sessionId = backStackEntry.arguments?.getLong("sessionId") ?: -1L
                         OtherScreen(
                             viewModel = viewModel,
+                            sessionId = if (sessionId == -1L) null else sessionId,
                             onBack = { navController.popBackStack() }
                         )
                     }

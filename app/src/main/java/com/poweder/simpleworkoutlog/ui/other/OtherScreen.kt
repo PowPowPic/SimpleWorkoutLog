@@ -31,10 +31,15 @@ import com.poweder.simpleworkoutlog.ui.components.durationToSeconds
 fun OtherScreen(
     viewModel: WorkoutViewModel,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sessionId: Long? = null  // null = 新規作成、値あり = 編集モード
 ) {
     val context = LocalContext.current
     val currentExercise by viewModel.currentOtherExercise.collectAsState()
+    val editingSession by viewModel.editingSession.collectAsState()
+
+    // 編集モードかどうか
+    val isEditMode = sessionId != null
 
     // 運動時間は時間・分・秒の3フィールド
     var durationHours by remember { mutableStateOf("") }
@@ -42,6 +47,32 @@ fun OtherScreen(
     var durationSeconds by remember { mutableStateOf("") }
     var caloriesBurned by remember { mutableStateOf("") }
     var showSavedMessage by remember { mutableStateOf(false) }
+
+    // 編集モード初期化フラグ
+    var isEditInitialized by remember { mutableStateOf(false) }
+
+    // 編集モードの場合、セッションをロード
+    LaunchedEffect(sessionId) {
+        if (sessionId != null) {
+            viewModel.loadOtherSessionForEdit(sessionId)
+        }
+    }
+
+    // 編集モードでセッションがロードされたらプリフィル
+    LaunchedEffect(editingSession, isEditMode) {
+        if (isEditMode && editingSession != null && !isEditInitialized) {
+            val session = editingSession!!
+            // 秒を時:分:秒に変換
+            val hours = session.durationSeconds / 3600
+            val minutes = (session.durationSeconds % 3600) / 60
+            val seconds = session.durationSeconds % 60
+            durationHours = if (hours > 0) hours.toString() else ""
+            durationMinutes = if (minutes > 0) minutes.toString() else ""
+            durationSeconds = if (seconds > 0) seconds.toString() else ""
+            caloriesBurned = if (session.caloriesBurned > 0) session.caloriesBurned.toString() else ""
+            isEditInitialized = true
+        }
+    }
 
     // カードのグラデーション
     val cardGradient = Brush.horizontalGradient(
@@ -66,7 +97,10 @@ fun OtherScreen(
                 )
             },
             navigationIcon = {
-                IconButton(onClick = onBack) {
+                IconButton(onClick = {
+                    viewModel.clearEditingSession()
+                    onBack()
+                }) {
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back),
@@ -152,17 +186,28 @@ fun OtherScreen(
                     val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
                     val calories = caloriesBurned.toIntOrNull() ?: 0
 
-                    currentExercise?.let { exercise ->
-                        viewModel.saveOtherWorkout(
-                            exerciseId = exercise.id,
+                    if (isEditMode && sessionId != null) {
+                        // 編集モード：UPDATE
+                        viewModel.updateOtherSession(
+                            sessionId = sessionId,
                             durationSeconds = totalDurationSeconds,
                             caloriesBurned = calories
                         )
-                        showSavedMessage = true
-                        durationHours = ""
-                        durationMinutes = ""
-                        durationSeconds = ""
-                        caloriesBurned = ""
+                        onBack()
+                    } else {
+                        // 新規モード：INSERT
+                        currentExercise?.let { exercise ->
+                            viewModel.saveOtherWorkout(
+                                exerciseId = exercise.id,
+                                durationSeconds = totalDurationSeconds,
+                                caloriesBurned = calories
+                            )
+                            showSavedMessage = true
+                            durationHours = ""
+                            durationMinutes = ""
+                            durationSeconds = ""
+                            caloriesBurned = ""
+                        }
                     }
                 },
                 enabled = durationHours.isNotBlank() || durationMinutes.isNotBlank() || durationSeconds.isNotBlank() || caloriesBurned.isNotBlank(),

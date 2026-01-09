@@ -47,7 +47,8 @@ import androidx.compose.ui.graphics.Color
 fun StrengthTrainingScreen(
     viewModel: WorkoutViewModel,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sessionId: Long? = null  // null = 新規作成、値あり = 編集モード
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -57,6 +58,10 @@ fun StrengthTrainingScreen(
     val setItems by viewModel.setItems.collectAsState()
     val sessionTotal by viewModel.sessionTotal.collectAsState()
     val currentExercise by viewModel.currentStrengthExercise.collectAsState()
+    val editingSession by viewModel.editingSession.collectAsState()
+
+    // 編集モードかどうか
+    val isEditMode = sessionId != null
 
     // 運動時間と消費カロリー入力
     // 運動時間: 時間・分・秒の3フィールド
@@ -64,6 +69,32 @@ fun StrengthTrainingScreen(
     var durationMinutes by remember { mutableStateOf("") }
     var durationSeconds by remember { mutableStateOf("") }
     var caloriesInput by remember { mutableStateOf("") }
+
+    // 編集モード初期化フラグ
+    var isEditInitialized by remember { mutableStateOf(false) }
+
+    // 編集モードの場合、セッションをロード
+    LaunchedEffect(sessionId) {
+        if (sessionId != null) {
+            viewModel.loadStrengthSessionForEdit(sessionId)
+        }
+    }
+
+    // 編集モードでセッションがロードされたらプリフィル
+    LaunchedEffect(editingSession, isEditMode) {
+        if (isEditMode && editingSession != null && !isEditInitialized) {
+            val session = editingSession!!
+            // 秒を時:分:秒に変換
+            val hours = session.durationSeconds / 3600
+            val minutes = (session.durationSeconds % 3600) / 60
+            val seconds = session.durationSeconds % 60
+            durationHours = if (hours > 0) hours.toString() else ""
+            durationMinutes = if (minutes > 0) minutes.toString() else ""
+            durationSeconds = if (seconds > 0) seconds.toString() else ""
+            caloriesInput = if (session.caloriesBurned > 0) session.caloriesBurned.toString() else ""
+            isEditInitialized = true
+        }
+    }
 
     // 戻る確認ダイアログ
     var showBackConfirmDialog by remember { mutableStateOf(false) }
@@ -106,6 +137,7 @@ fun StrengthTrainingScreen(
                     onClick = {
                         showBackConfirmDialog = false
                         viewModel.clearStrengthSession()
+                        viewModel.clearEditingSession()
                         onBack()
                     }
                 ) {
@@ -257,6 +289,7 @@ fun StrengthTrainingScreen(
                             showBackConfirmDialog = true
                         } else {
                             viewModel.clearStrengthSession()
+                            viewModel.clearEditingSession()
                             onBack()
                         }
                     }
@@ -281,13 +314,24 @@ fun StrengthTrainingScreen(
                         // 運動時間を秒に変換
                         val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
                         val calories = caloriesInput.toIntOrNull() ?: 0
-                        val exerciseId = currentExercise?.id
-                        if (exerciseId != null) {
-                            viewModel.finishAndSaveStrength(
-                                exerciseId = exerciseId,
+
+                        if (isEditMode && sessionId != null) {
+                            // 編集モード：UPDATE
+                            viewModel.updateStrengthSession(
+                                sessionId = sessionId,
                                 durationSeconds = totalDurationSeconds,
                                 caloriesBurned = calories
                             )
+                        } else {
+                            // 新規モード：INSERT
+                            val exerciseId = currentExercise?.id
+                            if (exerciseId != null) {
+                                viewModel.finishAndSaveStrength(
+                                    exerciseId = exerciseId,
+                                    durationSeconds = totalDurationSeconds,
+                                    caloriesBurned = calories
+                                )
+                            }
                         }
                         onBack()
                     }

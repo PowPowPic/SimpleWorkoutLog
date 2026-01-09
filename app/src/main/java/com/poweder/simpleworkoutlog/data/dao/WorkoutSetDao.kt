@@ -9,6 +9,12 @@ interface WorkoutSetDao {
     @Query("SELECT * FROM workout_sets WHERE sessionId = :sessionId ORDER BY setNumber")
     fun getSetsBySession(sessionId: Long): Flow<List<WorkoutSetEntity>>
 
+    /**
+     * セッションのセットを同期取得（編集用）
+     */
+    @Query("SELECT * FROM workout_sets WHERE sessionId = :sessionId ORDER BY setNumber")
+    suspend fun getSetsBySessionSync(sessionId: Long): List<WorkoutSetEntity>
+
     @Query("SELECT * FROM workout_sets WHERE id = :id")
     suspend fun getSetById(id: Long): WorkoutSetEntity?
 

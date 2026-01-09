@@ -44,7 +44,11 @@ import java.util.Locale
 @Composable
 fun HistoryScreen(
     viewModel: WorkoutViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToStrengthEdit: (Long) -> Unit = {},
+    onNavigateToCardioEdit: (Long) -> Unit = {},
+    onNavigateToStudioEdit: (Long) -> Unit = {},
+    onNavigateToOtherEdit: (Long) -> Unit = {}
 ) {
     val context = LocalContext.current
     val weightUnit by viewModel.weightUnit.collectAsState()
@@ -141,8 +145,15 @@ fun HistoryScreen(
             weightUnit = weightUnit,
             distanceUnit = distanceUnit,
             onEditSession = { session ->
-                // TODO: 編集画面へ遷移
+                // workoutTypeに応じて編集画面へ遷移
                 showDetailDialog = false
+                when (session.workoutType) {
+                    WorkoutType.STRENGTH -> onNavigateToStrengthEdit(session.id)
+                    WorkoutType.CARDIO -> onNavigateToCardioEdit(session.id)
+                    WorkoutType.STUDIO -> onNavigateToStudioEdit(session.id)
+                    WorkoutType.OTHER -> onNavigateToOtherEdit(session.id)
+                    else -> {} // INTERVAL等は今回対象外
+                }
             },
             onDeleteSession = { session ->
                 viewModel.deleteSession(session.id)

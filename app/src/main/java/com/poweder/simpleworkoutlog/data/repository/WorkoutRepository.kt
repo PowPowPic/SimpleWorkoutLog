@@ -68,6 +68,20 @@ class WorkoutRepository(
         return workoutSessionDao.getSessionsByDate(date)
     }
 
+    /**
+     * セッションをIDで取得（編集用）
+     */
+    suspend fun getSessionById(sessionId: Long): WorkoutSessionEntity? {
+        return workoutSessionDao.getSessionById(sessionId)
+    }
+
+    /**
+     * セッションのセットを一括取得（編集用）
+     */
+    suspend fun getSetsBySessionSync(sessionId: Long): List<WorkoutSetEntity> {
+        return workoutSetDao.getSetsBySessionSync(sessionId)
+    }
+
     suspend fun getOrCreateSession(exerciseId: Long, workoutType: String): WorkoutSessionEntity {
         val date = currentLogicalDate().toEpochDay()
         val existing = workoutSessionDao.getSessionByExerciseAndDate(exerciseId, date)

@@ -37,13 +37,18 @@ import java.util.Locale
 fun CardioScreen(
     viewModel: WorkoutViewModel,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sessionId: Long? = null  // null = 新規作成、値あり = 編集モード
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val adRemoved by viewModel.adRemoved.collectAsState()
     val currentExercise by viewModel.currentCardioExercise.collectAsState()
     val distanceUnit by viewModel.distanceUnit.collectAsState()
+    val editingSession by viewModel.editingSession.collectAsState()
+
+    // 編集モードかどうか
+    val isEditMode = sessionId != null
 
     // 入力値（運動時間は時間・分・秒の3フィールド）
     var durationHours by remember { mutableStateOf("") }
@@ -51,6 +56,33 @@ fun CardioScreen(
     var durationSeconds by remember { mutableStateOf("") }
     var distance by remember { mutableStateOf("") }
     var calories by remember { mutableStateOf("") }
+
+    // 編集モード初期化フラグ
+    var isEditInitialized by remember { mutableStateOf(false) }
+
+    // 編集モードの場合、セッションをロード
+    LaunchedEffect(sessionId) {
+        if (sessionId != null) {
+            viewModel.loadCardioSessionForEdit(sessionId)
+        }
+    }
+
+    // 編集モードでセッションがロードされたらプリフィル
+    LaunchedEffect(editingSession, isEditMode) {
+        if (isEditMode && editingSession != null && !isEditInitialized) {
+            val session = editingSession!!
+            // 秒を時:分:秒に変換
+            val hours = session.durationSeconds / 3600
+            val minutes = (session.durationSeconds % 3600) / 60
+            val seconds = session.durationSeconds % 60
+            durationHours = if (hours > 0) hours.toString() else ""
+            durationMinutes = if (minutes > 0) minutes.toString() else ""
+            durationSeconds = if (seconds > 0) seconds.toString() else ""
+            distance = if (session.distance > 0) session.distance.toString() else ""
+            calories = if (session.caloriesBurned > 0) session.caloriesBurned.toString() else ""
+            isEditInitialized = true
+        }
+    }
 
     // 未保存確認ダイアログ
     var showBackConfirmDialog by remember { mutableStateOf(false) }
@@ -88,6 +120,7 @@ fun CardioScreen(
                 TextButton(
                     onClick = {
                         showBackConfirmDialog = false
+                        viewModel.clearEditingSession()
                         onBack()
                     }
                 ) {
@@ -215,18 +248,29 @@ fun CardioScreen(
                     .clip(RoundedCornerShape(12.dp))
                     .background(WorkoutColors.ButtonConfirm)
                     .clickable {
-                        currentExercise?.let { exercise ->
-                            // 運動時間を秒に変換
-                            val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
-                            val dist = distance.toDoubleOrNull() ?: 0.0
-                            val cal = calories.toIntOrNull() ?: 0
+                        // 運動時間を秒に変換
+                        val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
+                        val dist = distance.toDoubleOrNull() ?: 0.0
+                        val cal = calories.toIntOrNull() ?: 0
 
-                            viewModel.saveCardioWorkout(
-                                exerciseId = exercise.id,
+                        if (isEditMode && sessionId != null) {
+                            // 編集モード：UPDATE
+                            viewModel.updateCardioSession(
+                                sessionId = sessionId,
                                 durationSeconds = totalDurationSeconds,
                                 distance = dist,
                                 caloriesBurned = cal
                             )
+                        } else {
+                            // 新規モード：INSERT
+                            currentExercise?.let { exercise ->
+                                viewModel.saveCardioWorkout(
+                                    exerciseId = exercise.id,
+                                    durationSeconds = totalDurationSeconds,
+                                    distance = dist,
+                                    caloriesBurned = cal
+                                )
+                            }
                         }
                         onBack()
                     }
