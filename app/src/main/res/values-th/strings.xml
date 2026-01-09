@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ==================== App ==================== -->
     <string name="app_name">Simple Workout Log</string>
+
+    <!-- ==================== Navigation ==================== -->
     <string name="nav_home">หน้าแรก</string>
     <string name="nav_history">ประวัติ</string>
     <string name="nav_calendar">ปฏิทิน</string>
     <string name="nav_graph">กราฟ</string>
-    <string name="nav_settings">การตั้งค่า</string>
+    <string name="nav_settings">ตั้งค่า</string>
+
+    <!-- ==================== Common ==================== -->
     <string name="common_ok">ตกลง</string>
     <string name="common_cancel">ยกเลิก</string>
     <string name="common_close">ปิด</string>
@@ -14,43 +19,203 @@
     <string name="edit">แก้ไข</string>
     <string name="delete">ลบ</string>
     <string name="save">บันทึก</string>
-    <string name="back">ย้อนกลับ</string>
-    <string name="coming_soon">เร็วๆ นี้</string>
-    <string name="today_grand_total">Today Grand Total</string>
+    <string name="back">กลับ</string>
+    <string name="confirm">ยืนยัน</string>
+    <string name="discard">ใช่</string>
+    <string name="rename">เปลี่ยนชื่อ</string>
+    <string name="kcal">kcal</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">น้ำหนักรวมวันนี้</string>
+    <string name="today_duration">เวลาออกกำลังกายวันนี้</string>
+    <string name="today_calories">แคลอรีที่เผาผลาญวันนี้</string>
     <string name="card_today_menu">เมนูออกกำลังกายวันนี้</string>
-    <string name="midnight_rule_note">บันทึกระหว่าง 0:00-3:00 น. จะถูกบันทึกเป็นวันก่อนหน้า</string>
-    <string name="settings_hint">ภาษาและ kg/lbs, km/mile สามารถเปลี่ยนได้ในการตั้งค่า</string>
+    <string name="midnight_rule_note">
+        บันทึกระหว่าง 00:00 ถึง 02:59 จะถูกนับเป็นของวันก่อนหน้า
+    </string>
+
+    <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">เลือกประเภทการออกกำลังกาย</string>
-    <string name="workout_strength">การฝึกกล้ามเนื้อ</string>
+    <string name="workout_strength">เวท</string>
     <string name="workout_cardio">คาร์ดิโอ</string>
-    <string name="workout_interval">การฝึกแบบอินเทอร์วัล</string>
-    <string name="reps">ครั้ง</string>
-    <string name="add_new_set">+ เซ็ตใหม่</string>
-    <string name="session_total">รวม</string>
-    <string name="finish_training">จบและบันทึก</string>
-    <string name="duration_minutes">ระยะเวลา (นาที)</string>
-    <string name="cardio_coming_soon">หน้าคาร์ดิโอ - เร็วๆ นี้</string>
-    <string name="interval_coming_soon">หน้าอินเทอร์วัล - เร็วๆ นี้</string>
+    <string name="workout_interval">อินเทอร์วัล</string>
+    <string name="workout_studio">สตูดิโอ</string>
+    <string name="workout_other">อื่น ๆ</string>
+    <string name="add_workout_type">+ เพิ่มประเภทใหม่</string>
+    <string name="workout_type_name">ชื่อประเภท</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">เลือกท่า</string>
+    <string name="no_exercises_yet">
+        ยังไม่มีท่าออกกำลังกาย เพิ่มได้จากปุ่มด้านล่าง
+    </string>
+    <string name="add_new_exercise">+ เพิ่มท่าใหม่</string>
+    <string name="exercise_name">ชื่อท่า</string>
+
+    <!-- ==================== Exercise Names - Strength ==================== -->
     <string name="exercise_bench_press">เบนช์เพรส</string>
     <string name="exercise_squat">สควอท</string>
-    <string name="exercise_deadlift">เดดลิฟท์</string>
-    <string name="exercise_overhead_press">โอเวอร์เฮดเพรส</string>
-    <string name="exercise_barbell_row">บาร์เบลโรว์</string>
+    <string name="exercise_deadlift">เดดลิฟต์</string>
+
+    <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">วิ่ง</string>
-    <string name="exercise_cycling">ปั่นจักรยาน</string>
-    <string name="exercise_swimming">ว่ายน้ำ</string>
+    <string name="exercise_walking">เดิน</string>
+    <string name="exercise_indoor_bike">จักรยานอยู่กับที่</string>
+
+    <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
     <string name="exercise_tabata">ทาบาตะ</string>
+
+    <!-- ==================== Exercise Names - Studio ==================== -->
+    <string name="exercise_yoga">โยคะ</string>
+    <string name="exercise_pilates">พิลาทิส</string>
+
+    <!-- ==================== Exercise Names - Other ==================== -->
+    <string name="exercise_snowboarding">สโนว์บอร์ด</string>
+    <string name="exercise_golf">กอล์ฟ</string>
+
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">ครั้ง</string>
+    <string name="add_new_set">+ เพิ่มเซต</string>
+    <string name="session_total">รวม</string>
+    <string name="exercise_duration">เวลาออกกำลังกาย</string>
+    <string name="exercise_calories">แคลอรี (kcal)</string>
+    <string name="finish_training">สิ้นสุดและบันทึก</string>
+    <string name="finish_and_save">สิ้นสุดและบันทึก</string>
+    <string name="go_home">กลับหน้าแรก</string>
+
+    <!-- ==================== Cardio Screen ==================== -->
+    <string name="duration_minutes">ระยะเวลา</string>
+    <string name="distance">ระยะทาง</string>
+    <string name="calories">แคลอรี</string>
+
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">ตั้งค่าตัวจับเวลา</string>
+    <string name="preset_tabata">ทาบาตะ</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">วอร์มอัพ</string>
+    <string name="training_seconds">ฝึก</string>
+    <string name="rest_seconds">พัก</string>
+    <string name="number_of_sets">จำนวนเซต</string>
+    <string name="cooldown_seconds">คูลดาวน์</string>
+    <string name="total_time_format">รวม: %s</string>
+    <string name="start_timer">เริ่ม</string>
+
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">วอร์มอัพ</string>
+    <string name="phase_training">ฝึก</string>
+    <string name="phase_rest">พัก</string>
+    <string name="phase_cooldown">คูลดาวน์</string>
+    <string name="phase_finished">เสร็จสิ้น</string>
+
+    <!-- ==================== Interval Timer - UI ==================== -->
+    <string name="set_progress">เซต %1$d / %2$d</string>
+    <string name="workout_complete">ออกกำลังกายเสร็จแล้ว!</string>
+    <string name="total_time_result">เวลารวม: %s</string>
+    <string name="back_to_home">กลับหน้าแรก</string>
+    <string name="pause">หยุดชั่วคราว</string>
+    <string name="resume">ทำต่อ</string>
+    <string name="stop">หยุด</string>
+    <string name="complete">บันทึก</string>
+    <string name="save_workout_result">บันทึกผลการออกกำลังกาย</string>
+
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">แคลอรี (kcal)</string>
+    <string name="saved_successfully">บันทึกแล้ว!</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">สรุปของวัน</string>
+    <string name="total_duration_label">เวลา</string>
+    <string name="total_calories_label">แคลอรี</string>
+    <string name="total_weight_label">น้ำหนัก</string>
+    <string name="no_workout_data">
+        ไม่มีข้อมูลการออกกำลังกายสำหรับวันนี้
+    </string>
+
+    <!-- ==================== Calendar Screen ==================== -->
+    <string name="monthly_summary">สรุปรายเดือน</string>
+    <string name="workout_days">จำนวนวันที่ออกกำลังกาย</string>
+    <string name="days_format">%1$d วัน</string>
+    <string name="average_duration">เวลาเฉลี่ย</string>
+    <string name="total_duration_month">เวลารวม</string>
+    <string name="total_calories_month">แคลอรีรวม</string>
+    <string name="total_weight_month">น้ำหนักรวม</string>
+
+    <!-- ==================== Settings ==================== -->
     <string name="settings_title">การตั้งค่า</string>
     <string name="settings_language_title">ภาษา</string>
-    <string name="settings_language_description">เปลี่ยนภาษาที่แสดง</string>
+    <string name="settings_language_description">เปลี่ยนภาษาแสดงผล</string>
     <string name="settings_weight_unit_title">หน่วยน้ำหนัก</string>
     <string name="settings_weight_unit_description">ปัจจุบัน: %1$s</string>
     <string name="settings_distance_unit_title">หน่วยระยะทาง</string>
     <string name="settings_distance_unit_description">ปัจจุบัน: %1$s</string>
     <string name="settings_delete_title">ลบข้อมูลทั้งหมด</string>
-    <string name="settings_delete_description">ลบบันทึกการออกกำลังกายทั้งหมด</string>
+    <string name="settings_delete_description">ลบประวัติการออกกำลังกายทั้งหมด</string>
+    <string name="language_system_default">ใช้ค่าระบบ</string>
+
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">ออกโดยไม่บันทึก?</string>
+    <string name="confirm_back_message">
+        มีเซตที่ยังไม่ได้บันทึก ต้องการกลับหรือไม่?
+    </string>
+    <string name="discard_confirm_title">ออกโดยไม่บันทึก?</string>
+    <string name="discard_confirm_message">
+        มีเซตที่บันทึกแล้วแต่ยังไม่ได้อัปเดต
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">ลบหรือไม่?</string>
+    <string name="delete_confirm_message">
+        ต้องการลบ “%1$s” หรือไม่?
+    </string>
     <string name="delete_all_title">ลบข้อมูลทั้งหมด</string>
-    <string name="delete_all_message">ลบข้อมูลทั้งหมด? การดำเนินการนี้ไม่สามารถยกเลิกได้</string>
-    <string name="language_system_default">ค่าเริ่มต้นของระบบ</string>
+    <string name="delete_all_message">
+        ต้องการลบข้อมูลทั้งหมดหรือไม่? ไม่สามารถย้อนกลับได้
+    </string>
+    <string name="delete_all_day_title">ลบข้อมูลทั้งหมดของวัน?</string>
+    <string name="delete_all_day_message">
+        ข้อมูลการออกกำลังกายของวันนี้จะถูกลบทั้งหมด ไม่สามารถย้อนกลับได้
+    </string>
+    <string name="delete_session_title">ลบรายการ?</string>
+    <string name="delete_session_message">
+        ต้องการลบรายการของ %1$s หรือไม่?
+    </string>
+    <string name="delete_category_title">ลบหมวดหมู่?</string>
+    <string name="delete_category_message">
+        รายการทั้งหมดในหมวดหมู่นี้จะถูกลบ
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">ใช้ภาษาใหม่หรือไม่?</string>
+    <string name="language_confirm_message">
+        จะใช้การตั้งค่าภาษาใหม่
+    </string>
+    <string name="applying_language">กำลังใช้ภาษา…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">แคลอรีสะสม</string>
+    <string name="now">ปัจจุบัน</string>
+    <string name="no_data">ไม่มีข้อมูล</string>
+    <string name="graph_reset_link">รีเซ็ตกราฟ</string>
+    <string name="graph_reset">รีเซ็ตกราฟ</string>
+    <string name="graph_reset_title">รีเซ็ตกราฟหรือไม่?</string>
+    <string name="graph_reset_confirm">
+        ข้อมูลกราฟจะถูกลบ ต้องการดำเนินการต่อหรือไม่?
+    </string>
+    <string name="graph_reset_message">
+        ข้อมูลกราฟจะถูกลบ\n(ข้อมูลประวัติและปฏิทินจะยังคงอยู่)
+    </string>
+    <string name="which_graph_to_see">ต้องการดูกราฟใด?</string>
+
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">เลือกกราฟ</string>
+    <string name="graph_picker_strength">เวท (น้ำหนักสูงสุด)</string>
+    <string name="graph_picker_cardio">คาร์ดิโอ (ระยะทางรวม)</string>
+    <string name="graph_picker_studio">สตูดิโอ (จำนวนครั้ง)</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">ชั่วโมง</string>
+    <string name="duration_minutes_placeholder">นาที</string>
+    <string name="duration_seconds_placeholder">วินาที</string>
+
 </resources>

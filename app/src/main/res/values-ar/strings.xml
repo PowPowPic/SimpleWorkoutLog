@@ -1,56 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ==================== App ==================== -->
     <string name="app_name">Simple Workout Log</string>
+
+    <!-- ==================== Navigation ==================== -->
     <string name="nav_home">الرئيسية</string>
     <string name="nav_history">السجل</string>
     <string name="nav_calendar">التقويم</string>
-    <string name="nav_graph">الرسم البياني</string>
-    <string name="nav_settings">الإعدادات</string>
+    <string name="nav_graph">الرسم</string>
+    <!-- 設定は短く -->
+    <string name="nav_settings">ضبط</string>
+
+    <!-- ==================== Common ==================== -->
     <string name="common_ok">موافق</string>
     <string name="common_cancel">إلغاء</string>
     <string name="common_close">إغلاق</string>
     <string name="common_yes">نعم</string>
     <string name="common_no">لا</string>
-    <string name="edit">تحرير</string>
+    <string name="edit">تعديل</string>
     <string name="delete">حذف</string>
     <string name="save">حفظ</string>
     <string name="back">رجوع</string>
-    <string name="coming_soon">قريباً</string>
-    <string name="today_grand_total">Today Grand Total</string>
-    <string name="card_today_menu">قائمة تمرين اليوم</string>
-    <string name="midnight_rule_note">السجلات بين 0:00-3:00 صباحاً تُحفظ كيوم سابق.</string>
-    <string name="settings_hint">يمكن تغيير اللغة و kg/lbs، km/mile في الإعدادات.</string>
+    <string name="confirm">تأكيد</string>
+    <string name="discard">نعم</string>
+    <string name="rename">إعادة تسمية</string>
+    <string name="kcal">kcal</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">إجمالي الوزن اليوم</string>
+    <string name="today_duration">مدة التمرين اليوم</string>
+    <string name="today_calories">السعرات المحروقة اليوم</string>
+    <string name="card_today_menu">تمارين اليوم</string>
+    <string name="midnight_rule_note">
+        يتم حفظ السجلات من 12:00 ص إلى 2:59 ص كتسجيل لليوم السابق
+    </string>
+
+    <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">اختر نوع التمرين</string>
-    <string name="workout_strength">تدريب القوة</string>
-    <string name="workout_cardio">الكارديو</string>
-    <string name="workout_interval">التدريب المتقطع</string>
-    <string name="reps">تكرار</string>
-    <string name="add_new_set">+ مجموعة جديدة</string>
-    <string name="session_total">المجموع</string>
-    <string name="finish_training">إنهاء وحفظ</string>
-    <string name="duration_minutes">المدة (دقائق)</string>
-    <string name="cardio_coming_soon">شاشة الكارديو - قريباً</string>
-    <string name="interval_coming_soon">شاشة التدريب المتقطع - قريباً</string>
-    <string name="exercise_bench_press">تمرين الضغط على البنش</string>
+    <string name="workout_strength">تقوية</string>
+    <string name="workout_cardio">كارديو</string>
+    <string name="workout_interval">فترات</string>
+    <string name="workout_studio">استوديو</string>
+    <string name="workout_other">أخرى</string>
+    <string name="add_workout_type">+ إضافة نوع جديد</string>
+    <string name="workout_type_name">اسم النوع</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">اختر التمرين</string>
+    <string name="no_exercises_yet">
+        لا توجد تمارين بعد. أضف تمرينًا من الزر أدناه.
+    </string>
+    <string name="add_new_exercise">+ إضافة تمرين جديد</string>
+    <string name="exercise_name">اسم التمرين</string>
+
+    <!-- ==================== Exercise Names - Strength ==================== -->
+    <string name="exercise_bench_press">بنش برس</string>
     <string name="exercise_squat">سكوات</string>
-    <string name="exercise_deadlift">ديدليفت</string>
-    <string name="exercise_overhead_press">الضغط العلوي</string>
-    <string name="exercise_barbell_row">تجديف البار</string>
-    <string name="exercise_running">الجري</string>
-    <string name="exercise_cycling">ركوب الدراجة</string>
-    <string name="exercise_swimming">السباحة</string>
+    <string name="exercise_deadlift">ديدلفت</string>
+
+    <!-- ==================== Exercise Names - Cardio ==================== -->
+    <string name="exercise_running">جري</string>
+    <string name="exercise_walking">مشي</string>
+    <string name="exercise_indoor_bike">دراجة ثابتة</string>
+
+    <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
     <string name="exercise_tabata">تاباتا</string>
+
+    <!-- ==================== Exercise Names - Studio ==================== -->
+    <string name="exercise_yoga">يوغا</string>
+    <string name="exercise_pilates">بيلاتس</string>
+
+    <!-- ==================== Exercise Names - Other ==================== -->
+    <string name="exercise_snowboarding">تزلج على الثلج</string>
+    <string name="exercise_golf">غولف</string>
+
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">تكرار</string>
+    <string name="add_new_set">+ إضافة مجموعة</string>
+    <string name="session_total">الإجمالي</string>
+    <string name="exercise_duration">المدة</string>
+    <string name="exercise_calories">السعرات (kcal)</string>
+    <string name="finish_training">إنهاء وحفظ</string>
+    <string name="finish_and_save">إنهاء وحفظ</string>
+    <string name="go_home">العودة إلى الرئيسية</string>
+
+    <!-- ==================== Cardio Screen ==================== -->
+    <string name="duration_minutes">المدة</string>
+    <string name="distance">المسافة</string>
+    <string name="calories">السعرات</string>
+
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">إعدادات المؤقت</string>
+    <string name="preset_tabata">تاباتا</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">إحماء</string>
+    <string name="training_seconds">تمرين</string>
+    <string name="rest_seconds">راحة</string>
+    <string name="number_of_sets">عدد المجموعات</string>
+    <string name="cooldown_seconds">تهدئة</string>
+    <string name="total_time_format">الإجمالي: %s</string>
+    <string name="start_timer">ابدأ</string>
+
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">إحماء</string>
+    <string name="phase_training">تمرين</string>
+    <string name="phase_rest">راحة</string>
+    <string name="phase_cooldown">تهدئة</string>
+    <string name="phase_finished">تم</string>
+
+    <!-- ==================== Interval Timer - UI ==================== -->
+    <string name="set_progress">المجموعة %1$d / %2$d</string>
+    <string name="workout_complete">اكتمل التمرين!</string>
+    <string name="total_time_result">الوقت الإجمالي: %s</string>
+    <string name="back_to_home">العودة إلى الرئيسية</string>
+    <string name="pause">إيقاف مؤقت</string>
+    <string name="resume">استئناف</string>
+    <string name="stop">إيقاف</string>
+    <string name="complete">حفظ</string>
+    <string name="save_workout_result">حفظ نتيجة التمرين</string>
+
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">السعرات (kcal)</string>
+    <string name="saved_successfully">تم الحفظ!</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">ملخص اليوم</string>
+    <string name="total_duration_label">الوقت</string>
+    <string name="total_calories_label">السعرات</string>
+    <string name="total_weight_label">الوزن</string>
+    <string name="no_workout_data">لا توجد بيانات تمرين لهذا اليوم</string>
+
+    <!-- ==================== Calendar Screen ==================== -->
+    <string name="monthly_summary">الملخص الشهري</string>
+    <string name="workout_days">أيام التمرين</string>
+    <string name="days_format">%1$d أيام</string>
+    <string name="average_duration">متوسط المدة</string>
+    <string name="total_duration_month">إجمالي المدة</string>
+    <string name="total_calories_month">إجمالي السعرات</string>
+    <string name="total_weight_month">إجمالي الوزن</string>
+
+    <!-- ==================== Settings ==================== -->
     <string name="settings_title">الإعدادات</string>
     <string name="settings_language_title">اللغة</string>
-    <string name="settings_language_description">تغيير لغة العرض.</string>
+    <string name="settings_language_description">تغيير لغة العرض</string>
     <string name="settings_weight_unit_title">وحدة الوزن</string>
     <string name="settings_weight_unit_description">الحالي: %1$s</string>
     <string name="settings_distance_unit_title">وحدة المسافة</string>
     <string name="settings_distance_unit_description">الحالي: %1$s</string>
     <string name="settings_delete_title">حذف جميع البيانات</string>
-    <string name="settings_delete_description">حذف جميع سجلات التمرين.</string>
+    <string name="settings_delete_description">حذف جميع سجلات التمرين</string>
+    <string name="language_system_default">اتباع إعدادات النظام</string>
+
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">المتابعة دون حفظ؟</string>
+    <string name="confirm_back_message">
+        لديك مجموعات غير محفوظة. هل تريد الرجوع؟
+    </string>
+    <string name="discard_confirm_title">المتابعة دون حفظ؟</string>
+    <string name="discard_confirm_message">
+        توجد مجموعات محفوظة لم يتم تحديثها.
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">حذف؟</string>
+    <string name="delete_confirm_message">
+        هل أنت متأكد من حذف "%1$s"؟
+    </string>
     <string name="delete_all_title">حذف جميع البيانات</string>
-    <string name="delete_all_message">هل تريد حذف جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء.</string>
-    <string name="language_system_default">الافتراضي للنظام</string>
+    <string name="delete_all_message">
+        هل تريد حذف جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء.
+    </string>
+    <string name="delete_all_day_title">حذف جميع السجلات؟</string>
+    <string name="delete_all_day_message">
+        سيتم حذف جميع سجلات هذا اليوم. لا يمكن التراجع.
+    </string>
+    <string name="delete_session_title">حذف السجل؟</string>
+    <string name="delete_session_message">
+        هل تريد حذف سجل %1$s؟
+    </string>
+    <string name="delete_category_title">حذف الفئة؟</string>
+    <string name="delete_category_message">
+        سيتم حذف جميع السجلات في هذه الفئة.
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">تطبيق اللغة؟</string>
+    <string name="language_confirm_message">
+        سيتم تطبيق إعداد اللغة الجديد.
+    </string>
+    <string name="applying_language">جارٍ تطبيق اللغة…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">السعرات التراكمية</string>
+    <string name="now">الآن</string>
+    <string name="no_data">لا توجد بيانات</string>
+    <string name="graph_reset_link">إعادة تعيين الرسم</string>
+    <string name="graph_reset">إعادة تعيين الرسم</string>
+    <string name="graph_reset_title">إعادة تعيين الرسم؟</string>
+    <string name="graph_reset_confirm">
+        سيتم حذف بيانات الرسم. هل أنت متأكد؟
+    </string>
+    <string name="graph_reset_message">
+        سيتم حذف بيانات الرسم.\n(ستبقى بيانات السجل والتقويم)
+    </string>
+    <string name="which_graph_to_see">أي رسم تريد عرضه؟</string>
+
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">اختر الرسم</string>
+    <string name="graph_picker_strength">تقوية (أقصى وزن)</string>
+    <string name="graph_picker_cardio">كارديو (المسافة الإجمالية)</string>
+    <string name="graph_picker_studio">استوديو (عدد الجلسات)</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">ساعة</string>
+    <string name="duration_minutes_placeholder">دقيقة</string>
+    <string name="duration_seconds_placeholder">ثانية</string>
+
+
 </resources>

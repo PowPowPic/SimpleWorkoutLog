@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ==================== App ==================== -->
     <string name="app_name">Simple Workout Log</string>
-    <string name="nav_home">Accueil</string>
+
+    <!-- ==================== Navigation ==================== -->
+    <string name="nav_home">Home</string>
     <string name="nav_history">Historique</string>
     <string name="nav_calendar">Calendrier</string>
-    <string name="nav_graph">Graphique</string>
-    <string name="nav_settings">Paramètres</string>
+    <string name="nav_graph">Graph</string>
+    <!-- 「Paramètres」は長いため短縮 -->
+    <string name="nav_settings">Prefs</string>
+
+    <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
     <string name="common_cancel">Annuler</string>
     <string name="common_close">Fermer</string>
@@ -15,42 +21,205 @@
     <string name="delete">Supprimer</string>
     <string name="save">Enregistrer</string>
     <string name="back">Retour</string>
-    <string name="coming_soon">Bientôt disponible</string>
-    <string name="today_grand_total">Today Grand Total</string>
-    <string name="card_today_menu">Menu d\'entraînement du jour</string>
-    <string name="midnight_rule_note">Les enregistrements entre 0h00 et 3h00 sont sauvegardés comme la veille.</string>
-    <string name="settings_hint">La langue et kg/lbs, km/mile peuvent être modifiés dans les paramètres.</string>
-    <string name="select_workout_type">Sélectionner le type d\'exercice</string>
+    <string name="confirm">Confirmer</string>
+    <string name="discard">Oui</string>
+    <string name="rename">Renommer</string>
+    <string name="kcal">kcal</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">Poids total aujourd’hui</string>
+    <string name="today_duration">Temps d’entraînement aujourd’hui</string>
+    <string name="today_calories">Calories brûlées aujourd’hui</string>
+    <string name="card_today_menu">Menu d’entraînement du jour</string>
+    <string name="midnight_rule_note">
+        Les enregistrements de 00:00 à 02:59 sont comptabilisés pour le jour précédent.
+    </string>
+
+    <!-- ==================== Workout Types ==================== -->
+    <string name="select_workout_type">Sélectionner le type</string>
     <string name="workout_strength">Musculation</string>
     <string name="workout_cardio">Cardio</string>
-    <string name="workout_interval">Entraînement par intervalles</string>
-    <string name="reps">reps</string>
-    <string name="add_new_set">+ Nouvelle série</string>
-    <string name="session_total">Total</string>
-    <string name="finish_training">Terminer et sauvegarder</string>
-    <string name="duration_minutes">Durée (minutes)</string>
-    <string name="cardio_coming_soon">Écran cardio - Bientôt disponible</string>
-    <string name="interval_coming_soon">Écran intervalles - Bientôt disponible</string>
+    <string name="workout_interval">Intervalle</string>
+    <string name="workout_studio">Studio</string>
+    <string name="workout_other">Autre</string>
+    <string name="add_workout_type">+ Ajouter un type</string>
+    <string name="workout_type_name">Nom du type</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">Sélectionner l’exercice</string>
+    <string name="no_exercises_yet">
+        Aucun exercice pour l’instant. Ajoutez-en un ci-dessous.
+    </string>
+    <string name="add_new_exercise">+ Ajouter un exercice</string>
+    <string name="exercise_name">Nom de l’exercice</string>
+
+    <!-- ==================== Exercise Names - Strength ==================== -->
     <string name="exercise_bench_press">Développé couché</string>
     <string name="exercise_squat">Squat</string>
     <string name="exercise_deadlift">Soulevé de terre</string>
-    <string name="exercise_overhead_press">Développé militaire</string>
-    <string name="exercise_barbell_row">Rowing barre</string>
+
+    <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">Course</string>
-    <string name="exercise_cycling">Cyclisme</string>
-    <string name="exercise_swimming">Natation</string>
+    <string name="exercise_walking">Marche</string>
+    <string name="exercise_indoor_bike">Vélo d’intérieur</string>
+
+    <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
     <string name="exercise_tabata">Tabata</string>
-    <string name="settings_title">Paramètres</string>
+
+    <!-- ==================== Exercise Names - Studio ==================== -->
+    <string name="exercise_yoga">Yoga</string>
+    <string name="exercise_pilates">Pilates</string>
+
+    <!-- ==================== Exercise Names - Other ==================== -->
+    <string name="exercise_snowboarding">Snowboard</string>
+    <string name="exercise_golf">Golf</string>
+
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">Reps</string>
+    <string name="add_new_set">+ Ajouter une série</string>
+    <string name="session_total">Total</string>
+    <string name="exercise_duration">Durée</string>
+    <string name="exercise_calories">Calories (kcal)</string>
+    <string name="finish_training">Terminer et enregistrer</string>
+    <string name="finish_and_save">Terminer et enregistrer</string>
+    <string name="go_home">Retour à l’accueil</string>
+
+    <!-- ==================== Cardio Screen ==================== -->
+    <string name="duration_minutes">Durée</string>
+    <string name="distance">Distance</string>
+    <string name="calories">Calories</string>
+
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">Réglages du minuteur</string>
+    <string name="preset_tabata">Tabata</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">Échauffement</string>
+    <string name="training_seconds">Entraînement</string>
+    <string name="rest_seconds">Repos</string>
+    <string name="number_of_sets">Séries</string>
+    <string name="cooldown_seconds">Récupération</string>
+    <string name="total_time_format">Total : %s</string>
+    <string name="start_timer">Démarrer</string>
+
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">Échauffement</string>
+    <string name="phase_training">Entraînement</string>
+    <string name="phase_rest">Repos</string>
+    <string name="phase_cooldown">Récupération</string>
+    <string name="phase_finished">Terminé</string>
+
+    <!-- ==================== Interval Timer - UI ==================== -->
+    <string name="set_progress">Série %1$d / %2$d</string>
+    <string name="workout_complete">Entraînement terminé !</string>
+    <string name="total_time_result">Temps total : %s</string>
+    <string name="back_to_home">Retour à l’accueil</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Reprendre</string>
+    <string name="stop">Arrêter</string>
+    <string name="complete">Enregistrer</string>
+    <string name="save_workout_result">Enregistrer le résultat</string>
+
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">Calories (kcal)</string>
+    <string name="saved_successfully">Enregistré !</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">Résumé du jour</string>
+    <string name="total_duration_label">Temps</string>
+    <string name="total_calories_label">Calories</string>
+    <string name="total_weight_label">Poids</string>
+    <string name="no_workout_data">
+        Aucune donnée d’entraînement pour ce jour.
+    </string>
+
+    <!-- ==================== Calendar Screen ==================== -->
+    <string name="monthly_summary">Résumé mensuel</string>
+    <string name="workout_days">Jours d’entraînement</string>
+    <string name="days_format">%1$d jours</string>
+    <string name="average_duration">Durée moyenne</string>
+    <string name="total_duration_month">Durée totale</string>
+    <string name="total_calories_month">Calories totales</string>
+    <string name="total_weight_month">Poids total</string>
+
+    <!-- ==================== Settings ==================== -->
+    <string name="settings_title">Préférences</string>
     <string name="settings_language_title">Langue</string>
-    <string name="settings_language_description">Changer la langue d\'affichage.</string>
+    <string name="settings_language_description">Changer la langue</string>
     <string name="settings_weight_unit_title">Unité de poids</string>
-    <string name="settings_weight_unit_description">Actuel: %1$s</string>
+    <string name="settings_weight_unit_description">Actuel : %1$s</string>
     <string name="settings_distance_unit_title">Unité de distance</string>
-    <string name="settings_distance_unit_description">Actuel: %1$s</string>
+    <string name="settings_distance_unit_description">Actuel : %1$s</string>
     <string name="settings_delete_title">Supprimer toutes les données</string>
-    <string name="settings_delete_description">Supprimer tous les enregistrements d\'entraînement.</string>
+    <string name="settings_delete_description">
+        Supprimer tous les enregistrements
+    </string>
+    <string name="language_system_default">Selon le système</string>
+
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">Continuer sans enregistrer ?</string>
+    <string name="confirm_back_message">
+        Des séries ne sont pas enregistrées. Voulez-vous revenir ?
+    </string>
+    <string name="discard_confirm_title">Continuer sans enregistrer ?</string>
+    <string name="discard_confirm_message">
+        Des séries enregistrées n’ont pas été mises à jour.
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">Supprimer ?</string>
+    <string name="delete_confirm_message">
+        Voulez-vous vraiment supprimer « %1$s » ?
+    </string>
     <string name="delete_all_title">Supprimer toutes les données</string>
-    <string name="delete_all_message">Supprimer toutes les données? Cette action est irréversible.</string>
-    <string name="language_system_default">Par défaut du système</string>
+    <string name="delete_all_message">
+        Voulez-vous supprimer toutes les données ? Cette action est irréversible.
+    </string>
+    <string name="delete_all_day_title">Supprimer tous les enregistrements ?</string>
+    <string name="delete_all_day_message">
+        Tous les enregistrements de ce jour seront supprimés. Action irréversible.
+    </string>
+    <string name="delete_session_title">Supprimer l’enregistrement ?</string>
+    <string name="delete_session_message">
+        Supprimer l’enregistrement de %1$s ?
+    </string>
+    <string name="delete_category_title">Supprimer la catégorie ?</string>
+    <string name="delete_category_message">
+        Tous les enregistrements de cette catégorie seront supprimés.
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">Appliquer la langue ?</string>
+    <string name="language_confirm_message">
+        La nouvelle langue sera appliquée.
+    </string>
+    <string name="applying_language">Application de la langue…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">Calories cumulées</string>
+    <string name="now">Maintenant</string>
+    <string name="no_data">Aucune donnée</string>
+    <string name="graph_reset_link">Réinitialiser le graphique</string>
+    <string name="graph_reset">Réinitialiser le graphique</string>
+    <string name="graph_reset_title">Réinitialiser le graphique ?</string>
+    <string name="graph_reset_confirm">
+        Les données du graphique seront supprimées. Continuer ?
+    </string>
+    <string name="graph_reset_message">
+        Les données du graphique seront supprimées.\n(L’historique et le calendrier seront conservés.)
+    </string>
+    <string name="which_graph_to_see">Quel graphique souhaitez-vous voir ?</string>
+
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">Sélectionner le graphique</string>
+    <string name="graph_picker_strength">Musculation (poids max)</string>
+    <string name="graph_picker_cardio">Cardio (distance totale)</string>
+    <string name="graph_picker_studio">Studio (séances totales)</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">h</string>
+    <string name="duration_minutes_placeholder">min</string>
+    <string name="duration_seconds_placeholder">s</string>
+
+
 </resources>

@@ -8,7 +8,8 @@
     <string name="nav_history">History</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_graph">Graph</string>
-    <string name="nav_settings">Settings</string>
+    <!-- 長くなる Settings を避けて短縮 -->
+    <string name="nav_settings">Prefs</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -21,25 +22,24 @@
     <string name="save">Save</string>
     <string name="back">Back</string>
     <string name="confirm">Confirm</string>
-    <string name="discard">Discard</string>
+    <string name="discard">Yes</string>
     <string name="rename">Rename</string>
-    <string name="coming_soon">Coming Soon</string>
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
-    <string name="today_grand_total">Today Grand Total</string>
-    <string name="today_duration">Today\'s Exercise Time</string>
-    <string name="today_calories">Today\'s Calories Burned</string>
-    <string name="card_today_menu">Today\'s Training Menu</string>
-    <string name="midnight_rule_note">Records between 0:00-3:00 AM are saved as the previous day.</string>
-    <string name="settings_hint" translatable="false">Language and kg/lbs, km/mile can be changed in Settings.</string>
-
+    <string name="today_grand_total">Total Weight Today</string>
+    <string name="today_duration">Workout Time Today</string>
+    <string name="today_calories">Calories Burned Today</string>
+    <string name="card_today_menu">Today’s Workout Menu</string>
+    <string name="midnight_rule_note">
+        Records from 12:00 AM to 2:59 AM are saved as the previous day.
+    </string>
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Select Workout Type</string>
-    <string name="workout_strength">Strength Training</string>
+    <string name="workout_strength">Strength</string>
     <string name="workout_cardio">Cardio</string>
-    <string name="workout_interval">Interval Training</string>
+    <string name="workout_interval">Interval</string>
     <string name="workout_studio">Studio</string>
     <string name="workout_other">Other</string>
     <string name="add_workout_type">+ Add New Type</string>
@@ -47,8 +47,9 @@
 
     <!-- ==================== Exercise Selection ==================== -->
     <string name="select_exercise">Select Exercise</string>
-    <string name="no_exercises_yet">No exercises yet. Add one below!</string>
-    <string name="empty_slot">Empty</string>
+    <string name="no_exercises_yet">
+        No exercises yet. Please add one below.
+    </string>
     <string name="add_new_exercise">+ Add New Exercise</string>
     <string name="exercise_name">Exercise Name</string>
 
@@ -56,15 +57,11 @@
     <string name="exercise_bench_press">Bench Press</string>
     <string name="exercise_squat">Squat</string>
     <string name="exercise_deadlift">Deadlift</string>
-    <string name="exercise_overhead_press">Overhead Press</string>
-    <string name="exercise_barbell_row">Barbell Row</string>
 
     <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">Running</string>
     <string name="exercise_walking">Walking</string>
     <string name="exercise_indoor_bike">Indoor Bike</string>
-    <string name="exercise_cycling">Cycling</string>
-    <string name="exercise_swimming">Swimming</string>
 
     <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
@@ -77,22 +74,19 @@
     <!-- ==================== Exercise Names - Other ==================== -->
     <string name="exercise_snowboarding">Snowboarding</string>
     <string name="exercise_golf">Golf</string>
-    <string name="exercise_skiing">Skiing</string>
-    <string name="exercise_hiking">Hiking</string>
-    <string name="exercise_bass_fishing">Bass Fishing</string>
 
     <!-- ==================== Strength Training Screen ==================== -->
-    <string name="reps">reps</string>
-    <string name="add_new_set">+ Add New Set</string>
+    <string name="reps">Reps</string>
+    <string name="add_new_set">+ Add Set</string>
     <string name="session_total">Total</string>
-    <string name="exercise_duration">Exercise Time (min)</string>
-    <string name="exercise_calories">Calories Burned (kcal)</string>
+    <string name="exercise_duration">Duration</string>
+    <string name="exercise_calories">Calories (kcal)</string>
     <string name="finish_training">Finish &amp; Save</string>
     <string name="finish_and_save">Finish &amp; Save</string>
-    <string name="go_home">Go Home</string>
+    <string name="go_home">Back to Home</string>
 
     <!-- ==================== Cardio Screen ==================== -->
-    <string name="duration_minutes">Duration (minutes)</string>
+    <string name="duration_minutes">Duration</string>
     <string name="distance">Distance</string>
     <string name="calories">Calories</string>
 
@@ -100,109 +94,133 @@
     <string name="interval_timer_settings">Timer Settings</string>
     <string name="preset_tabata">Tabata</string>
     <string name="preset_hiit">HIIT</string>
-    <string name="warmup_seconds">Warm-up (seconds)</string>
-    <string name="training_seconds">Training (seconds)</string>
-    <string name="rest_seconds">Rest (seconds)</string>
-    <string name="number_of_sets">Number of sets</string>
-    <string name="cooldown_seconds">Cool-down (seconds)</string>
+    <string name="warmup_seconds">Warm-up</string>
+    <string name="training_seconds">Training</string>
+    <string name="rest_seconds">Rest</string>
+    <string name="number_of_sets">Sets</string>
+    <string name="cooldown_seconds">Cooldown</string>
     <string name="total_time_format">Total: %s</string>
     <string name="start_timer">Start</string>
 
     <!-- ==================== Interval Timer - Phases ==================== -->
-    <string name="phase_warmup">WARM-UP</string>
-    <string name="phase_training">TRAINING</string>
-    <string name="phase_rest">REST</string>
-    <string name="phase_cooldown">COOL-DOWN</string>
-    <string name="phase_finished">FINISHED</string>
+    <string name="phase_warmup">Warm-up</string>
+    <string name="phase_training">Training</string>
+    <string name="phase_rest">Rest</string>
+    <string name="phase_cooldown">Cooldown</string>
+    <string name="phase_finished">Finished</string>
 
     <!-- ==================== Interval Timer - UI ==================== -->
     <string name="set_progress">Set %1$d / %2$d</string>
     <string name="workout_complete">Workout Complete!</string>
-    <string name="total_time_result">Total time: %s</string>
+    <string name="total_time_result">Total Time: %s</string>
     <string name="back_to_home">Back to Home</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="stop">Stop</string>
-    <string name="complete">Complete</string>
+    <string name="complete">Save</string>
     <string name="save_workout_result">Save Workout Result</string>
 
     <!-- ==================== Other Screen ==================== -->
-    <string name="calories_burned">Calories burned (kcal)</string>
-    <string name="saved_successfully">Saved successfully!</string>
+    <string name="calories_burned">Calories (kcal)</string>
+    <string name="saved_successfully">Saved!</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">Day Summary</string>
+    <string name="day_summary">Daily Summary</string>
     <string name="total_duration_label">Time</string>
     <string name="total_calories_label">Calories</string>
     <string name="total_weight_label">Weight</string>
-    <string name="no_workout_data">No workout data for this day</string>
+    <string name="no_workout_data">No workout data for this day.</string>
 
     <!-- ==================== Calendar Screen ==================== -->
     <string name="monthly_summary">Monthly Summary</string>
     <string name="workout_days">Workout Days</string>
     <string name="days_format">%1$d days</string>
-    <string name="average_duration">Average Time</string>
-    <string name="total_duration_month">Total Time</string>
+    <string name="average_duration">Average Duration</string>
+    <string name="total_duration_month">Total Duration</string>
     <string name="total_calories_month">Total Calories</string>
     <string name="total_weight_month">Total Weight</string>
 
     <!-- ==================== Settings ==================== -->
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">Preferences</string>
     <string name="settings_language_title">Language</string>
-    <string name="settings_language_description">Change display language.</string>
+    <string name="settings_language_description">Change display language</string>
     <string name="settings_weight_unit_title">Weight Unit</string>
     <string name="settings_weight_unit_description">Current: %1$s</string>
     <string name="settings_distance_unit_title">Distance Unit</string>
     <string name="settings_distance_unit_description">Current: %1$s</string>
     <string name="settings_delete_title">Delete All Data</string>
-    <string name="settings_delete_description">Delete all workout records.</string>
-    <string name="language_system_default">System Default</string>
+    <string name="settings_delete_description">
+        Delete all workout records
+    </string>
+    <string name="language_system_default">Follow System</string>
 
     <!-- ==================== Dialogs - Confirm ==================== -->
-    <string name="confirm_back_title">Discard Changes?</string>
-    <string name="confirm_back_message">You have unsaved sets. Are you sure you want to go back?</string>
-    <string name="discard_confirm_title">Discard Changes?</string>
-    <string name="discard_confirm_message">You have confirmed sets that haven\'t been saved. Do you want to discard them?</string>
+    <string name="confirm_back_title">Continue without saving?</string>
+    <string name="confirm_back_message">
+        You have unsaved sets. Are you sure you want to go back?
+    </string>
+    <string name="discard_confirm_title">Continue without saving?</string>
+    <string name="discard_confirm_message">
+        There are saved sets that have not been updated.
+    </string>
 
     <!-- ==================== Dialogs - Delete ==================== -->
     <string name="delete_confirm_title">Delete?</string>
-    <string name="delete_confirm_message">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="delete_confirm_message">
+        Are you sure you want to delete "%1$s"?
+    </string>
     <string name="delete_all_title">Delete All Data</string>
-    <string name="delete_all_message">Delete all data? This action cannot be undone.</string>
+    <string name="delete_all_message">
+        Are you sure you want to delete all data? This cannot be undone.
+    </string>
     <string name="delete_all_day_title">Delete All Records?</string>
-    <string name="delete_all_day_message">All workout records for this day will be deleted. This cannot be undone.</string>
+    <string name="delete_all_day_message">
+        All workout records for this day will be deleted. This cannot be undone.
+    </string>
     <string name="delete_session_title">Delete Record?</string>
-    <string name="delete_session_message">Delete %1$s record?</string>
+    <string name="delete_session_message">
+        Delete the record for %1$s?
+    </string>
     <string name="delete_category_title">Delete Category?</string>
-    <string name="delete_category_message">All records in this category will be deleted.</string>
+    <string name="delete_category_message">
+        All records in this category will be deleted.
+    </string>
 
     <!-- ==================== Dialogs - Language ==================== -->
     <string name="language_confirm_title">Apply Language?</string>
-    <string name="language_confirm_message">The app will restart to apply the new language setting.</string>
+    <string name="language_confirm_message">
+        The new language setting will be applied.
+    </string>
     <string name="applying_language">Applying language…</string>
 
-    <!-- Graph Screen -->
+    <!-- ==================== Graph Screen ==================== -->
     <string name="cumulative_calories">Cumulative Calories</string>
     <string name="now">Now</string>
-    <string name="no_data">No data</string>
-    <string name="graph_reset_link">Reset graph</string>
-    <string name="graph_reset">Reset graph</string>
+    <string name="no_data">No Data</string>
+    <string name="graph_reset_link">Reset Graph</string>
+    <string name="graph_reset">Reset Graph</string>
     <string name="graph_reset_title">Reset Graph?</string>
-    <string name="graph_reset_confirm">This will delete all existing graph data. Are you sure?</string>
-    <string name="graph_reset_message">This will reset the graph start point to today. Your workout history will not be deleted.</string>
+    <string name="graph_reset_confirm">
+        This will delete all graph data. Are you sure?
+    </string>
+    <string name="graph_reset_message">
+        Graph data will be deleted.\n(History and calendar data will remain.)
+    </string>
     <string name="which_graph_to_see">Which graph would you like to see?</string>
 
-    <!-- Graph Picker (Phase0) -->
+    <!-- ==================== Graph Picker ==================== -->
     <string name="graph_picker_title">Select Graph</string>
     <string name="graph_picker_strength">Strength (Max Weight)</string>
-    <string name="graph_picker_cardio">Cardio (Cumulative Distance)</string>
-    <string name="graph_picker_studio">Studio (Cumulative Sessions)</string>
-    <string name="graph_coming_soon">This graph will be available in the next update.</string>
+    <string name="graph_picker_cardio">Cardio (Total Distance)</string>
+    <string name="graph_picker_studio">Studio (Total Sessions)</string>
 
+    <!-- ==================== Duration input placeholders ==================== -->
     <string name="duration_hours_placeholder">Hours</string>
     <string name="duration_minutes_placeholder">Minutes</string>
     <string name="duration_seconds_placeholder">Seconds</string>
 
-
-
+    <!-- ==================== Settings Hint (English Only) ==================== -->
+    <string name="settings_hint" translatable="false">
+        Language and kg/lbs, km/mile can be changed in Settings.
+    </string>
 </resources>

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ==================== App ==================== -->
     <string name="app_name">Simple Workout Log</string>
+
+    <!-- ==================== Navigation ==================== -->
     <string name="nav_home">首頁</string>
-    <string name="nav_history">歷史</string>
-    <string name="nav_calendar">日曆</string>
+    <string name="nav_history">紀錄</string>
+    <string name="nav_calendar">行事曆</string>
     <string name="nav_graph">圖表</string>
     <string name="nav_settings">設定</string>
+
+    <!-- ==================== Common ==================== -->
     <string name="common_ok">確定</string>
     <string name="common_cancel">取消</string>
     <string name="common_close">關閉</string>
@@ -15,42 +20,202 @@
     <string name="delete">刪除</string>
     <string name="save">儲存</string>
     <string name="back">返回</string>
-    <string name="coming_soon">即將推出</string>
-    <string name="today_grand_total">Today Grand Total</string>
-    <string name="card_today_menu">今日訓練菜單</string>
-    <string name="midnight_rule_note">0:00-3:00 之間的記錄將保存為前一天。</string>
-    <string name="settings_hint">語言和 kg/lbs、km/mile 可在設定中更改。</string>
+    <string name="confirm">確認</string>
+    <string name="discard">是</string>
+    <string name="rename">重新命名</string>
+    <string name="kcal">kcal</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">今日總重量</string>
+    <string name="today_duration">今日運動時間</string>
+    <string name="today_calories">今日消耗卡路里</string>
+    <string name="card_today_menu">今日訓練項目</string>
+    <string name="midnight_rule_note">
+        凌晨 00:00 至 02:59 的紀錄將儲存為前一天
+    </string>
+
+    <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">選擇運動類型</string>
     <string name="workout_strength">重量訓練</string>
     <string name="workout_cardio">有氧運動</string>
     <string name="workout_interval">間歇訓練</string>
-    <string name="reps">次</string>
-    <string name="add_new_set">+ 新組數</string>
-    <string name="session_total">總計</string>
-    <string name="finish_training">結束並儲存</string>
-    <string name="duration_minutes">時間（分鐘）</string>
-    <string name="cardio_coming_soon">有氧畫面 - 即將推出</string>
-    <string name="interval_coming_soon">間歇畫面 - 即將推出</string>
+    <string name="workout_studio">課程</string>
+    <string name="workout_other">其他</string>
+    <string name="add_workout_type">＋ 新增類型</string>
+    <string name="workout_type_name">類型名稱</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">選擇項目</string>
+    <string name="no_exercises_yet">
+        尚無運動項目，請使用下方按鈕新增
+    </string>
+    <string name="add_new_exercise">＋ 新增項目</string>
+    <string name="exercise_name">項目名稱</string>
+
+    <!-- ==================== Exercise Names - Strength ==================== -->
     <string name="exercise_bench_press">臥推</string>
     <string name="exercise_squat">深蹲</string>
     <string name="exercise_deadlift">硬舉</string>
-    <string name="exercise_overhead_press">肩推</string>
-    <string name="exercise_barbell_row">槓鈴划船</string>
+
+    <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">跑步</string>
-    <string name="exercise_cycling">騎自行車</string>
-    <string name="exercise_swimming">游泳</string>
+    <string name="exercise_walking">步行</string>
+    <string name="exercise_indoor_bike">室內腳踏車</string>
+
+    <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
     <string name="exercise_tabata">Tabata</string>
+
+    <!-- ==================== Exercise Names - Studio ==================== -->
+    <string name="exercise_yoga">瑜伽</string>
+    <string name="exercise_pilates">皮拉提斯</string>
+
+    <!-- ==================== Exercise Names - Other ==================== -->
+    <string name="exercise_snowboarding">滑雪板</string>
+    <string name="exercise_golf">高爾夫</string>
+
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">次</string>
+    <string name="add_new_set">＋ 新增組數</string>
+    <string name="session_total">合計</string>
+    <string name="exercise_duration">運動時間</string>
+    <string name="exercise_calories">消耗卡路里 (kcal)</string>
+    <string name="finish_training">結束並儲存</string>
+    <string name="finish_and_save">結束並儲存</string>
+    <string name="go_home">返回首頁</string>
+
+    <!-- ==================== Cardio Screen ==================== -->
+    <string name="duration_minutes">運動時間</string>
+    <string name="distance">距離</string>
+    <string name="calories">卡路里</string>
+
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">計時器設定</string>
+    <string name="preset_tabata">Tabata</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">暖身</string>
+    <string name="training_seconds">訓練</string>
+    <string name="rest_seconds">休息</string>
+    <string name="number_of_sets">組數</string>
+    <string name="cooldown_seconds">緩和</string>
+    <string name="total_time_format">合計：%s</string>
+    <string name="start_timer">開始</string>
+
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">暖身</string>
+    <string name="phase_training">訓練</string>
+    <string name="phase_rest">休息</string>
+    <string name="phase_cooldown">緩和</string>
+    <string name="phase_finished">完成</string>
+
+    <!-- ==================== Interval Timer - UI ==================== -->
+    <string name="set_progress">第 %1$d / %2$d 組</string>
+    <string name="workout_complete">訓練完成！</string>
+    <string name="total_time_result">總時間：%s</string>
+    <string name="back_to_home">返回首頁</string>
+    <string name="pause">暫停</string>
+    <string name="resume">繼續</string>
+    <string name="stop">停止</string>
+    <string name="complete">儲存</string>
+    <string name="save_workout_result">儲存訓練結果</string>
+
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">消耗卡路里 (kcal)</string>
+    <string name="saved_successfully">已儲存！</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">當日紀錄</string>
+    <string name="total_duration_label">時間</string>
+    <string name="total_calories_label">卡路里</string>
+    <string name="total_weight_label">重量</string>
+    <string name="no_workout_data">
+        此日沒有運動紀錄
+    </string>
+
+    <!-- ==================== Calendar Screen ==================== -->
+    <string name="monthly_summary">每月紀錄</string>
+    <string name="workout_days">運動天數</string>
+    <string name="days_format">%1$d 天</string>
+    <string name="average_duration">平均運動時間</string>
+    <string name="total_duration_month">總運動時間</string>
+    <string name="total_calories_month">總消耗卡路里</string>
+    <string name="total_weight_month">總重量</string>
+
+    <!-- ==================== Settings ==================== -->
     <string name="settings_title">設定</string>
     <string name="settings_language_title">語言</string>
-    <string name="settings_language_description">更改顯示語言。</string>
+    <string name="settings_language_description">變更顯示語言</string>
     <string name="settings_weight_unit_title">重量單位</string>
     <string name="settings_weight_unit_description">目前：%1$s</string>
     <string name="settings_distance_unit_title">距離單位</string>
     <string name="settings_distance_unit_description">目前：%1$s</string>
     <string name="settings_delete_title">刪除所有資料</string>
-    <string name="settings_delete_description">刪除所有訓練記錄。</string>
+    <string name="settings_delete_description">刪除所有訓練紀錄</string>
+    <string name="language_system_default">依系統設定</string>
+
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">未儲存就返回嗎？</string>
+    <string name="confirm_back_message">
+        尚有未儲存的組數，確定要返回嗎？
+    </string>
+    <string name="discard_confirm_title">未儲存就返回嗎？</string>
+    <string name="discard_confirm_message">
+        有已儲存但未更新的組數
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">確定刪除？</string>
+    <string name="delete_confirm_message">
+        確定要刪除「%1$s」嗎？
+    </string>
     <string name="delete_all_title">刪除所有資料</string>
-    <string name="delete_all_message">刪除所有資料？此操作無法復原。</string>
-    <string name="language_system_default">系統預設</string>
+    <string name="delete_all_message">
+        確定要刪除所有資料嗎？此操作無法復原。
+    </string>
+    <string name="delete_all_day_title">刪除當日所有紀錄？</string>
+    <string name="delete_all_day_message">
+        當日所有訓練紀錄將被刪除，且無法復原。
+    </string>
+    <string name="delete_session_title">刪除紀錄？</string>
+    <string name="delete_session_message">
+        確定要刪除 %1$s 的紀錄嗎？
+    </string>
+    <string name="delete_category_title">刪除分類？</string>
+    <string name="delete_category_message">
+        此分類中的所有紀錄都將被刪除。
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">套用語言？</string>
+    <string name="language_confirm_message">
+        將套用新的語言設定。
+    </string>
+    <string name="applying_language">正在套用語言…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">累積消耗卡路里</string>
+    <string name="now">現在</string>
+    <string name="no_data">無資料</string>
+    <string name="graph_reset_link">重設圖表</string>
+    <string name="graph_reset">重設圖表</string>
+    <string name="graph_reset_title">要重設圖表嗎？</string>
+    <string name="graph_reset_confirm">
+        圖表資料將被刪除，是否繼續？
+    </string>
+    <string name="graph_reset_message">
+        圖表資料將被刪除。\n（歷史與行事曆資料會保留）
+    </string>
+    <string name="which_graph_to_see">想查看哪個圖表？</string>
+
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">選擇圖表</string>
+    <string name="graph_picker_strength">重量訓練（最大重量）</string>
+    <string name="graph_picker_cardio">有氧（累積距離）</string>
+    <string name="graph_picker_studio">課程（累積次數）</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">小時</string>
+    <string name="duration_minutes_placeholder">分鐘</string>
+    <string name="duration_seconds_placeholder">秒</string>
+
 </resources>

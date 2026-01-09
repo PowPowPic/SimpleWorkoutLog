@@ -39,20 +39,7 @@ class SampleDataSeeder(
                 sortOrder = 3,
                 nameResId = R.string.exercise_deadlift,
                 isTemplate = true
-            ),
-            ExerciseEntity(
-                name = "",
-                workoutType = WorkoutType.STRENGTH,
-                sortOrder = 4,
-                nameResId = R.string.exercise_overhead_press,
-                isTemplate = true
-            ),
-            ExerciseEntity(
-                name = "",
-                workoutType = WorkoutType.STRENGTH,
-                sortOrder = 5,
-                nameResId = R.string.exercise_barbell_row,
-                isTemplate = true
+
             )
         )
 
@@ -64,20 +51,7 @@ class SampleDataSeeder(
                 sortOrder = 1,
                 nameResId = R.string.exercise_running,
                 isTemplate = true
-            ),
-            ExerciseEntity(
-                name = "",
-                workoutType = WorkoutType.CARDIO,
-                sortOrder = 2,
-                nameResId = R.string.exercise_cycling,
-                isTemplate = true
-            ),
-            ExerciseEntity(
-                name = "",
-                workoutType = WorkoutType.CARDIO,
-                sortOrder = 3,
-                nameResId = R.string.exercise_swimming,
-                isTemplate = true
+
             )
         )
 
@@ -132,27 +106,7 @@ class SampleDataSeeder(
                 sortOrder = 2,
                 nameResId = R.string.exercise_golf,
                 isTemplate = true
-            ),
-            ExerciseEntity(
-                name = "",
-                workoutType = WorkoutType.OTHER,
-                sortOrder = 3,
-                nameResId = R.string.exercise_bass_fishing,
-                isTemplate = true
-            ),
-            ExerciseEntity(
-                name = "",
-                workoutType = WorkoutType.OTHER,
-                sortOrder = 4,
-                nameResId = R.string.exercise_skiing,
-                isTemplate = true
-            ),
-            ExerciseEntity(
-                name = "",
-                workoutType = WorkoutType.OTHER,
-                sortOrder = 5,
-                nameResId = R.string.exercise_hiking,
-                isTemplate = true
+
             )
         )
 
