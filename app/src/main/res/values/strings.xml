@@ -197,4 +197,10 @@
     <string name="graph_picker_studio">Studio (Cumulative Sessions)</string>
     <string name="graph_coming_soon">This graph will be available in the next update.</string>
 
+    <string name="duration_hours_placeholder">Hours</string>
+    <string name="duration_minutes_placeholder">Minutes</string>
+    <string name="duration_seconds_placeholder">Seconds</string>
+
+
+
 </resources>

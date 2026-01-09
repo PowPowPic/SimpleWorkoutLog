@@ -26,6 +26,7 @@ import com.poweder.simpleworkoutlog.data.entity.WorkoutType
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
+import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -56,8 +57,8 @@ fun WorkoutDayDetailDialog(
             .withLocale(Locale.getDefault())
     }
 
-    // 合計計算
-    val totalDuration = sessions.sumOf { it.durationMinutes }
+    // 合計計算（秒単位）
+    val totalDurationSeconds = sessions.sumOf { it.durationSeconds }
     val totalCalories = sessions.sumOf { it.caloriesBurned }
     val totalWeight = sessionWeights.values.sum()
 
@@ -133,7 +134,7 @@ fun WorkoutDayDetailDialog(
                 ) {
                     // 日付合計サマリ
                     DaySummaryCard(
-                        totalDuration = totalDuration,
+                        totalDurationSeconds = totalDurationSeconds,
                         totalCalories = totalCalories,
                         totalWeight = totalWeight,
                         weightUnit = weightUnit
@@ -144,7 +145,7 @@ fun WorkoutDayDetailDialog(
                     // 種目ごとにカードを表示
                     sessions.forEach { session ->
                         // 種目名を取得（見つからない場合はexerciseIdを表示）
-                        val exerciseName = exerciseNames[session.exerciseId] 
+                        val exerciseName = exerciseNames[session.exerciseId]
                             ?: "Exercise #${session.exerciseId}"
                         val sessionWeight = sessionWeights[session.id] ?: 0.0
 
@@ -179,7 +180,7 @@ fun WorkoutDayDetailDialog(
  */
 @Composable
 private fun DaySummaryCard(
-    totalDuration: Int,
+    totalDurationSeconds: Int,
     totalCalories: Int,
     totalWeight: Double,
     weightUnit: WeightUnit
@@ -210,7 +211,7 @@ private fun DaySummaryCard(
             ) {
                 SummaryItem(
                     label = stringResource(R.string.total_duration_label),
-                    value = formatDuration(totalDuration)
+                    value = formatHms(totalDurationSeconds)
                 )
 
                 SummaryItem(
@@ -375,11 +376,11 @@ private fun ExerciseCard(
                     )
                 }
 
-                // 運動時間
-                if (session.durationMinutes > 0) {
+                // 運動時間（秒単位で保存されているのでformatHmsで表示）
+                if (session.durationSeconds > 0) {
                     DetailItem(
                         label = stringResource(R.string.total_duration_label),
-                        value = formatDuration(session.durationMinutes)
+                        value = formatHms(session.durationSeconds)
                     )
                 }
 
@@ -391,9 +392,9 @@ private fun ExerciseCard(
                     )
                 }
             }
-            
+
             // 何も表示するものがない場合のフォールバック
-            if (sessionWeight <= 0 && session.durationMinutes <= 0 && session.caloriesBurned <= 0) {
+            if (sessionWeight <= 0 && session.durationSeconds <= 0 && session.caloriesBurned <= 0) {
                 Text(
                     text = "---",
                     style = MaterialTheme.typography.bodyMedium,
@@ -422,18 +423,5 @@ private fun DetailItem(
             fontWeight = FontWeight.Bold,
             color = WorkoutColors.TextPrimary
         )
-    }
-}
-
-/**
- * 分数を時間:分形式にフォーマット
- */
-private fun formatDuration(minutes: Int): String {
-    val hours = minutes / 60
-    val mins = minutes % 60
-    return if (hours > 0) {
-        "${hours}h ${mins}m"
-    } else {
-        "${mins}m"
     }
 }

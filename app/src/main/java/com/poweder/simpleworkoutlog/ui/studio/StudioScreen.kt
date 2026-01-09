@@ -26,6 +26,8 @@ import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.ui.components.DurationInputField
+import com.poweder.simpleworkoutlog.ui.components.durationToSeconds
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -42,8 +44,10 @@ fun StudioScreen(
     val adRemoved by viewModel.adRemoved.collectAsState()
     val currentExercise by viewModel.currentStudioExercise.collectAsState()
 
-    // 入力値
+    // 入力値（運動時間は時間・分・秒の3フィールド）
+    var durationHours by remember { mutableStateOf("") }
     var durationMinutes by remember { mutableStateOf("") }
+    var durationSeconds by remember { mutableStateOf("") }
     var calories by remember { mutableStateOf("") }
 
     // 未保存確認ダイアログ
@@ -70,7 +74,7 @@ fun StudioScreen(
     }
 
     // 入力があるかどうか
-    val hasInput = durationMinutes.isNotBlank() || calories.isNotBlank()
+    val hasInput = durationHours.isNotBlank() || durationMinutes.isNotBlank() || durationSeconds.isNotBlank() || calories.isNotBlank()
 
     // 未保存確認ダイアログ
     if (showBackConfirmDialog) {
@@ -143,12 +147,15 @@ fun StudioScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // 時間（分）
-            InputField(
-                label = stringResource(R.string.duration_minutes),
-                value = durationMinutes,
-                onValueChange = { durationMinutes = it },
-                suffix = "min"
+            // 時間（時間・分・秒の3フィールド）
+            DurationInputField(
+                hours = durationHours,
+                minutes = durationMinutes,
+                seconds = durationSeconds,
+                onHoursChange = { durationHours = it },
+                onMinutesChange = { durationMinutes = it },
+                onSecondsChange = { durationSeconds = it },
+                modifier = Modifier.fillMaxWidth()
             )
 
             // 消費カロリー
@@ -199,12 +206,13 @@ fun StudioScreen(
                     .background(WorkoutColors.ButtonConfirm)
                     .clickable {
                         currentExercise?.let { exercise ->
-                            val duration = durationMinutes.toIntOrNull() ?: 0
+                            // 運動時間を秒に変換
+                            val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
                             val cal = calories.toIntOrNull() ?: 0
 
                             viewModel.saveStudioWorkout(
                                 exerciseId = exercise.id,
-                                durationMinutes = duration,
+                                durationSeconds = totalDurationSeconds,
                                 caloriesBurned = cal
                             )
                         }
@@ -250,12 +258,12 @@ private fun InputField(
             OutlinedTextField(
                 value = value,
                 onValueChange = { newValue ->
-                    // 数字とピリオドのみ許可
-                    if (newValue.isEmpty() || newValue.matches(Regex("^\\d*\\.?\\d*$"))) {
+                    // 数字のみ許可
+                    if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
                         onValueChange(newValue)
                     }
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = WorkoutColors.AccentOrange,

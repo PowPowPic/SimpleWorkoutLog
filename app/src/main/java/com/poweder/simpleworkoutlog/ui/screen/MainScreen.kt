@@ -36,6 +36,7 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -56,7 +57,7 @@ fun MainScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     val todayTotalWeight by viewModel.todayTotalWeight.collectAsState()
-    val todayTotalDuration by viewModel.todayTotalDuration.collectAsState()
+    val todayTotalDurationSeconds by viewModel.todayTotalDurationSeconds.collectAsState()
     val todayTotalCalories by viewModel.todayTotalCalories.collectAsState()
     val weightUnit by viewModel.weightUnit.collectAsState()
     val adRemoved by viewModel.adRemoved.collectAsState()
@@ -247,7 +248,7 @@ fun MainScreen(
         )
     }
 
-    // インターバル種目選択ダイアログ（専用：HIIT/TABATAのみ）
+    // インターバル種目選択ダイアログ（専用）
     if (showIntervalExerciseDialog) {
         IntervalExerciseSelectDialog(
             onHiitSelect = {
@@ -376,7 +377,7 @@ fun MainScreen(
             // 今日の運動時間カード（h:mm:ss形式）
             TodaySummaryCard(
                 title = stringResource(R.string.today_duration),
-                value = formatDurationHMS(todayTotalDuration)
+                value = formatHms(todayTotalDurationSeconds)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -529,14 +530,4 @@ private fun MainActionCard(
             color = WorkoutColors.TextPrimary
         )
     }
-}
-
-/**
- * 分数を h:mm:ss 形式にフォーマット
- */
-private fun formatDurationHMS(totalMinutes: Int): String {
-    val hours = totalMinutes / 60
-    val minutes = totalMinutes % 60
-    val seconds = 0  // 分単位で保存しているので秒は0
-    return "%d:%02d:%02d".format(hours, minutes, seconds)
 }

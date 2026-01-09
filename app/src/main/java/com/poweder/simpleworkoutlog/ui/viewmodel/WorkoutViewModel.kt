@@ -129,9 +129,9 @@ class WorkoutViewModel(
         sets.sumOf { it.weight * it.reps }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0.0)
 
-    // 今日の運動時間（分）（セッションから直接計算）
-    val todayTotalDuration: StateFlow<Int> = todaySessions.map { sessions ->
-        sessions.sumOf { it.durationMinutes }
+    // 今日の運動時間（秒）（セッションから直接計算）
+    val todayTotalDurationSeconds: StateFlow<Int> = todaySessions.map { sessions ->
+        sessions.sumOf { it.durationSeconds }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
     // 今日の消費カロリー（セッションから直接計算）
@@ -402,13 +402,15 @@ class WorkoutViewModel(
      * セッション完了＆保存（筋トレ用 - 運動時間と消費カロリー対応）
      * 有効なセット（weight > 0 && reps > 0）は確定状態に関係なく全て保存
      * @param exerciseId 種目ID（他カテゴリの選択に影響されないよう引数で受け取る）
+     * @param durationSeconds 運動時間（秒）
+     * @param caloriesBurned 消費カロリー
      */
-    fun finishAndSaveStrength(exerciseId: Long, durationMinutes: Int = 0, caloriesBurned: Int = 0) {
+    fun finishAndSaveStrength(exerciseId: Long, durationSeconds: Int = 0, caloriesBurned: Int = 0) {
         viewModelScope.launch {
             // 有効なセット（weight > 0 && reps > 0）は全て保存対象
             val validSets = _setItems.value.filter { it.isValid }
 
-            if (validSets.isEmpty() && durationMinutes == 0 && caloriesBurned == 0) {
+            if (validSets.isEmpty() && durationSeconds == 0 && caloriesBurned == 0) {
                 clearStrengthSession()
                 return@launch
             }
@@ -427,7 +429,7 @@ class WorkoutViewModel(
 
             // 運動時間と消費カロリーを保存
             val updatedSession = session.copy(
-                durationMinutes = durationMinutes,
+                durationSeconds = durationSeconds,
                 caloriesBurned = caloriesBurned,
                 updatedAt = System.currentTimeMillis()
             )
@@ -441,9 +443,9 @@ class WorkoutViewModel(
      * 互換用（旧API）：
      * 可能なら Screen から finishAndSaveStrength(exerciseId, ...) を直接呼ぶこと
      */
-    fun finishAndSave(durationMinutes: Int = 0, caloriesBurned: Int = 0) {
+    fun finishAndSave(durationSeconds: Int = 0, caloriesBurned: Int = 0) {
         val exerciseId = _currentStrengthExercise.value?.id ?: return
-        finishAndSaveStrength(exerciseId, durationMinutes, caloriesBurned)
+        finishAndSaveStrength(exerciseId, durationSeconds, caloriesBurned)
     }
 
     /**
@@ -567,6 +569,7 @@ class WorkoutViewModel(
 
     /**
      * 指定月の統計を取得（セットから重量計算）
+     * ※ 運動時間は秒で計算
      */
     fun getMonthlyStats(yearMonth: YearMonth): Flow<MonthlyStats> {
         val startDate = yearMonth.atDay(1).toEpochDay()
@@ -582,11 +585,11 @@ class WorkoutViewModel(
                 // ワークアウト日数（ユニークな日付数）
                 val workoutDays = sessions.map { it.logicalDate }.distinct().size
 
-                // 総運動時間
-                val totalDuration = sessions.sumOf { it.durationMinutes }
+                // 総運動時間（秒）
+                val totalDurationSeconds = sessions.sumOf { it.durationSeconds }
 
-                // 平均運動時間
-                val averageDuration = if (workoutDays > 0) totalDuration / workoutDays else 0
+                // 平均運動時間（秒）
+                val averageDurationSeconds = if (workoutDays > 0) totalDurationSeconds / workoutDays else 0
 
                 // 総消費カロリー
                 val totalCalories = sessions.sumOf { it.caloriesBurned }
@@ -596,8 +599,8 @@ class WorkoutViewModel(
 
                 MonthlyStats(
                     workoutDays = workoutDays,
-                    totalDuration = totalDuration,
-                    averageDuration = averageDuration,
+                    totalDurationSeconds = totalDurationSeconds,
+                    averageDurationSeconds = averageDurationSeconds,
                     totalCalories = totalCalories,
                     totalWeight = totalWeight
                 )
@@ -607,17 +610,18 @@ class WorkoutViewModel(
 
     /**
      * その他ワークアウトを保存
+     * @param durationSeconds 運動時間（秒）
      */
     fun saveOtherWorkout(
         exerciseId: Long,
-        durationMinutes: Int,
+        durationSeconds: Int,
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
             val session = repository.getOrCreateSession(exerciseId, WorkoutType.OTHER)
 
             val updatedSession = session.copy(
-                durationMinutes = durationMinutes,
+                durationSeconds = durationSeconds,
                 caloriesBurned = caloriesBurned,
                 updatedAt = System.currentTimeMillis()
             )
@@ -627,10 +631,11 @@ class WorkoutViewModel(
 
     /**
      * 有酸素ワークアウトを保存
+     * @param durationSeconds 運動時間（秒）
      */
     fun saveCardioWorkout(
         exerciseId: Long,
-        durationMinutes: Int,
+        durationSeconds: Int,
         distance: Double,
         caloriesBurned: Int
     ) {
@@ -638,7 +643,7 @@ class WorkoutViewModel(
             val session = repository.getOrCreateSession(exerciseId, WorkoutType.CARDIO)
 
             val updatedSession = session.copy(
-                durationMinutes = durationMinutes,
+                durationSeconds = durationSeconds,
                 distance = distance,
                 caloriesBurned = caloriesBurned,
                 updatedAt = System.currentTimeMillis()
@@ -649,17 +654,18 @@ class WorkoutViewModel(
 
     /**
      * スタジオワークアウトを保存
+     * @param durationSeconds 運動時間（秒）
      */
     fun saveStudioWorkout(
         exerciseId: Long,
-        durationMinutes: Int,
+        durationSeconds: Int,
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
             val session = repository.getOrCreateSession(exerciseId, WorkoutType.STUDIO)
 
             val updatedSession = session.copy(
-                durationMinutes = durationMinutes,
+                durationSeconds = durationSeconds,
                 caloriesBurned = caloriesBurned,
                 updatedAt = System.currentTimeMillis()
             )
@@ -669,6 +675,7 @@ class WorkoutViewModel(
 
     /**
      * インターバルワークアウトを保存
+     * @param durationSeconds 運動時間（秒）- そのまま保存
      */
     fun saveIntervalWorkout(
         exerciseId: Long,
@@ -678,9 +685,8 @@ class WorkoutViewModel(
         viewModelScope.launch {
             val session = repository.getOrCreateSession(exerciseId, WorkoutType.INTERVAL)
 
-            val durationMinutes = durationSeconds / 60
             val updatedSession = session.copy(
-                durationMinutes = durationMinutes,
+                durationSeconds = durationSeconds,
                 updatedAt = System.currentTimeMillis()
             )
             repository.updateSession(updatedSession)
@@ -689,6 +695,7 @@ class WorkoutViewModel(
 
     /**
      * インターバルワークアウトを種目名で保存（HIIT/Tabata）- 消費カロリー対応
+     * @param durationSeconds 運動時間（秒）- そのまま保存
      */
     fun saveIntervalWorkoutByName(
         exerciseName: String,
@@ -697,8 +704,6 @@ class WorkoutViewModel(
         caloriesBurned: Int = 0
     ) {
         viewModelScope.launch {
-            val durationMinutes = durationSeconds / 60
-
             // インターバル種目を検索または作成
             val exercises = repository.getExercisesByType(WorkoutType.INTERVAL).first()
             var exercise = exercises.find { it.name == exerciseName || it.customName == exerciseName }
@@ -716,7 +721,7 @@ class WorkoutViewModel(
             val session = repository.getOrCreateSession(exercise.id, WorkoutType.INTERVAL)
 
             val updatedSession = session.copy(
-                durationMinutes = durationMinutes,
+                durationSeconds = durationSeconds,
                 caloriesBurned = caloriesBurned,
                 updatedAt = System.currentTimeMillis()
             )

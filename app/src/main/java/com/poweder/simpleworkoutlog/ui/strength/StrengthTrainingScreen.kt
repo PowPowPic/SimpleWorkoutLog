@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
-import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.data.model.SetItem
 import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
@@ -36,6 +35,8 @@ import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
 import com.poweder.simpleworkoutlog.util.formatWeight
+import com.poweder.simpleworkoutlog.ui.components.DurationInputField
+import com.poweder.simpleworkoutlog.ui.components.durationToSeconds
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -58,7 +59,10 @@ fun StrengthTrainingScreen(
     val currentExercise by viewModel.currentStrengthExercise.collectAsState()
 
     // 運動時間と消費カロリー入力
-    var durationInput by remember { mutableStateOf("") }
+    // 運動時間: 時間・分・秒の3フィールド
+    var durationHours by remember { mutableStateOf("") }
+    var durationMinutes by remember { mutableStateOf("") }
+    var durationSeconds by remember { mutableStateOf("") }
     var caloriesInput by remember { mutableStateOf("") }
 
     // 戻る確認ダイアログ
@@ -156,21 +160,16 @@ fun StrengthTrainingScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // 運動時間入力
+            // 運動時間入力（時間・分・秒の3フィールド）
             item {
-                OutlinedTextField(
-                    value = durationInput,
-                    onValueChange = { durationInput = it.filter { c -> c.isDigit() } },
-                    label = { Text(stringResource(R.string.exercise_duration)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = WorkoutColors.TextPrimary,
-                        unfocusedTextColor = WorkoutColors.TextPrimary,
-                        focusedBorderColor = WorkoutColors.AccentOrange,
-                        unfocusedBorderColor = WorkoutColors.TextSecondary
-                    )
+                DurationInputField(
+                    hours = durationHours,
+                    minutes = durationMinutes,
+                    seconds = durationSeconds,
+                    onHoursChange = { durationHours = it },
+                    onMinutesChange = { durationMinutes = it },
+                    onSecondsChange = { durationSeconds = it },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -279,13 +278,14 @@ fun StrengthTrainingScreen(
                     .clip(RoundedCornerShape(12.dp))
                     .background(WorkoutColors.ButtonConfirm)
                     .clickable {
-                        val duration = durationInput.toIntOrNull() ?: 0
+                        // 運動時間を秒に変換
+                        val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
                         val calories = caloriesInput.toIntOrNull() ?: 0
                         val exerciseId = currentExercise?.id
                         if (exerciseId != null) {
                             viewModel.finishAndSaveStrength(
                                 exerciseId = exerciseId,
-                                durationMinutes = duration,
+                                durationSeconds = totalDurationSeconds,
                                 caloriesBurned = calories
                             )
                         }

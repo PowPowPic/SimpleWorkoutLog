@@ -23,6 +23,8 @@ import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
+import com.poweder.simpleworkoutlog.ui.components.DurationInputField
+import com.poweder.simpleworkoutlog.ui.components.durationToSeconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +36,10 @@ fun OtherScreen(
     val context = LocalContext.current
     val currentExercise by viewModel.currentOtherExercise.collectAsState()
 
+    // 運動時間は時間・分・秒の3フィールド
+    var durationHours by remember { mutableStateOf("") }
     var durationMinutes by remember { mutableStateOf("") }
+    var durationSeconds by remember { mutableStateOf("") }
     var caloriesBurned by remember { mutableStateOf("") }
     var showSavedMessage by remember { mutableStateOf(false) }
 
@@ -105,21 +110,14 @@ fun OtherScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // 時間入力
-                    OutlinedTextField(
-                        value = durationMinutes,
-                        onValueChange = { durationMinutes = it.filter { c -> c.isDigit() } },
-                        label = { Text(stringResource(R.string.duration_minutes)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        singleLine = true,
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = WorkoutColors.TextPrimary,
-                            unfocusedBorderColor = WorkoutColors.TextSecondary,
-                            focusedLabelColor = WorkoutColors.TextPrimary,
-                            unfocusedLabelColor = WorkoutColors.TextSecondary,
-                            focusedTextColor = WorkoutColors.TextPrimary,
-                            unfocusedTextColor = WorkoutColors.TextPrimary
-                        ),
+                    // 時間入力（時間・分・秒の3フィールド）
+                    DurationInputField(
+                        hours = durationHours,
+                        minutes = durationMinutes,
+                        seconds = durationSeconds,
+                        onHoursChange = { durationHours = it },
+                        onMinutesChange = { durationMinutes = it },
+                        onSecondsChange = { durationSeconds = it },
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -150,21 +148,24 @@ fun OtherScreen(
             // 保存ボタン
             Button(
                 onClick = {
-                    val duration = durationMinutes.toIntOrNull() ?: 0
+                    // 運動時間を秒に変換
+                    val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
                     val calories = caloriesBurned.toIntOrNull() ?: 0
 
                     currentExercise?.let { exercise ->
                         viewModel.saveOtherWorkout(
                             exerciseId = exercise.id,
-                            durationMinutes = duration,
+                            durationSeconds = totalDurationSeconds,
                             caloriesBurned = calories
                         )
                         showSavedMessage = true
+                        durationHours = ""
                         durationMinutes = ""
+                        durationSeconds = ""
                         caloriesBurned = ""
                     }
                 },
-                enabled = durationMinutes.isNotBlank() || caloriesBurned.isNotBlank(),
+                enabled = durationHours.isNotBlank() || durationMinutes.isNotBlank() || durationSeconds.isNotBlank() || caloriesBurned.isNotBlank(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = WorkoutColors.ButtonConfirm
                 ),

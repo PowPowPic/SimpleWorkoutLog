@@ -83,14 +83,14 @@
     <string name="reps">reps</string>
     <string name="add_new_set">＋ 新たなセット</string>
     <string name="session_total">total</string>
-    <string name="exercise_duration">運動時間（分）</string>
+    <string name="exercise_duration">運動時間</string>
     <string name="exercise_calories">消費カロリー（kcal）</string>
     <string name="finish_training">トレーニング終了・保存</string>
     <string name="finish_and_save">終了・保存</string>
     <string name="go_home">Homeに戻る</string>
 
     <!-- ==================== Cardio Screen ==================== -->
-    <string name="duration_minutes">時間（分）</string>
+    <string name="duration_minutes">運動時間</string>
     <string name="distance">距離</string>
     <string name="calories">消費カロリー</string>
 
@@ -121,7 +121,7 @@
     <string name="pause">一時停止</string>
     <string name="resume">再開</string>
     <string name="stop">停止</string>
-    <string name="complete">完了</string>
+    <string name="complete">保存</string>
     <string name="save_workout_result">ワークアウト結果を保存</string>
 
     <!-- ==================== Other Screen ==================== -->
@@ -176,7 +176,7 @@
 
     <!-- ==================== Dialogs - Language ==================== -->
     <string name="language_confirm_title">言語を適用しますか？</string>
-    <string name="language_confirm_message">新しい言語設定を適用するためにアプリが再起動します。</string>
+    <string name="language_confirm_message">新しい言語設定を適用します。</string>
     <string name="applying_language">言語を適用しています…</string>
 
     <!-- Graph Screen -->
@@ -196,5 +196,10 @@
     <string name="graph_picker_cardio">有酸素（累積距離）</string>
     <string name="graph_picker_studio">スタジオ（累積回数）</string>
     <string name="graph_coming_soon">このグラフは次のフェーズで実装します</string>
+
+    <!-- Duration input placeholders -->
+    <string name="duration_hours_placeholder">時間</string>
+    <string name="duration_minutes_placeholder">分</string>
+    <string name="duration_seconds_placeholder">秒</string>
 
 </resources>

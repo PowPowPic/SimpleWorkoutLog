@@ -26,6 +26,7 @@ import com.poweder.simpleworkoutlog.ui.dialog.WorkoutDayDetailDialog
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -67,7 +68,7 @@ fun CalendarScreen(
 
     // 全種目リスト（直接取得）
     val allExercises by viewModel.allExercises.collectAsState()
-    
+
     // 種目名マップを作成（allExercisesから直接）
     val exerciseNames = remember(allExercises) {
         allExercises.associate { exercise ->
@@ -345,18 +346,18 @@ private fun MonthlySummaryCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 平均運動時間
+            // 平均運動時間（h:mm:ss形式）
             SummaryRow(
                 label = stringResource(R.string.average_duration),
-                value = formatDuration(stats.averageDuration)
+                value = formatHms(stats.averageDurationSeconds)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 総運動時間
+            // 総運動時間（h:mm:ss形式）
             SummaryRow(
                 label = stringResource(R.string.total_duration_month),
-                value = formatDuration(stats.totalDuration)
+                value = formatHms(stats.totalDurationSeconds)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -402,25 +403,12 @@ private fun SummaryRow(
 }
 
 /**
- * 分数を時間:分形式にフォーマット
- */
-private fun formatDuration(minutes: Int): String {
-    val hours = minutes / 60
-    val mins = minutes % 60
-    return if (hours > 0) {
-        "${hours}h ${mins}m"
-    } else {
-        "${mins}m"
-    }
-}
-
-/**
- * 月間統計データクラス
+ * 月間統計データクラス（秒単位）
  */
 data class MonthlyStats(
     val workoutDays: Int = 0,
-    val totalDuration: Int = 0,
-    val averageDuration: Int = 0,
+    val totalDurationSeconds: Int = 0,
+    val averageDurationSeconds: Int = 0,
     val totalCalories: Int = 0,
     val totalWeight: Double = 0.0
 )

@@ -28,7 +28,7 @@ data class WorkoutSessionEntity(
     val logicalDate: Long,               // EpochDay
     val workoutType: String,             // STRENGTH, CARDIO, INTERVAL, STUDIO, OTHER
     val totalWeight: Double = 0.0,       // 筋トレ用：総重量
-    val durationMinutes: Int = 0,        // 有酸素/インターバル/その他用：時間
+    val durationSeconds: Int = 0,        // 運動時間（秒）※全カテゴリ共通
     val caloriesBurned: Int = 0,         // 消費カロリー
     val distance: Double = 0.0,          // 有酸素用：距離（km または mile）
     val createdAt: Long = System.currentTimeMillis(),

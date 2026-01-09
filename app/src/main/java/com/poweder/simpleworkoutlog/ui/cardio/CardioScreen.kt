@@ -26,6 +26,8 @@ import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.ui.components.DurationInputField
+import com.poweder.simpleworkoutlog.ui.components.durationToSeconds
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -43,8 +45,10 @@ fun CardioScreen(
     val currentExercise by viewModel.currentCardioExercise.collectAsState()
     val distanceUnit by viewModel.distanceUnit.collectAsState()
 
-    // 入力値
+    // 入力値（運動時間は時間・分・秒の3フィールド）
+    var durationHours by remember { mutableStateOf("") }
     var durationMinutes by remember { mutableStateOf("") }
+    var durationSeconds by remember { mutableStateOf("") }
     var distance by remember { mutableStateOf("") }
     var calories by remember { mutableStateOf("") }
 
@@ -72,7 +76,7 @@ fun CardioScreen(
     }
 
     // 入力があるかどうか
-    val hasInput = durationMinutes.isNotBlank() || distance.isNotBlank() || calories.isNotBlank()
+    val hasInput = durationHours.isNotBlank() || durationMinutes.isNotBlank() || durationSeconds.isNotBlank() || distance.isNotBlank() || calories.isNotBlank()
 
     // 未保存確認ダイアログ
     if (showBackConfirmDialog) {
@@ -145,12 +149,15 @@ fun CardioScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // 時間（分）
-            InputField(
-                label = stringResource(R.string.duration_minutes),
-                value = durationMinutes,
-                onValueChange = { durationMinutes = it },
-                suffix = "min"
+            // 時間（時間・分・秒の3フィールド）
+            DurationInputField(
+                hours = durationHours,
+                minutes = durationMinutes,
+                seconds = durationSeconds,
+                onHoursChange = { durationHours = it },
+                onMinutesChange = { durationMinutes = it },
+                onSecondsChange = { durationSeconds = it },
+                modifier = Modifier.fillMaxWidth()
             )
 
             // 距離
@@ -209,13 +216,14 @@ fun CardioScreen(
                     .background(WorkoutColors.ButtonConfirm)
                     .clickable {
                         currentExercise?.let { exercise ->
-                            val duration = durationMinutes.toIntOrNull() ?: 0
+                            // 運動時間を秒に変換
+                            val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
                             val dist = distance.toDoubleOrNull() ?: 0.0
                             val cal = calories.toIntOrNull() ?: 0
 
                             viewModel.saveCardioWorkout(
                                 exerciseId = exercise.id,
-                                durationMinutes = duration,
+                                durationSeconds = totalDurationSeconds,
                                 distance = dist,
                                 caloriesBurned = cal
                             )

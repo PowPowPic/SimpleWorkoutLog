@@ -33,6 +33,8 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatDurationShort
+import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -89,8 +91,8 @@ fun HistoryScreen(
     // カテゴリ別にグループ化
     val sessionsByType = sessionsForDate.groupBy { it.workoutType }
 
-    // 合計計算（セットから重量を計算）
-    val totalDuration = sessionsForDate.sumOf { it.durationMinutes }
+    // 合計計算（セットから重量を計算）- 秒で計算
+    val totalDurationSeconds = sessionsForDate.sumOf { it.durationSeconds }
     val totalCalories = sessionsForDate.sumOf { it.caloriesBurned }
     val totalWeight = setsForDate.sumOf { it.weight * it.reps }
 
@@ -233,14 +235,14 @@ fun HistoryScreen(
             } else {
                 // 日付合計サマリ
                 DaySummaryCard(
-                    totalDuration = totalDuration,
+                    totalDurationSeconds = totalDurationSeconds,
                     totalCalories = totalCalories,
                     totalWeight = totalWeight,
                     weightUnit = weightUnit,
                     onClick = { showDetailDialog = true }
                 )
 
-                // カテゴリ別サマリカード
+                // カテゴリ別サマリ
                 // 筋トレ
                 sessionsByType[WorkoutType.STRENGTH]?.let { sessions ->
                     val categoryWeight = sessions.sumOf { session ->
@@ -257,7 +259,7 @@ fun HistoryScreen(
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
                         categoryWeight = categoryWeight,
-                        categoryDuration = sessions.sumOf { it.durationMinutes },
+                        categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
                         onClick = { showDetailDialog = true },
                         onEdit = { showDetailDialog = true },
@@ -281,7 +283,7 @@ fun HistoryScreen(
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
                         categoryWeight = 0.0,
-                        categoryDuration = sessions.sumOf { it.durationMinutes },
+                        categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
                         onClick = { showDetailDialog = true },
                         onEdit = { showDetailDialog = true },
@@ -305,7 +307,7 @@ fun HistoryScreen(
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
                         categoryWeight = 0.0,
-                        categoryDuration = sessions.sumOf { it.durationMinutes },
+                        categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
                         onClick = { showDetailDialog = true },
                         onEdit = { showDetailDialog = true },
@@ -329,7 +331,7 @@ fun HistoryScreen(
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
                         categoryWeight = 0.0,
-                        categoryDuration = sessions.sumOf { it.durationMinutes },
+                        categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
                         onClick = { showDetailDialog = true },
                         onEdit = { showDetailDialog = true },
@@ -353,7 +355,7 @@ fun HistoryScreen(
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
                         categoryWeight = 0.0,
-                        categoryDuration = sessions.sumOf { it.durationMinutes },
+                        categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
                         onClick = { showDetailDialog = true },
                         onEdit = { showDetailDialog = true },
@@ -375,7 +377,7 @@ fun HistoryScreen(
  */
 @Composable
 private fun DaySummaryCard(
-    totalDuration: Int,
+    totalDurationSeconds: Int,
     totalCalories: Int,
     totalWeight: Double,
     weightUnit: WeightUnit,
@@ -408,7 +410,7 @@ private fun DaySummaryCard(
             ) {
                 SummaryItem(
                     label = stringResource(R.string.total_duration_label),
-                    value = formatDuration(totalDuration)
+                    value = formatHms(totalDurationSeconds)
                 )
 
                 SummaryItem(
@@ -460,7 +462,7 @@ private fun CategorySummaryCard(
     sessionWeights: Map<Long, Double>,
     weightUnit: WeightUnit,
     categoryWeight: Double,
-    categoryDuration: Int,
+    categoryDurationSeconds: Int,
     categoryCalories: Int,
     onClick: () -> Unit,
     onEdit: () -> Unit,
@@ -519,7 +521,7 @@ private fun CategorySummaryCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // カテゴリサマリ（重量、時間、カロリー）
+            // カテゴリサマリ（重量、時間、カロリー）- 短い形式で表示
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -531,9 +533,9 @@ private fun CategorySummaryCard(
                         color = WorkoutColors.TextPrimary
                     )
                 }
-                if (categoryDuration > 0) {
+                if (categoryDurationSeconds > 0) {
                     Text(
-                        text = formatDuration(categoryDuration),
+                        text = formatDurationShort(categoryDurationSeconds),
                         style = MaterialTheme.typography.bodyMedium,
                         color = WorkoutColors.TextPrimary
                     )
@@ -562,18 +564,5 @@ private fun CategorySummaryCard(
                 )
             }
         }
-    }
-}
-
-/**
- * 分数を時間:分形式にフォーマット
- */
-private fun formatDuration(minutes: Int): String {
-    val hours = minutes / 60
-    val mins = minutes % 60
-    return if (hours > 0) {
-        "${hours}h ${mins}m"
-    } else {
-        "${mins}m"
     }
 }
