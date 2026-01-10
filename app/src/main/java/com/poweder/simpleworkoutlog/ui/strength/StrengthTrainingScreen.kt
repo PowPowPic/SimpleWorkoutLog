@@ -117,7 +117,7 @@ fun StrengthTrainingScreen(
             .withLocale(Locale.getDefault())
     }
 
-    val backgroundGradient = Brush.verticalGradient(
+    val backgroundGradient = Brush.horizontalGradient(
         colors = listOf(
             WorkoutColors.BackgroundDark,
             WorkoutColors.BackgroundMedium
@@ -205,20 +205,42 @@ fun StrengthTrainingScreen(
 
             // 消費カロリー入力
             item {
-                OutlinedTextField(
-                    value = caloriesInput,
-                    onValueChange = { caloriesInput = it.filter { c -> c.isDigit() } },
-                    label = { Text(stringResource(R.string.exercise_calories)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = WorkoutColors.TextPrimary,
-                        unfocusedTextColor = WorkoutColors.TextPrimary,
-                        focusedBorderColor = WorkoutColors.AccentOrange,
-                        unfocusedBorderColor = Color.Black
+                Column {
+                    Text(
+                        text = stringResource(R.string.calories),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = WorkoutColors.TextPrimary,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
-                )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = caloriesInput,
+                            onValueChange = { caloriesInput = it.filter { c -> c.isDigit() } },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            singleLine = true,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = WorkoutColors.TextPrimary,
+                                unfocusedTextColor = WorkoutColors.TextPrimary,
+                                focusedBorderColor = WorkoutColors.AccentOrange,
+                                unfocusedBorderColor = Color.Black
+                            ),
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Text(
+                            text = stringResource(R.string.kcal),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = WorkoutColors.TextPrimary
+                        )
+                    }
+                }
             }
 
             item {

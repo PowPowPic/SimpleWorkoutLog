@@ -62,6 +62,7 @@ fun DurationInputField(
                     Text(
                         text = stringResource(R.string.duration_hours_placeholder),
                         textAlign = TextAlign.Center,
+                        color = WorkoutColors.TextPrimary,
                         modifier = Modifier.fillMaxWidth()
                     )
                 },
@@ -72,7 +73,9 @@ fun DurationInputField(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = Color.Black
+                    unfocusedBorderColor = Color.Black,
+                    focusedPlaceholderColor = WorkoutColors.TextPrimary,
+                    unfocusedPlaceholderColor = WorkoutColors.TextPrimary
                 ),
                 modifier = Modifier.weight(1f)
             )
@@ -96,6 +99,7 @@ fun DurationInputField(
                     Text(
                         text = stringResource(R.string.duration_minutes_placeholder),
                         textAlign = TextAlign.Center,
+                        color = WorkoutColors.TextPrimary,
                         modifier = Modifier.fillMaxWidth()
                     )
                 },
@@ -106,7 +110,9 @@ fun DurationInputField(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = Color.Black
+                    unfocusedBorderColor = Color.Black,
+                    focusedPlaceholderColor = WorkoutColors.TextPrimary,
+                    unfocusedPlaceholderColor = WorkoutColors.TextPrimary
                 ),
                 modifier = Modifier.weight(1f)
             )
@@ -130,6 +136,7 @@ fun DurationInputField(
                     Text(
                         text = stringResource(R.string.duration_seconds_placeholder),
                         textAlign = TextAlign.Center,
+                        color = WorkoutColors.TextPrimary,
                         modifier = Modifier.fillMaxWidth()
                     )
                 },
@@ -140,7 +147,9 @@ fun DurationInputField(
                     focusedTextColor = WorkoutColors.TextPrimary,
                     unfocusedTextColor = WorkoutColors.TextPrimary,
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = Color.Black
+                    unfocusedBorderColor = Color.Black,
+                    focusedPlaceholderColor = WorkoutColors.TextPrimary,
+                    unfocusedPlaceholderColor = WorkoutColors.TextPrimary
                 ),
                 modifier = Modifier.weight(1f)
             )

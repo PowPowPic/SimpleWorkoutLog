@@ -52,6 +52,11 @@ fun IntervalScreen(
     // タイマー開始時刻（SystemClock.elapsedRealtime()ベース）
     var phaseStartTime by remember { mutableStateOf(0L) }
     var phaseDuration by remember { mutableStateOf(0) }
+    
+    // タイマー全体の開始時刻（総経過時間計算用）
+    var totalStartTime by remember { mutableStateOf(0L) }
+    // 一時停止時の累積時間
+    var pausedTotalElapsed by remember { mutableStateOf(0L) }
 
     // 完了後の入力画面表示フラグ
     var showResultInput by remember { mutableStateOf(isEditMode) }  // 編集モードでは最初から結果入力画面
@@ -107,10 +112,13 @@ fun IntervalScreen(
                 val elapsed = ((SystemClock.elapsedRealtime() - phaseStartTime) / 1000).toInt()
                 val remaining = (phaseDuration - elapsed).coerceAtLeast(0)
 
+                // 総経過時間を計算（一時停止時の累積 + 現在のセッションの経過）
+                val currentTotalElapsed = (pausedTotalElapsed + (SystemClock.elapsedRealtime() - totalStartTime)) / 1000
+
                 // 残り時間を更新
                 timerState = timerState.copy(
                     remainingSeconds = remaining,
-                    totalElapsedSeconds = timerState.totalElapsedSeconds + 1
+                    totalElapsedSeconds = currentTotalElapsed.toInt()
                 )
 
                 // サウンド再生（残り秒が変わった時のみ鳴らす）
@@ -158,6 +166,9 @@ fun IntervalScreen(
                 settings = newSettings
                 showSettingsDialog = false
                 lastBeepSecond = -1
+                // タイマー開始時にtotalStartTimeを初期化
+                totalStartTime = SystemClock.elapsedRealtime()
+                pausedTotalElapsed = 0L
                 startTimer(
                     settings = newSettings,
                     onStateChange = { newState, duration ->
@@ -298,9 +309,13 @@ fun IntervalScreen(
                                 color = if (timerState.isRunning) WorkoutColors.AccentOrange else WorkoutColors.ButtonConfirm,
                                 onClick = {
                                     if (timerState.isRunning) {
+                                        // 一時停止時：経過時間を累積に保存
+                                        pausedTotalElapsed += SystemClock.elapsedRealtime() - totalStartTime
                                         timerState = timerState.copy(isRunning = false)
                                     } else {
+                                        // 再開時：フェーズとトータルの開始時刻を更新
                                         phaseStartTime = SystemClock.elapsedRealtime() - ((phaseDuration - timerState.remainingSeconds) * 1000L)
+                                        totalStartTime = SystemClock.elapsedRealtime()
                                         timerState = timerState.copy(isRunning = true)
                                     }
                                 }
@@ -420,7 +435,7 @@ private fun ResultInputSection(
                 OutlinedTextField(
                     value = durationMinutes,
                     onValueChange = { onDurationMinutesChange(it.filter { c -> c.isDigit() }) },
-                    label = { Text("分") },
+                    label = { Text("分", color = WorkoutColors.TextPrimary) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.weight(1f),
@@ -428,14 +443,16 @@ private fun ResultInputSection(
                         focusedTextColor = WorkoutColors.TextPrimary,
                         unfocusedTextColor = WorkoutColors.TextPrimary,
                         focusedBorderColor = WorkoutColors.AccentOrange,
-                        unfocusedBorderColor = Color.Black
+                        unfocusedBorderColor = Color.Black,
+                        focusedLabelColor = WorkoutColors.TextPrimary,
+                        unfocusedLabelColor = WorkoutColors.TextPrimary
                     )
                 )
                 Text(":", color = WorkoutColors.TextPrimary)
                 OutlinedTextField(
                     value = durationSeconds,
                     onValueChange = { onDurationSecondsChange(it.filter { c -> c.isDigit() }) },
-                    label = { Text("秒") },
+                    label = { Text("秒", color = WorkoutColors.TextPrimary) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.weight(1f),
@@ -443,7 +460,9 @@ private fun ResultInputSection(
                         focusedTextColor = WorkoutColors.TextPrimary,
                         unfocusedTextColor = WorkoutColors.TextPrimary,
                         focusedBorderColor = WorkoutColors.AccentOrange,
-                        unfocusedBorderColor = Color.Black
+                        unfocusedBorderColor = Color.Black,
+                        focusedLabelColor = WorkoutColors.TextPrimary,
+                        unfocusedLabelColor = WorkoutColors.TextPrimary
                     )
                 )
             }
@@ -452,7 +471,7 @@ private fun ResultInputSection(
             OutlinedTextField(
                 value = formatTime(totalSeconds),
                 onValueChange = { },
-                label = { Text(stringResource(R.string.duration_minutes)) },
+                label = { Text(stringResource(R.string.duration_minutes), color = WorkoutColors.TextPrimary) },
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(0.8f),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -460,7 +479,9 @@ private fun ResultInputSection(
                     unfocusedTextColor = WorkoutColors.TextPrimary,
                     disabledTextColor = WorkoutColors.TextPrimary,
                     focusedBorderColor = WorkoutColors.AccentOrange,
-                    unfocusedBorderColor = Color.Black
+                    unfocusedBorderColor = Color.Black,
+                    focusedLabelColor = WorkoutColors.TextPrimary,
+                    unfocusedLabelColor = WorkoutColors.TextPrimary
                 )
             )
         }
@@ -468,20 +489,46 @@ private fun ResultInputSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         // 消費カロリー入力
-        OutlinedTextField(
-            value = caloriesInput,
-            onValueChange = { onCaloriesChange(it.filter { c -> c.isDigit() }) },
-            label = { Text(stringResource(R.string.calories_burned)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(0.8f),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = WorkoutColors.TextPrimary,
-                unfocusedTextColor = WorkoutColors.TextPrimary,
-                focusedBorderColor = WorkoutColors.AccentOrange,
-                unfocusedBorderColor = Color.Black
+        Column(
+            modifier = Modifier.fillMaxWidth(0.8f)
+        ) {
+            Text(
+                text = stringResource(R.string.calories),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = WorkoutColors.TextPrimary,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
-        )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedTextField(
+                    value = caloriesInput,
+                    onValueChange = { onCaloriesChange(it.filter { c -> c.isDigit() }) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = WorkoutColors.TextPrimary,
+                        unfocusedTextColor = WorkoutColors.TextPrimary,
+                        focusedBorderColor = WorkoutColors.AccentOrange,
+                        unfocusedBorderColor = Color.Black,
+                        focusedPlaceholderColor = WorkoutColors.TextPrimary,
+                        unfocusedPlaceholderColor = WorkoutColors.TextPrimary
+                    ),
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Text(
+                    text = stringResource(R.string.kcal),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = WorkoutColors.TextPrimary
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 

@@ -323,7 +323,7 @@ private fun InputField(
             Text(
                 text = suffix,
                 style = MaterialTheme.typography.titleMedium,
-                color = WorkoutColors.TextSecondary
+                color = WorkoutColors.TextPrimary
             )
         }
     }

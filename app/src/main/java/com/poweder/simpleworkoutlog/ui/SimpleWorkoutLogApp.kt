@@ -110,7 +110,7 @@ fun SimpleWorkoutLogApp(
                 NavHost(
                     navController = navController,
                     startDestination = "main_pager",
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = if (isMainScreen) Modifier.padding(innerPadding) else Modifier.fillMaxSize()
                 ) {
                     // メイン5画面（HorizontalPager）
                     composable("main_pager") {
