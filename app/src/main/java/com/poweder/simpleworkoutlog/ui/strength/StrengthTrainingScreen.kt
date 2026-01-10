@@ -360,6 +360,9 @@ fun StrengthTrainingScreen(
                 )
             }
         }
+
+        // システムナビゲーションバー用のスペース
+        Spacer(modifier = Modifier.navigationBarsPadding())
     }
 }
 

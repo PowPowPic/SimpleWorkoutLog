@@ -337,6 +337,9 @@ fun IntervalScreen(
                 }
             }
         }
+
+        // システムナビゲーションバー用のスペース
+        Spacer(modifier = Modifier.navigationBarsPadding())
     }
 }
 

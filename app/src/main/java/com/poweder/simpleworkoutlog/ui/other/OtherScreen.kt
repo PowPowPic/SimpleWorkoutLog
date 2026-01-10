@@ -309,6 +309,7 @@ fun OtherScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        // システムナビゲーションバー用のスペース
+        Spacer(modifier = Modifier.navigationBarsPadding())
     }
 }

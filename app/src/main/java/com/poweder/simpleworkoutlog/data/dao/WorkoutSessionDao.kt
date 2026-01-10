@@ -49,7 +49,7 @@ interface WorkoutSessionDao {
         SELECT logicalDate as date, SUM(distance) as totalDistance
         FROM workout_sessions
         WHERE exerciseId = :exerciseId
-        AND workoutType = 'CARDIO'
+        AND workoutType = 'cardio'
         AND logicalDate >= :startDate
         GROUP BY logicalDate
         ORDER BY logicalDate ASC
@@ -62,7 +62,7 @@ interface WorkoutSessionDao {
     @Query("""
         SELECT logicalDate as date, COUNT(*) as sessionCount
         FROM workout_sessions
-        WHERE workoutType = 'STUDIO'
+        WHERE workoutType = 'studio'
         AND logicalDate >= :startDate
         GROUP BY logicalDate
         ORDER BY logicalDate ASC
