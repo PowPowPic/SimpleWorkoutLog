@@ -219,8 +219,39 @@
     <string name="duration_minutes_placeholder">Minutes</string>
     <string name="duration_seconds_placeholder">Seconds</string>
 
+    <!-- Interval Timer (Level B) -->
+    <string name="total_elapsed">Total: %1$s</string>
+    <string name="edit_interval_result">Edit Result</string>
+    <string name="input_result">Input Result</string>
+    <string name="duration">Duration</string>
+    <!-- Interval Timer -->
+    <string name="timer_settings">Timer Settings</string>
+
+    <string name="warm_up">Warm-up</string>
+    <string name="training">Training</string>
+    <string name="rest">Rest</string>
+    <string name="cooldown">Cooldown</string>
+
+    <string name="seconds_unit">sec</string>
+
+    <string name="sets_count">Sets</string>
+    <string name="sets_unit">sets</string>
+
+    <string name="total_time_estimate">Total time: %1$s</string>
+
+    <string name="start">Start</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Interval Timer Notification -->
+    <string name="interval_timer_channel_name">Interval Timer</string>
+    <string name="interval_timer_channel_description">Shows interval timer progress</string>
+    <string name="interval_timer">Interval Timer</string>
+
+
+
     <!-- ==================== Settings Hint (English Only) ==================== -->
     <string name="settings_hint" translatable="false">
         Language and kg/lbs, km/mile can be changed in Settings.
     </string>
+
 </resources>

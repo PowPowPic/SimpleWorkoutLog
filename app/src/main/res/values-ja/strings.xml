@@ -194,4 +194,34 @@
     <string name="duration_minutes_placeholder">分</string>
     <string name="duration_seconds_placeholder">秒</string>
 
+    <!-- Interval Timer (Level B) -->
+    <string name="total_elapsed">合計: %1$s</string>
+    <string name="edit_interval_result">結果を編集</string>
+    <string name="input_result">結果を入力</string>
+    <string name="duration">運動時間</string>
+    <!-- インターバルタイマー -->
+    <string name="timer_settings">タイマー設定</string>
+
+    <string name="warm_up">ウォームアップ</string>
+    <string name="training">トレーニング</string>
+    <string name="rest">休憩</string>
+    <string name="cooldown">クールダウン</string>
+
+    <string name="seconds_unit">秒</string>
+
+    <string name="sets_count">セット数</string>
+    <string name="sets_unit">セット</string>
+
+    <string name="total_time_estimate">合計時間：%1$s</string>
+
+    <string name="start">開始</string>
+    <string name="cancel">キャンセル</string>
+
+    <!-- Interval Timer Notification -->
+    <string name="interval_timer_channel_name">インターバルタイマー</string>
+    <string name="interval_timer_channel_description">インターバルタイマーの進捗を表示</string>
+    <string name="interval_timer">インターバルタイマー</string>
+
+
+
 </resources>

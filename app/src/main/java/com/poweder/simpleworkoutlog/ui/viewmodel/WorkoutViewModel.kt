@@ -17,6 +17,7 @@ import com.poweder.simpleworkoutlog.data.model.SetItem
 import com.poweder.simpleworkoutlog.data.preferences.LastInputDataStore
 import com.poweder.simpleworkoutlog.data.preferences.SettingsDataStore
 import com.poweder.simpleworkoutlog.data.repository.WorkoutRepository
+import com.poweder.simpleworkoutlog.domain.interval.IntervalPlan
 import com.poweder.simpleworkoutlog.ui.screen.MonthlyStats
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
@@ -1084,5 +1085,38 @@ class WorkoutViewModel(
 
             clearEditingSession()
         }
+    }
+
+    // ===== インターバルタイマー（Level C2：ForegroundService経由） =====
+
+    // タイマー設定（UIが監視）
+    private val _intervalPlan = MutableStateFlow<IntervalPlan?>(null)
+    val intervalPlan: StateFlow<IntervalPlan?> = _intervalPlan.asStateFlow()
+
+    // 結果入力画面表示フラグ
+    private val _showIntervalResultInput = MutableStateFlow(false)
+    val showIntervalResultInput: StateFlow<Boolean> = _showIntervalResultInput.asStateFlow()
+
+    /**
+     * インターバルタイマーのプランを設定
+     * ※ 実際のタイマー駆動はForegroundServiceが行う
+     */
+    fun setIntervalPlan(plan: IntervalPlan) {
+        _intervalPlan.value = plan
+    }
+
+    /**
+     * 結果入力画面を表示
+     */
+    fun showIntervalResultInput() {
+        _showIntervalResultInput.value = true
+    }
+
+    /**
+     * インターバルタイマー状態をクリア（画面離脱時）
+     */
+    fun clearIntervalTimer() {
+        _intervalPlan.value = null
+        _showIntervalResultInput.value = false
     }
 }
