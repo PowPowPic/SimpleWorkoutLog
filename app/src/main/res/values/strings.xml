@@ -9,7 +9,7 @@
     <string name="nav_calendar">Calendar</string>
     <string name="nav_graph">Graph</string>
     <!-- 長くなる Settings を避けて短縮 -->
-    <string name="nav_settings">Prefs</string>
+    <string name="nav_settings">Settings</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -141,7 +141,7 @@
     <string name="total_weight_month">Total Weight</string>
 
     <!-- ==================== Settings ==================== -->
-    <string name="settings_title">Preferences</string>
+    <string name="settings_title">Settings</string>
     <string name="settings_language_title">Language</string>
     <string name="settings_language_description">Change display language</string>
     <string name="settings_weight_unit_title">Weight Unit</string>
@@ -256,7 +256,10 @@
     <string name="countdown_last_5_seconds">Countdown (last 5 seconds)</string>
     <string name="countdown_last_5_seconds_desc">Notify 5–1 seconds before each phase ends</string>
 
-
+    <!-- Interval Presets -->
+    <string name="preset_tabata_desc">20 seconds work / 10 seconds rest × 8 rounds</string>
+    <string name="preset_hiit_desc">High-intensity interval training\nCustomize work and rest time</string>
+    <string name="preset_emom_desc">Every Minute On the Minute\nStart a new round every minute</string>
 
     <!-- ==================== Settings Hint (English Only) ==================== -->
     <string name="settings_hint" translatable="false">

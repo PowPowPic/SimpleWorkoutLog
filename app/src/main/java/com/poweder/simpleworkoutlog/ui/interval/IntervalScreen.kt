@@ -132,10 +132,11 @@ fun IntervalScreen(
     // 設定ダイアログ
     if (showSettingsDialog) {
         IntervalTimerSettingsDialog(
-            initialPlan = if (intervalExerciseName == "Tabata") {
-                IntervalPlan.tabataDefault()
-            } else {
-                IntervalPlan.hiitDefault()
+            initialPlan = when (intervalExerciseName) {
+                "TABATA" -> IntervalPlan.tabataDefault()
+                "HIIT" -> IntervalPlan.hiitDefault()
+                "EMOM" -> IntervalPlan.emomDefault()
+                else -> IntervalPlan.tabataDefault()
             },
             onConfirm = { newPlan ->
                 showSettingsDialog = false

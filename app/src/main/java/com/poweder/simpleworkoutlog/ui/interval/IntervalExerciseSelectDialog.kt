@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -20,12 +21,14 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 
 /**
  * インターバルトレーニング専用の種目選択ダイアログ
- * Tabata / HIIT の2択のみ、編集/削除/追加なし
+ * TABATA / HIIT / EMOM の3択
+ * 順序: TABATA → HIIT → EMOM（固定）
  */
 @Composable
 fun IntervalExerciseSelectDialog(
-    onHiitSelect: () -> Unit,
     onTabataSelect: () -> Unit,
+    onHiitSelect: () -> Unit,
+    onEmomSelect: () -> Unit,
     onDismiss: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
@@ -45,23 +48,34 @@ fun IntervalExerciseSelectDialog(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Tabata カード（先に表示）
+                // 1. TABATA（最初）
                 IntervalTypeCard(
-                    text = "Tabata",
+                    title = "TABATA",
+                    description = stringResource(R.string.preset_tabata_desc),
                     onClick = onTabataSelect
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // HIIT カード
+                // 2. HIIT（2番目）
                 IntervalTypeCard(
-                    text = "HIIT",
+                    title = "HIIT",
+                    description = stringResource(R.string.preset_hiit_desc),
                     onClick = onHiitSelect
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // 3. EMOM（最後）
+                IntervalTypeCard(
+                    title = "EMOM",
+                    description = stringResource(R.string.preset_emom_desc),
+                    onClick = onEmomSelect
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Cancel ボタンのみ
+                // Cancel ボタン
                 TextButton(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
@@ -78,7 +92,8 @@ fun IntervalExerciseSelectDialog(
 
 @Composable
 private fun IntervalTypeCard(
-    text: String,
+    title: String,
+    description: String,
     onClick: () -> Unit
 ) {
     val gradient = Brush.horizontalGradient(
@@ -94,15 +109,21 @@ private fun IntervalTypeCard(
             .clip(RoundedCornerShape(12.dp))
             .background(gradient)
             .clickable { onClick() }
-            .padding(vertical = 24.dp, horizontal = 16.dp),
-        contentAlignment = Alignment.Center
+            .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = WorkoutColors.TextPrimary,
-            textAlign = TextAlign.Center
-        )
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = WorkoutColors.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Black
+            )
+        }
     }
 }

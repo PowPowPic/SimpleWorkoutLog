@@ -251,14 +251,19 @@ fun MainScreen(
     // インターバル種目選択ダイアログ（専用）
     if (showIntervalExerciseDialog) {
         IntervalExerciseSelectDialog(
+            onTabataSelect = {
+                showIntervalExerciseDialog = false
+                viewModel.setIntervalExerciseName("TABATA")
+                onNavigateToInterval()
+            },
             onHiitSelect = {
                 showIntervalExerciseDialog = false
                 viewModel.setIntervalExerciseName("HIIT")
                 onNavigateToInterval()
             },
-            onTabataSelect = {
+            onEmomSelect = {
                 showIntervalExerciseDialog = false
-                viewModel.setIntervalExerciseName("Tabata")
+                viewModel.setIntervalExerciseName("EMOM")
                 onNavigateToInterval()
             },
             onDismiss = { showIntervalExerciseDialog = false }

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -455,7 +456,7 @@ private fun SettingsSwitchItem(
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = WorkoutColors.TextSecondary
+                    color = Color.Black
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
