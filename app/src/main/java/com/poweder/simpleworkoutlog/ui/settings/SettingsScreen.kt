@@ -35,6 +35,12 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
+// タイマー設定用の定数（IntervalForegroundServiceと共有）
+private const val PREFS_SETTINGS = "swl_prefs"
+private const val KEY_TIMER_SOUND = "timer_sound_enabled"
+private const val KEY_TIMER_VIBRATION = "timer_vibration_enabled"
+private const val KEY_COUNTDOWN_LAST_5 = "countdown_last_5_seconds"
+
 /**
  * ContextからActivityを取得する拡張関数
  */
@@ -73,6 +79,22 @@ fun SettingsScreen(
     var pendingLanguage by remember { mutableStateOf<String?>(null) }
     var showLanguageConfirmDialog by remember { mutableStateOf(false) }
     var showApplyingDialog by remember { mutableStateOf(false) }
+
+    // タイマー設定用SharedPreferences
+    val timerSettingsPrefs = remember {
+        context.getSharedPreferences(PREFS_SETTINGS, Context.MODE_PRIVATE)
+    }
+
+    // タイマー設定の状態
+    var timerSoundEnabled by remember {
+        mutableStateOf(timerSettingsPrefs.getBoolean(KEY_TIMER_SOUND, true))
+    }
+    var timerVibrationEnabled by remember {
+        mutableStateOf(timerSettingsPrefs.getBoolean(KEY_TIMER_VIBRATION, true))
+    }
+    var countdownEnabled by remember {
+        mutableStateOf(timerSettingsPrefs.getBoolean(KEY_COUNTDOWN_LAST_5, false))
+    }
 
     // 日付をライフサイクルに連動して更新
     var logicalDate by remember { mutableStateOf(currentLogicalDate()) }
@@ -244,7 +266,8 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // 言語設定
@@ -268,7 +291,51 @@ fun SettingsScreen(
                 onClick = { showDistanceUnitDialog = true }
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // ===== タイマー設定セクション =====
+            Text(
+                text = stringResource(R.string.timer_settings_section),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = WorkoutColors.AccentOrange,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            // タイマー音
+            SettingsSwitchItem(
+                title = stringResource(R.string.timer_sound),
+                description = stringResource(R.string.timer_sound_desc),
+                checked = timerSoundEnabled,
+                onCheckedChange = { enabled ->
+                    timerSoundEnabled = enabled
+                    timerSettingsPrefs.edit().putBoolean(KEY_TIMER_SOUND, enabled).apply()
+                }
+            )
+
+            // タイマーバイブ
+            SettingsSwitchItem(
+                title = stringResource(R.string.timer_vibration),
+                description = stringResource(R.string.timer_vibration_desc),
+                checked = timerVibrationEnabled,
+                onCheckedChange = { enabled ->
+                    timerVibrationEnabled = enabled
+                    timerSettingsPrefs.edit().putBoolean(KEY_TIMER_VIBRATION, enabled).apply()
+                }
+            )
+
+            // ラスト5秒カウントダウン
+            SettingsSwitchItem(
+                title = stringResource(R.string.countdown_last_5_seconds),
+                description = stringResource(R.string.countdown_last_5_seconds_desc),
+                checked = countdownEnabled,
+                onCheckedChange = { enabled ->
+                    countdownEnabled = enabled
+                    timerSettingsPrefs.edit().putBoolean(KEY_COUNTDOWN_LAST_5, enabled).apply()
+                }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // 全データ削除
             SettingsItem(
@@ -342,6 +409,65 @@ private fun SettingsItem(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium,
                 color = WorkoutColors.TextSecondary
+            )
+        }
+    }
+}
+
+/**
+ * スイッチ付き設定項目
+ */
+@Composable
+private fun SettingsSwitchItem(
+    title: String,
+    description: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    val cardGradient = Brush.horizontalGradient(
+        colors = listOf(
+            WorkoutColors.StrengthCardStart,
+            WorkoutColors.StrengthCardEnd
+        )
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(cardGradient)
+            .clickable { onCheckedChange(!checked) }
+            .padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = WorkoutColors.TextPrimary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = WorkoutColors.TextSecondary
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Switch(
+                checked = checked,
+                onCheckedChange = onCheckedChange,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = WorkoutColors.AccentOrange,
+                    checkedTrackColor = WorkoutColors.AccentOrange.copy(alpha = 0.5f),
+                    uncheckedThumbColor = WorkoutColors.TextSecondary,
+                    uncheckedTrackColor = WorkoutColors.TextSecondary.copy(alpha = 0.3f)
+                )
             )
         }
     }

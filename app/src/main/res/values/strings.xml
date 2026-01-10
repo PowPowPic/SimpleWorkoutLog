@@ -247,6 +247,15 @@
     <string name="interval_timer_channel_description">Shows interval timer progress</string>
     <string name="interval_timer">Interval Timer</string>
 
+    <!-- Timer Settings -->
+    <string name="timer_settings_section">Timer Settings</string>
+    <string name="timer_sound">Timer sound</string>
+    <string name="timer_sound_desc">Turn timer sounds on/off</string>
+    <string name="timer_vibration">Timer vibration</string>
+    <string name="timer_vibration_desc">Turn vibration on/off</string>
+    <string name="countdown_last_5_seconds">Countdown (last 5 seconds)</string>
+    <string name="countdown_last_5_seconds_desc">Notify 5–1 seconds before each phase ends</string>
+
 
 
     <!-- ==================== Settings Hint (English Only) ==================== -->

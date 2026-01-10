@@ -222,6 +222,15 @@
     <string name="interval_timer_channel_description">インターバルタイマーの進捗を表示</string>
     <string name="interval_timer">インターバルタイマー</string>
 
+    <!-- Timer Settings -->
+    <string name="timer_settings_section">タイマー設定</string>
+    <string name="timer_sound">タイマー音</string>
+    <string name="timer_sound_desc">タイマーの音をオン／オフします</string>
+    <string name="timer_vibration">タイマーバイブ</string>
+    <string name="timer_vibration_desc">バイブ通知をオン／オフします</string>
+    <string name="countdown_last_5_seconds">ラスト5秒カウントダウン</string>
+    <string name="countdown_last_5_seconds_desc">各フェーズ終了の5〜1秒前に通知します</string>
+
 
 
 </resources>
