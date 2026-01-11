@@ -4,7 +4,7 @@
     <string name="app_name">Simple Workout Log</string>
 
     <!-- ==================== Navigation ==================== -->
-    <string name="nav_home">Ana</string>
+    <string name="nav_home">Ana Sayfa</string>
     <string name="nav_history">Geçmiş</string>
     <string name="nav_calendar">Takvim</string>
     <string name="nav_graph">Grafik</string>
@@ -26,13 +26,11 @@
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
-    <string name="today_grand_total">Bugünün toplam ağırlığı</string>
+    <string name="today_grand_total">Bugünkü toplam ağırlık</string>
     <string name="today_duration">Bugünkü egzersiz süresi</string>
     <string name="today_calories">Bugün yakılan kalori</string>
-    <string name="card_today_menu">Bugünün antrenman menüsü</string>
-    <string name="midnight_rule_note">
-        00:00–02:59 arasındaki kayıtlar önceki güne kaydedilir
-    </string>
+    <string name="card_today_menu">Bugünkü antrenman</string>
+    <string name="midnight_rule_note">00:00–03:00 arasındaki kayıtlar önceki gün olarak kaydedilir</string>
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Egzersiz türünü seç</string>
@@ -41,15 +39,13 @@
     <string name="workout_interval">Interval</string>
     <string name="workout_studio">Stüdyo</string>
     <string name="workout_other">Diğer</string>
-    <string name="add_workout_type">+ Yeni tür ekle</string>
+    <string name="add_workout_type">＋ Yeni tür ekle</string>
     <string name="workout_type_name">Tür adı</string>
 
     <!-- ==================== Exercise Selection ==================== -->
     <string name="select_exercise">Egzersiz seç</string>
-    <string name="no_exercises_yet">
-        Henüz egzersiz yok. Aşağıdaki butonla ekleyin.
-    </string>
-    <string name="add_new_exercise">+ Yeni egzersiz ekle</string>
+    <string name="no_exercises_yet">Henüz egzersiz yok. Aşağıdaki düğmeden ekleyin!</string>
+    <string name="add_new_exercise">＋ Yeni egzersiz ekle</string>
     <string name="exercise_name">Egzersiz adı</string>
 
     <!-- ==================== Exercise Names - Strength ==================== -->
@@ -76,16 +72,16 @@
 
     <!-- ==================== Strength Training Screen ==================== -->
     <string name="reps">Tekrar</string>
-    <string name="add_new_set">+ Set ekle</string>
+    <string name="add_new_set">＋ Yeni set</string>
     <string name="session_total">Toplam</string>
     <string name="exercise_duration">Egzersiz süresi</string>
-    <string name="exercise_calories">Kalori (kcal)</string>
+    <string name="exercise_calories">Yakılan kalori (kcal)</string>
     <string name="finish_training">Antrenmanı bitir ve kaydet</string>
     <string name="finish_and_save">Bitir ve kaydet</string>
     <string name="go_home">Ana sayfaya dön</string>
 
     <!-- ==================== Cardio Screen ==================== -->
-    <string name="duration_minutes">Süre</string>
+    <string name="duration_minutes">Egzersiz süresi</string>
     <string name="distance">Mesafe</string>
     <string name="calories">Kalori</string>
 
@@ -124,13 +120,11 @@
     <string name="saved_successfully">Kaydedildi!</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">Günün özeti</string>
+    <string name="day_summary">Günün kaydı</string>
     <string name="total_duration_label">Süre</string>
     <string name="total_calories_label">Kalori</string>
     <string name="total_weight_label">Ağırlık</string>
-    <string name="no_workout_data">
-        Bu gün için egzersiz verisi yok
-    </string>
+    <string name="no_workout_data">Bu gün için egzersiz verisi yok</string>
 
     <!-- ==================== Calendar Screen ==================== -->
     <string name="monthly_summary">Aylık özet</string>
@@ -144,78 +138,98 @@
     <!-- ==================== Settings ==================== -->
     <string name="settings_title">Ayarlar</string>
     <string name="settings_language_title">Dil</string>
-    <string name="settings_language_description">Görüntü dilini değiştir</string>
+    <string name="settings_language_description">Görüntüleme dilini değiştir</string>
     <string name="settings_weight_unit_title">Ağırlık birimi</string>
     <string name="settings_weight_unit_description">Mevcut: %1$s</string>
     <string name="settings_distance_unit_title">Mesafe birimi</string>
     <string name="settings_distance_unit_description">Mevcut: %1$s</string>
     <string name="settings_delete_title">Tüm verileri sil</string>
-    <string name="settings_delete_description">Tüm egzersiz kayıtlarını sil</string>
+    <string name="settings_delete_description">Tüm antrenman kayıtlarını sil</string>
     <string name="language_system_default">Sistem ayarlarını kullan</string>
 
     <!-- ==================== Dialogs - Confirm ==================== -->
     <string name="confirm_back_title">Kaydetmeden çıkılsın mı?</string>
-    <string name="confirm_back_message">
-        Kaydedilmemiş setler var. Geri dönmek istiyor musunuz?
-    </string>
+    <string name="confirm_back_message">Kaydedilmemiş setler var. Geri dönülsün mü?</string>
     <string name="discard_confirm_title">Kaydetmeden çıkılsın mı?</string>
-    <string name="discard_confirm_message">
-        Kaydedilmiş ancak güncellenmemiş setler var.
-    </string>
+    <string name="discard_confirm_message">Kaydedilmemiş onaylı setler var.</string>
 
     <!-- ==================== Dialogs - Delete ==================== -->
     <string name="delete_confirm_title">Silinsin mi?</string>
-    <string name="delete_confirm_message">
-        "%1$s" silinsin mi?
-    </string>
+    <string name="delete_confirm_message">“%1$s” silinsin mi?</string>
     <string name="delete_all_title">Tüm verileri sil</string>
-    <string name="delete_all_message">
-        Tüm veriler silinsin mi? Bu işlem geri alınamaz.
-    </string>
+    <string name="delete_all_message">Tüm veriler silinecek. Bu işlem geri alınamaz.</string>
     <string name="delete_all_day_title">Tüm kayıtlar silinsin mi?</string>
-    <string name="delete_all_day_message">
-        Bu günün tüm egzersiz kayıtları silinecek. Geri alınamaz.
-    </string>
+    <string name="delete_all_day_message">Bu güne ait tüm kayıtlar silinecek. Bu işlem geri alınamaz.</string>
     <string name="delete_session_title">Kayıt silinsin mi?</string>
-    <string name="delete_session_message">
-        %1$s kaydı silinsin mi?
-    </string>
+    <string name="delete_session_message">%1$s kaydı silinsin mi?</string>
     <string name="delete_category_title">Kategori silinsin mi?</string>
-    <string name="delete_category_message">
-        Bu kategorideki tüm kayıtlar silinecek.
-    </string>
+    <string name="delete_category_message">Bu kategorideki tüm kayıtlar silinecek.</string>
 
     <!-- ==================== Dialogs - Language ==================== -->
     <string name="language_confirm_title">Dil uygulansın mı?</string>
-    <string name="language_confirm_message">
-        Yeni dil ayarı uygulanacak.
-    </string>
+    <string name="language_confirm_message">Yeni dil ayarı uygulanacak.</string>
     <string name="applying_language">Dil uygulanıyor…</string>
 
-    <!-- ==================== Graph Screen ==================== -->
+    <!-- Graph Screen -->
     <string name="cumulative_calories">Birikimli kalori</string>
     <string name="now">Şimdi</string>
     <string name="no_data">Veri yok</string>
     <string name="graph_reset_link">Grafiği sıfırla</string>
     <string name="graph_reset">Grafiği sıfırla</string>
     <string name="graph_reset_title">Grafik sıfırlansın mı?</string>
-    <string name="graph_reset_confirm">
-        Grafik verileri silinecek. Devam edilsin mi?
-    </string>
-    <string name="graph_reset_message">
-        Grafik verileri silinecek.\n(Geçmiş ve takvim verileri korunur)
-    </string>
+    <string name="graph_reset_confirm">Grafik verileri silinecek. Devam edilsin mi?</string>
+    <string name="graph_reset_message">Grafik verileri silinecek.\n(Geçmiş ve takvim korunur)</string>
     <string name="which_graph_to_see">Hangi grafiği görmek istiyorsunuz?</string>
 
-    <!-- ==================== Graph Picker ==================== -->
+    <!-- Graph Picker (Phase0) -->
     <string name="graph_picker_title">Grafik seç</string>
-    <string name="graph_picker_strength">Ağırlık (maks.)</string>
-    <string name="graph_picker_cardio">Kardiyo (toplam mesafe)</string>
-    <string name="graph_picker_studio">Stüdyo (toplam sayım)</string>
+    <string name="graph_picker_strength">Ağırlık (maks. kg)</string>
+    <string name="graph_picker_cardio">Kardiyo (birikimli mesafe)</string>
+    <string name="graph_picker_studio">Stüdyo (toplam sayı)</string>
 
-    <!-- ==================== Duration input placeholders ==================== -->
+    <!-- Duration input placeholders -->
     <string name="duration_hours_placeholder">Saat</string>
-    <string name="duration_minutes_placeholder">Dak</string>
-    <string name="duration_seconds_placeholder">Sn</string>
+    <string name="duration_minutes_placeholder">Dakika</string>
+    <string name="duration_seconds_placeholder">Saniye</string>
 
+    <!-- Interval Timer (Level B) -->
+    <string name="total_elapsed">Toplam: %1$s</string>
+    <string name="edit_interval_result">Sonucu düzenle</string>
+    <string name="input_result">Sonuç gir</string>
+    <string name="duration">Egzersiz süresi</string>
+    <string name="timer_settings">Zamanlayıcı ayarları</string>
+
+    <string name="warm_up">Isınma</string>
+    <string name="training">Antrenman</string>
+    <string name="rest">Dinlenme</string>
+    <string name="cooldown">Soğuma</string>
+
+    <string name="seconds_unit">Saniye</string>
+
+    <string name="sets_count">Set sayısı</string>
+    <string name="sets_unit">Set</string>
+
+    <string name="total_time_estimate">Toplam süre: %1$s</string>
+
+    <string name="start">Başlat</string>
+    <string name="cancel">İptal</string>
+
+    <!-- Interval Timer Notification -->
+    <string name="interval_timer_channel_name">Interval zamanlayıcı</string>
+    <string name="interval_timer_channel_description">Interval zamanlayıcının ilerlemesini göster</string>
+    <string name="interval_timer">Interval zamanlayıcı</string>
+
+    <!-- Timer Settings -->
+    <string name="timer_settings_section">Zamanlayıcı ayarları</string>
+    <string name="timer_sound">Zamanlayıcı sesi</string>
+    <string name="timer_sound_desc">Zamanlayıcı sesini aç/kapat</string>
+    <string name="timer_vibration">Titreşim</string>
+    <string name="timer_vibration_desc">Titreşimi aç/kapat</string>
+    <string name="countdown_last_5_seconds">Son 5 saniye geri sayım</string>
+    <string name="countdown_last_5_seconds_desc">Her aşama bitmeden 5–1 saniye önce bildirim</string>
+
+    <!-- Interval Presets -->
+    <string name="preset_tabata_desc">20 sn çalışma / 10 sn dinlenme × 8 tur</string>
+    <string name="preset_hiit_desc">Yüksek yoğunluklu interval antrenman\nÇalışma ve dinlenmeyi özelleştir</string>
+    <string name="preset_emom_desc">Every Minute On the Minute\nHer dakika yeni bir tur başlat</string>
 </resources>

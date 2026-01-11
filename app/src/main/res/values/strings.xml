@@ -8,7 +8,6 @@
     <string name="nav_history">History</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_graph">Graph</string>
-    <!-- 長くなる Settings を避けて短縮 -->
     <string name="nav_settings">Settings</string>
 
     <!-- ==================== Common ==================== -->
@@ -30,16 +29,16 @@
     <string name="today_grand_total">Total Weight Today</string>
     <string name="today_duration">Workout Time Today</string>
     <string name="today_calories">Calories Burned Today</string>
-    <string name="card_today_menu">Today’s Workout Menu</string>
+    <string name="card_today_menu">Today’s Workout</string>
     <string name="midnight_rule_note">
-        Records from 12:00 AM to 2:59 AM are saved as the previous day.
+        Records from 12:00 AM to 3:00 AM are saved as the previous day.
     </string>
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Select Workout Type</string>
     <string name="workout_strength">Strength</string>
     <string name="workout_cardio">Cardio</string>
-    <string name="workout_interval">Interval</string>
+    <string name="workout_interval">Interval Training</string>
     <string name="workout_studio">Studio</string>
     <string name="workout_other">Other</string>
     <string name="add_workout_type">+ Add New Type</string>
@@ -48,7 +47,7 @@
     <!-- ==================== Exercise Selection ==================== -->
     <string name="select_exercise">Select Exercise</string>
     <string name="no_exercises_yet">
-        No exercises yet. Please add one below.
+        No exercises yet. Please add one using the button below!
     </string>
     <string name="add_new_exercise">+ Add New Exercise</string>
     <string name="exercise_name">Exercise Name</string>
@@ -149,9 +148,7 @@
     <string name="settings_distance_unit_title">Distance Unit</string>
     <string name="settings_distance_unit_description">Current: %1$s</string>
     <string name="settings_delete_title">Delete All Data</string>
-    <string name="settings_delete_description">
-        Delete all workout records
-    </string>
+    <string name="settings_delete_description">Delete all workout records</string>
     <string name="language_system_default">Follow System</string>
 
     <!-- ==================== Dialogs - Confirm ==================== -->
@@ -161,7 +158,7 @@
     </string>
     <string name="discard_confirm_title">Continue without saving?</string>
     <string name="discard_confirm_message">
-        There are saved sets that have not been updated.
+        There are confirmed sets that have not been saved.
     </string>
 
     <!-- ==================== Dialogs - Delete ==================== -->
@@ -171,11 +168,11 @@
     </string>
     <string name="delete_all_title">Delete All Data</string>
     <string name="delete_all_message">
-        Are you sure you want to delete all data? This cannot be undone.
+        Are you sure you want to delete all data? This action cannot be undone.
     </string>
     <string name="delete_all_day_title">Delete All Records?</string>
     <string name="delete_all_day_message">
-        All workout records for this day will be deleted. This cannot be undone.
+        All workout records for this day will be deleted. This action cannot be undone.
     </string>
     <string name="delete_session_title">Delete Record?</string>
     <string name="delete_session_message">
@@ -219,12 +216,13 @@
     <string name="duration_minutes_placeholder">Minutes</string>
     <string name="duration_seconds_placeholder">Seconds</string>
 
-    <!-- Interval Timer (Level B) -->
+    <!-- ==================== Interval Timer (Level B) ==================== -->
     <string name="total_elapsed">Total: %1$s</string>
     <string name="edit_interval_result">Edit Result</string>
     <string name="input_result">Input Result</string>
     <string name="duration">Duration</string>
-    <!-- Interval Timer -->
+
+    <!-- ==================== Interval Timer ==================== -->
     <string name="timer_settings">Timer Settings</string>
 
     <string name="warm_up">Warm-up</string>
@@ -242,28 +240,33 @@
     <string name="start">Start</string>
     <string name="cancel">Cancel</string>
 
-    <!-- Interval Timer Notification -->
+    <!-- ==================== Interval Timer Notification ==================== -->
     <string name="interval_timer_channel_name">Interval Timer</string>
     <string name="interval_timer_channel_description">Shows interval timer progress</string>
     <string name="interval_timer">Interval Timer</string>
 
-    <!-- Timer Settings -->
+    <!-- ==================== Timer Settings ==================== -->
     <string name="timer_settings_section">Timer Settings</string>
     <string name="timer_sound">Timer sound</string>
-    <string name="timer_sound_desc">Turn timer sounds on/off</string>
+    <string name="timer_sound_desc">Turn timer sounds on or off</string>
     <string name="timer_vibration">Timer vibration</string>
-    <string name="timer_vibration_desc">Turn vibration on/off</string>
+    <string name="timer_vibration_desc">Turn vibration notifications on or off</string>
     <string name="countdown_last_5_seconds">Countdown (last 5 seconds)</string>
-    <string name="countdown_last_5_seconds_desc">Notify 5–1 seconds before each phase ends</string>
+    <string name="countdown_last_5_seconds_desc">
+        Notify 5–1 seconds before each phase ends
+    </string>
 
-    <!-- Interval Presets -->
+    <!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 seconds work / 10 seconds rest × 8 rounds</string>
-    <string name="preset_hiit_desc">High-intensity interval training\nCustomize work and rest time</string>
-    <string name="preset_emom_desc">Every Minute On the Minute\nStart a new round every minute</string>
+    <string name="preset_hiit_desc">
+        High-intensity interval training\nCustomize work and rest time
+    </string>
+    <string name="preset_emom_desc">
+        Every Minute On the Minute\nStart a new round every minute
+    </string>
 
     <!-- ==================== Settings Hint (English Only) ==================== -->
     <string name="settings_hint" translatable="false">
         Language and kg/lbs, km/mile can be changed in Settings.
     </string>
-
 </resources>

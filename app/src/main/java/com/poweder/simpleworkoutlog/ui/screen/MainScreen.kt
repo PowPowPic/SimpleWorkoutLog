@@ -117,7 +117,12 @@ fun MainScreen(
             currentName = exercise.getDisplayName(context),
             title = stringResource(R.string.rename),
             onConfirm = { newName ->
-                viewModel.updateExercise(exercise.copy(customName = newName, nameResId = null))
+                // リネーム時はカスタム名を設定し、テンプレートフラグをOFFに
+                viewModel.updateExercise(exercise.copy(
+                    customName = newName,
+                    isTemplate = false,
+                    templateKey = null
+                ))
                 exerciseToRename = null
                 when (currentWorkoutTypeForRename) {
                     WorkoutType.STRENGTH -> showStrengthExerciseDialog = true

@@ -31,19 +31,28 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 
 /**
  * ExerciseEntityの表示名を取得する拡張関数
+ * 
+ * テンプレート種目: templateKey → stringResource で表示名を取得
+ * カスタム種目: customName または name を使用
  */
 fun ExerciseEntity.getDisplayName(context: Context): String {
-    if (!customName.isNullOrEmpty()) {
-        return customName
-    }
-    if (nameResId != null) {
-        return try {
-            context.getString(nameResId)
-        } catch (e: Exception) {
-            name.ifEmpty { "Unknown" }
+    return if (isTemplate) {
+        // テンプレート: templateKey から表示名を取得
+        val key = templateKey ?: return name.ifEmpty { "Unknown" }
+        val resId = context.resources.getIdentifier(key, "string", context.packageName)
+        if (resId != 0) {
+            try {
+                context.getString(resId)
+            } catch (e: Exception) {
+                key // fallback: キー名をそのまま表示
+            }
+        } else {
+            key // fallback: キー名をそのまま表示
         }
+    } else {
+        // カスタム: customName または name を使用
+        customName?.takeIf { it.isNotBlank() } ?: name.ifEmpty { "Unknown" }
     }
-    return name.ifEmpty { "Unknown" }
 }
 
 /**

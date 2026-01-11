@@ -79,7 +79,7 @@
     <string name="exercise_calories">消費カロリー（kcal）</string>
     <string name="finish_training">トレーニング終了・保存</string>
     <string name="finish_and_save">終了・保存</string>
-    <string name="go_home">Homeに戻る</string>
+    <string name="go_home">ホームに戻る</string>
 
     <!-- ==================== Cardio Screen ==================== -->
     <string name="duration_minutes">運動時間</string>
@@ -179,7 +179,7 @@
     <string name="graph_reset">グラフをリセットする</string>
     <string name="graph_reset_title">グラフをリセットしますか？</string>
     <string name="graph_reset_confirm">これまでのグラフの記録が消えてしまいますが、よろしいですか？</string>
-    <string name="graph_reset_message">これまでのグラフの記録が消えてしまいますがいいですか？\n（履歴・カレンダーの記録は残ります）</string>
+    <string name="graph_reset_message">これまでのグラフの記録が消えてしまいますが、よろしいですか？\n（履歴・カレンダーの記録は残ります）</string>
     <string name="which_graph_to_see">どのグラフが見たいですか？</string>
 
     <!-- Graph Picker (Phase0) -->
@@ -199,6 +199,7 @@
     <string name="edit_interval_result">結果を編集</string>
     <string name="input_result">結果を入力</string>
     <string name="duration">運動時間</string>
+
     <!-- インターバルタイマー -->
     <string name="timer_settings">タイマー設定</string>
 
@@ -232,8 +233,8 @@
     <string name="countdown_last_5_seconds_desc">各フェーズ終了の5〜1秒前に通知します</string>
 
     <!-- Interval Presets -->
-    <string name="preset_tabata_desc">20秒ワーク / 10秒レスト × 8ラウンド</string>
-    <string name="preset_hiit_desc">高強度インターバルトレーニング\nワークとレストを自由にカスタマイズ</string>
+    <string name="preset_tabata_desc">20秒ワーク / 10秒休憩 × 8ラウンド</string>
+    <string name="preset_hiit_desc">高強度インターバルトレーニング\nワークと休憩を自由にカスタマイズ</string>
     <string name="preset_emom_desc">Every Minute On the Minute\n毎分新しいラウンドをスタート</string>
 
 </resources>

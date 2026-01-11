@@ -57,42 +57,42 @@ data class IntervalPlan(
 
     companion object {
         /**
-         * TABATA プリセット
-         * 20秒 work / 10秒 rest × 8ラウンド
-         * Warm-up / Cooldown なし
+         * TABATA プリセット（王道・最短）
+         * クラシック・タバタ準拠
+         * 調整せずにそのまま使える
          */
         fun tabataDefault() = IntervalPlan(
-            warmupSec = 0,
+            warmupSec = 10,
             trainingSec = 20,
             restSec = 10,
             rounds = 8,
-            cooldownSec = 0
+            cooldownSec = 30
         )
 
         /**
-         * HIIT プリセット
-         * 30秒 work / 30秒 rest × 10ラウンド
-         * ユーザーが自由にカスタマイズ可能
+         * HIIT プリセット（汎用・主力）
+         * 30/30より"HIITらしい"設定
+         * 初心者〜中級者まで違和感なし
          */
         fun hiitDefault() = IntervalPlan(
-            warmupSec = 0,
-            trainingSec = 30,
-            restSec = 30,
+            warmupSec = 10,
+            trainingSec = 40,
+            restSec = 20,
             rounds = 10,
-            cooldownSec = 0
+            cooldownSec = 30
         )
 
         /**
          * EMOM プリセット (Every Minute On the Minute)
-         * 60秒 work / 0秒 rest × 10ラウンド
+         * 10-minute EMOM の標準形
          * 毎分スタートを音で知らせる
          */
         fun emomDefault() = IntervalPlan(
-            warmupSec = 0,
+            warmupSec = 10,
             trainingSec = 60,
             restSec = 0,
             rounds = 10,
-            cooldownSec = 0
+            cooldownSec = 30
         )
     }
 }

@@ -32,4 +32,15 @@ interface ExerciseDao {
 
     @Query("SELECT MAX(sortOrder) FROM exercises WHERE workoutType = :type")
     suspend fun getMaxSortOrder(type: String): Int?
+
+    // ===== テンプレート管理用 =====
+
+    @Query("DELETE FROM exercises WHERE isTemplate = 1")
+    suspend fun deleteTemplates()
+
+    @Query("SELECT COUNT(*) FROM exercises")
+    suspend fun countAll(): Int
+
+    @Query("SELECT COUNT(*) FROM exercises WHERE isTemplate = 1")
+    suspend fun countTemplates(): Int
 }

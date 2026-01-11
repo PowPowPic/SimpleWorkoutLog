@@ -4,12 +4,11 @@
     <string name="app_name">Simple Workout Log</string>
 
     <!-- ==================== Navigation ==================== -->
-    <string name="nav_home">Home</string>
+    <string name="nav_home">Início</string>
     <string name="nav_history">Histórico</string>
     <string name="nav_calendar">Calendário</string>
     <string name="nav_graph">Gráfico</string>
-    <!-- 「Configurações」は長いため短縮 -->
-    <string name="nav_settings">Prefs</string>
+    <string name="nav_settings">Opções</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -28,29 +27,25 @@
 
     <!-- ==================== Main Screen ==================== -->
     <string name="today_grand_total">Peso total de hoje</string>
-    <string name="today_duration">Tempo de treino hoje</string>
+    <string name="today_duration">Tempo de treino de hoje</string>
     <string name="today_calories">Calorias queimadas hoje</string>
-    <string name="card_today_menu">Menu de treino de hoje</string>
-    <string name="midnight_rule_note">
-        Registros entre 00:00 e 02:59 são salvos como do dia anterior.
-    </string>
+    <string name="card_today_menu">Treino de hoje</string>
+    <string name="midnight_rule_note">Registros entre 0:00 e 3:00 são salvos como o dia anterior</string>
 
     <!-- ==================== Workout Types ==================== -->
-    <string name="select_workout_type">Selecionar tipo de treino</string>
-    <string name="workout_strength">Força</string>
+    <string name="select_workout_type">Selecione o tipo de treino</string>
+    <string name="workout_strength">Musculação</string>
     <string name="workout_cardio">Cardio</string>
-    <string name="workout_interval">Intervalo</string>
+    <string name="workout_interval">Treino intervalado</string>
     <string name="workout_studio">Estúdio</string>
-    <string name="workout_other">Outro</string>
-    <string name="add_workout_type">+ Adicionar tipo</string>
+    <string name="workout_other">Outros</string>
+    <string name="add_workout_type">＋ Adicionar tipo</string>
     <string name="workout_type_name">Nome do tipo</string>
 
     <!-- ==================== Exercise Selection ==================== -->
-    <string name="select_exercise">Selecionar exercício</string>
-    <string name="no_exercises_yet">
-        Nenhum exercício ainda. Adicione usando o botão abaixo.
-    </string>
-    <string name="add_new_exercise">+ Adicionar exercício</string>
+    <string name="select_exercise">Selecione o exercício</string>
+    <string name="no_exercises_yet">Ainda não há exercícios. Adicione pelo botão abaixo!</string>
+    <string name="add_new_exercise">＋ Adicionar exercício</string>
     <string name="exercise_name">Nome do exercício</string>
 
     <!-- ==================== Exercise Names - Strength ==================== -->
@@ -61,7 +56,7 @@
     <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">Corrida</string>
     <string name="exercise_walking">Caminhada</string>
-    <string name="exercise_indoor_bike">Bicicleta ergométrica</string>
+    <string name="exercise_indoor_bike">Bike indoor</string>
 
     <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
@@ -77,21 +72,21 @@
 
     <!-- ==================== Strength Training Screen ==================== -->
     <string name="reps">Reps</string>
-    <string name="add_new_set">+ Adicionar série</string>
+    <string name="add_new_set">＋ Adicionar série</string>
     <string name="session_total">Total</string>
-    <string name="exercise_duration">Duração</string>
-    <string name="exercise_calories">Calorias (kcal)</string>
+    <string name="exercise_duration">Tempo de exercício</string>
+    <string name="exercise_calories">Calorias queimadas (kcal)</string>
     <string name="finish_training">Finalizar e salvar</string>
     <string name="finish_and_save">Finalizar e salvar</string>
-    <string name="go_home">Voltar para Home</string>
+    <string name="go_home">Voltar ao início</string>
 
     <!-- ==================== Cardio Screen ==================== -->
-    <string name="duration_minutes">Duração</string>
+    <string name="duration_minutes">Tempo de exercício</string>
     <string name="distance">Distância</string>
     <string name="calories">Calorias</string>
 
     <!-- ==================== Interval Timer - Settings ==================== -->
-    <string name="interval_timer_settings">Configurações do timer</string>
+    <string name="interval_timer_settings">Config. do timer</string>
     <string name="preset_tabata">Tabata</string>
     <string name="preset_hiit">HIIT</string>
     <string name="warmup_seconds">Aquecimento</string>
@@ -113,7 +108,7 @@
     <string name="set_progress">Série %1$d / %2$d</string>
     <string name="workout_complete">Treino concluído!</string>
     <string name="total_time_result">Tempo total: %s</string>
-    <string name="back_to_home">Voltar para Home</string>
+    <string name="back_to_home">Voltar ao início</string>
     <string name="pause">Pausar</string>
     <string name="resume">Retomar</string>
     <string name="stop">Parar</string>
@@ -121,102 +116,120 @@
     <string name="save_workout_result">Salvar resultado do treino</string>
 
     <!-- ==================== Other Screen ==================== -->
-    <string name="calories_burned">Calorias (kcal)</string>
+    <string name="calories_burned">Calorias queimadas (kcal)</string>
     <string name="saved_successfully">Salvo!</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">Resumo do dia</string>
+    <string name="day_summary">Registro do dia</string>
     <string name="total_duration_label">Tempo</string>
     <string name="total_calories_label">Calorias</string>
     <string name="total_weight_label">Peso</string>
-    <string name="no_workout_data">
-        Não há dados de treino para este dia.
-    </string>
+    <string name="no_workout_data">Não há dados de treino neste dia</string>
 
     <!-- ==================== Calendar Screen ==================== -->
     <string name="monthly_summary">Resumo mensal</string>
     <string name="workout_days">Dias de treino</string>
     <string name="days_format">%1$d dias</string>
-    <string name="average_duration">Duração média</string>
-    <string name="total_duration_month">Duração total</string>
+    <string name="average_duration">Tempo médio</string>
+    <string name="total_duration_month">Tempo total</string>
     <string name="total_calories_month">Calorias totais</string>
     <string name="total_weight_month">Peso total</string>
 
     <!-- ==================== Settings ==================== -->
-    <string name="settings_title">Preferências</string>
+    <string name="settings_title">Configurações</string>
     <string name="settings_language_title">Idioma</string>
-    <string name="settings_language_description">Alterar idioma</string>
+    <string name="settings_language_description">Alterar idioma de exibição</string>
     <string name="settings_weight_unit_title">Unidade de peso</string>
     <string name="settings_weight_unit_description">Atual: %1$s</string>
     <string name="settings_distance_unit_title">Unidade de distância</string>
     <string name="settings_distance_unit_description">Atual: %1$s</string>
     <string name="settings_delete_title">Excluir todos os dados</string>
-    <string name="settings_delete_description">Excluir todos os registros</string>
-    <string name="language_system_default">Seguir o sistema</string>
+    <string name="settings_delete_description">Excluir todos os registros de treino</string>
+    <string name="language_system_default">Usar config. do sistema</string>
 
     <!-- ==================== Dialogs - Confirm ==================== -->
-    <string name="confirm_back_title">Continuar sem salvar?</string>
-    <string name="confirm_back_message">
-        Há séries não salvas. Deseja voltar?
-    </string>
-    <string name="discard_confirm_title">Continuar sem salvar?</string>
-    <string name="discard_confirm_message">
-        Há séries salvas que não foram atualizadas.
-    </string>
+    <string name="confirm_back_title">Sair sem salvar?</string>
+    <string name="confirm_back_message">Há séries não salvas. Voltar?</string>
+    <string name="discard_confirm_title">Sair sem salvar?</string>
+    <string name="discard_confirm_message">Há séries confirmadas não salvas.</string>
 
     <!-- ==================== Dialogs - Delete ==================== -->
     <string name="delete_confirm_title">Excluir?</string>
-    <string name="delete_confirm_message">
-        Deseja excluir "%1$s"?
-    </string>
+    <string name="delete_confirm_message">Excluir “%1$s”?</string>
     <string name="delete_all_title">Excluir todos os dados</string>
-    <string name="delete_all_message">
-        Deseja excluir todos os dados? Esta ação não pode ser desfeita.
-    </string>
+    <string name="delete_all_message">Todos os dados serão excluídos. Esta ação não pode ser desfeita.</string>
     <string name="delete_all_day_title">Excluir todos os registros?</string>
-    <string name="delete_all_day_message">
-        Todos os registros deste dia serão excluídos. Ação irreversível.
-    </string>
+    <string name="delete_all_day_message">Todos os registros deste dia serão excluídos. Esta ação não pode ser desfeita.</string>
     <string name="delete_session_title">Excluir registro?</string>
-    <string name="delete_session_message">
-        Excluir o registro de %1$s?
-    </string>
+    <string name="delete_session_message">Excluir o registro de %1$s?</string>
     <string name="delete_category_title">Excluir categoria?</string>
-    <string name="delete_category_message">
-        Todos os registros desta categoria serão excluídos.
-    </string>
+    <string name="delete_category_message">Todos os registros desta categoria serão excluídos.</string>
 
     <!-- ==================== Dialogs - Language ==================== -->
     <string name="language_confirm_title">Aplicar idioma?</string>
-    <string name="language_confirm_message">
-        O novo idioma será aplicado.
-    </string>
+    <string name="language_confirm_message">O novo idioma será aplicado.</string>
     <string name="applying_language">Aplicando idioma…</string>
 
-    <!-- ==================== Graph Screen ==================== -->
+    <!-- Graph Screen -->
     <string name="cumulative_calories">Calorias acumuladas</string>
     <string name="now">Agora</string>
     <string name="no_data">Sem dados</string>
     <string name="graph_reset_link">Redefinir gráfico</string>
     <string name="graph_reset">Redefinir gráfico</string>
     <string name="graph_reset_title">Redefinir gráfico?</string>
-    <string name="graph_reset_confirm">
-        Os dados do gráfico serão excluídos. Continuar?
-    </string>
-    <string name="graph_reset_message">
-        Os dados do gráfico serão excluídos.\n(O histórico e o calendário serão mantidos.)
-    </string>
-    <string name="which_graph_to_see">Qual gráfico deseja ver?</string>
+    <string name="graph_reset_confirm">Os dados do gráfico serão apagados. Continuar?</string>
+    <string name="graph_reset_message">Os dados do gráfico serão apagados.\n(O histórico e o calendário serão mantidos)</string>
+    <string name="which_graph_to_see">Qual gráfico você quer ver?</string>
 
-    <!-- ==================== Graph Picker ==================== -->
+    <!-- Graph Picker (Phase0) -->
     <string name="graph_picker_title">Selecionar gráfico</string>
-    <string name="graph_picker_strength">Força (peso máx.)</string>
-    <string name="graph_picker_cardio">Cardio (distância total)</string>
-    <string name="graph_picker_studio">Estúdio (sessões totais)</string>
+    <string name="graph_picker_strength">Musculação (peso máx.)</string>
+    <string name="graph_picker_cardio">Cardio (distância acumulada)</string>
+    <string name="graph_picker_studio">Estúdio (total de vezes)</string>
 
-    <!-- ==================== Duration input placeholders ==================== -->
+    <!-- Duration input placeholders -->
     <string name="duration_hours_placeholder">Horas</string>
-    <string name="duration_minutes_placeholder">Min</string>
-    <string name="duration_seconds_placeholder">Seg</string>
+    <string name="duration_minutes_placeholder">Minutos</string>
+    <string name="duration_seconds_placeholder">Segundos</string>
 
+    <!-- Interval Timer (Level B) -->
+    <string name="total_elapsed">Total: %1$s</string>
+    <string name="edit_interval_result">Editar resultado</string>
+    <string name="input_result">Inserir resultado</string>
+    <string name="duration">Tempo de exercício</string>
+    <string name="timer_settings">Config. do timer</string>
+
+    <string name="warm_up">Aquecimento</string>
+    <string name="training">Treino</string>
+    <string name="rest">Descanso</string>
+    <string name="cooldown">Desaquecimento</string>
+
+    <string name="seconds_unit">Segundos</string>
+
+    <string name="sets_count">Séries</string>
+    <string name="sets_unit">Série</string>
+
+    <string name="total_time_estimate">Tempo total: %1$s</string>
+
+    <string name="start">Iniciar</string>
+    <string name="cancel">Cancelar</string>
+
+    <!-- Interval Timer Notification -->
+    <string name="interval_timer_channel_name">Timer de intervalos</string>
+    <string name="interval_timer_channel_description">Mostrar o progresso do timer de intervalos</string>
+    <string name="interval_timer">Timer de intervalos</string>
+
+    <!-- Timer Settings -->
+    <string name="timer_settings_section">Config. do timer</string>
+    <string name="timer_sound">Som do timer</string>
+    <string name="timer_sound_desc">Ativar/desativar o som do timer</string>
+    <string name="timer_vibration">Vibração</string>
+    <string name="timer_vibration_desc">Ativar/desativar a vibração</string>
+    <string name="countdown_last_5_seconds">Contagem final (5 s)</string>
+    <string name="countdown_last_5_seconds_desc">Notificar de 5 a 1 s antes do fim da fase</string>
+
+    <!-- Interval Presets -->
+    <string name="preset_tabata_desc">20 s trabalho / 10 s descanso × 8 rounds</string>
+    <string name="preset_hiit_desc">Treino intervalado de alta intensidade\nPersonalize trabalho e descanso</string>
+    <string name="preset_emom_desc">Every Minute On the Minute\nComece um novo round a cada minuto</string>
 </resources>

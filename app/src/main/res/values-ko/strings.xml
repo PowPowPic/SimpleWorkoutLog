@@ -11,7 +11,7 @@
     <string name="nav_settings">설정</string>
 
     <!-- ==================== Common ==================== -->
-    <string name="common_ok">확인</string>
+    <string name="common_ok">OK</string>
     <string name="common_cancel">취소</string>
     <string name="common_close">닫기</string>
     <string name="common_yes">예</string>
@@ -30,36 +30,32 @@
     <string name="today_duration">오늘의 운동 시간</string>
     <string name="today_calories">오늘의 소모 칼로리</string>
     <string name="card_today_menu">오늘의 운동 메뉴</string>
-    <string name="midnight_rule_note">
-        오전 12시부터 오전 2시 59분까지의 기록은 전날 기록으로 저장됩니다
-    </string>
+    <string name="midnight_rule_note">오전 0시~오전 3시 기록은 전날 기록으로 저장됩니다</string>
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">운동 종류 선택</string>
-    <string name="workout_strength">근력</string>
-    <string name="workout_cardio">유산소</string>
-    <string name="workout_interval">인터벌</string>
+    <string name="workout_strength">근력 운동</string>
+    <string name="workout_cardio">유산소 운동</string>
+    <string name="workout_interval">인터벌 트레이닝</string>
     <string name="workout_studio">스튜디오</string>
     <string name="workout_other">기타</string>
-    <string name="add_workout_type">+ 새 종류 추가</string>
-    <string name="workout_type_name">종류 이름</string>
+    <string name="add_workout_type">＋ 새 유형 추가</string>
+    <string name="workout_type_name">유형 이름</string>
 
     <!-- ==================== Exercise Selection ==================== -->
-    <string name="select_exercise">운동 선택</string>
-    <string name="no_exercises_yet">
-        아직 운동이 없습니다. 아래 버튼으로 추가하세요.
-    </string>
-    <string name="add_new_exercise">+ 새 운동 추가</string>
-    <string name="exercise_name">운동 이름</string>
+    <string name="select_exercise">종목 선택</string>
+    <string name="no_exercises_yet">아직 종목이 없습니다. 아래 버튼으로 추가해 주세요!</string>
+    <string name="add_new_exercise">＋ 새 종목 추가</string>
+    <string name="exercise_name">종목명</string>
 
     <!-- ==================== Exercise Names - Strength ==================== -->
-    <string name="exercise_bench_press">벤치 프레스</string>
+    <string name="exercise_bench_press">벤치프레스</string>
     <string name="exercise_squat">스쿼트</string>
     <string name="exercise_deadlift">데드리프트</string>
 
     <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">러닝</string>
-    <string name="exercise_walking">걷기</string>
+    <string name="exercise_walking">워킹</string>
     <string name="exercise_indoor_bike">실내 자전거</string>
 
     <!-- ==================== Exercise Names - Interval ==================== -->
@@ -76,12 +72,12 @@
 
     <!-- ==================== Strength Training Screen ==================== -->
     <string name="reps">회</string>
-    <string name="add_new_set">+ 세트 추가</string>
+    <string name="add_new_set">＋ 새 세트</string>
     <string name="session_total">합계</string>
     <string name="exercise_duration">운동 시간</string>
     <string name="exercise_calories">소모 칼로리 (kcal)</string>
-    <string name="finish_training">운동 종료 · 저장</string>
-    <string name="finish_and_save">종료 · 저장</string>
+    <string name="finish_training">운동 종료·저장</string>
+    <string name="finish_and_save">종료·저장</string>
     <string name="go_home">홈으로 돌아가기</string>
 
     <!-- ==================== Cardio Screen ==================== -->
@@ -95,46 +91,44 @@
     <string name="preset_hiit">HIIT</string>
     <string name="warmup_seconds">워밍업</string>
     <string name="training_seconds">트레이닝</string>
-    <string name="rest_seconds">휴식</string>
+    <string name="rest_seconds">인터벌</string>
     <string name="number_of_sets">세트 수</string>
     <string name="cooldown_seconds">쿨다운</string>
-    <string name="total_time_format">총합: %s</string>
+    <string name="total_time_format">합계: %s</string>
     <string name="start_timer">시작</string>
 
     <!-- ==================== Interval Timer - Phases ==================== -->
     <string name="phase_warmup">워밍업</string>
     <string name="phase_training">트레이닝</string>
-    <string name="phase_rest">휴식</string>
+    <string name="phase_rest">인터벌</string>
     <string name="phase_cooldown">쿨다운</string>
     <string name="phase_finished">완료</string>
 
     <!-- ==================== Interval Timer - UI ==================== -->
     <string name="set_progress">세트 %1$d / %2$d</string>
-    <string name="workout_complete">운동 완료!</string>
+    <string name="workout_complete">워크아웃 완료!</string>
     <string name="total_time_result">총 시간: %s</string>
     <string name="back_to_home">홈으로 돌아가기</string>
     <string name="pause">일시정지</string>
     <string name="resume">재개</string>
-    <string name="stop">중지</string>
+    <string name="stop">정지</string>
     <string name="complete">저장</string>
-    <string name="save_workout_result">운동 결과 저장</string>
+    <string name="save_workout_result">워크아웃 결과 저장</string>
 
     <!-- ==================== Other Screen ==================== -->
     <string name="calories_burned">소모 칼로리 (kcal)</string>
-    <string name="saved_successfully">저장되었습니다!</string>
+    <string name="saved_successfully">저장했습니다!</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">이 날의 기록</string>
+    <string name="day_summary">이날의 기록</string>
     <string name="total_duration_label">시간</string>
     <string name="total_calories_label">칼로리</string>
     <string name="total_weight_label">중량</string>
-    <string name="no_workout_data">
-        이 날의 운동 기록이 없습니다
-    </string>
+    <string name="no_workout_data">이날의 워크아웃 데이터가 없습니다</string>
 
     <!-- ==================== Calendar Screen ==================== -->
     <string name="monthly_summary">월간 기록</string>
-    <string name="workout_days">운동 일수</string>
+    <string name="workout_days">워크아웃 일수</string>
     <string name="days_format">%1$d일</string>
     <string name="average_duration">평균 운동 시간</string>
     <string name="total_duration_month">총 운동 시간</string>
@@ -144,7 +138,7 @@
     <!-- ==================== Settings ==================== -->
     <string name="settings_title">설정</string>
     <string name="settings_language_title">언어</string>
-    <string name="settings_language_description">표시 언어 변경</string>
+    <string name="settings_language_description">표시 언어를 변경합니다</string>
     <string name="settings_weight_unit_title">중량 단위</string>
     <string name="settings_weight_unit_description">현재: %1$s</string>
     <string name="settings_distance_unit_title">거리 단위</string>
@@ -154,68 +148,88 @@
     <string name="language_system_default">시스템 설정 따르기</string>
 
     <!-- ==================== Dialogs - Confirm ==================== -->
-    <string name="confirm_back_title">저장하지 않고 돌아갈까요?</string>
-    <string name="confirm_back_message">
-        저장되지 않은 세트가 있습니다. 돌아가시겠습니까?
-    </string>
-    <string name="discard_confirm_title">저장하지 않고 돌아갈까요?</string>
-    <string name="discard_confirm_message">
-        저장되었지만 수정되지 않은 세트가 있습니다.
-    </string>
+    <string name="confirm_back_title">변경하지 않아도 되나요?</string>
+    <string name="confirm_back_message">저장되지 않은 세트가 있습니다. 돌아가도 될까요?</string>
+    <string name="discard_confirm_title">변경하지 않아도 되나요?</string>
+    <string name="discard_confirm_message">저장되지 않은 확정 세트가 있습니다.</string>
 
     <!-- ==================== Dialogs - Delete ==================== -->
     <string name="delete_confirm_title">삭제할까요?</string>
-    <string name="delete_confirm_message">
-        “%1$s”을(를) 삭제하시겠습니까?
-    </string>
+    <string name="delete_confirm_message">“%1$s”을(를) 삭제할까요?</string>
     <string name="delete_all_title">전체 데이터 삭제</string>
-    <string name="delete_all_message">
-        모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
-    </string>
-    <string name="delete_all_day_title">모든 기록을 삭제할까요?</string>
-    <string name="delete_all_day_message">
-        이 날의 모든 운동 기록이 삭제됩니다. 되돌릴 수 없습니다.
-    </string>
+    <string name="delete_all_message">모든 데이터를 삭제할까요? 이 작업은 되돌릴 수 없습니다.</string>
+    <string name="delete_all_day_title">전체 기록을 삭제할까요?</string>
+    <string name="delete_all_day_message">이날의 워크아웃 기록이 모두 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</string>
     <string name="delete_session_title">기록을 삭제할까요?</string>
-    <string name="delete_session_message">
-        %1$s 기록을 삭제하시겠습니까?
-    </string>
+    <string name="delete_session_message">%1$s 기록을 삭제할까요?</string>
     <string name="delete_category_title">카테고리를 삭제할까요?</string>
-    <string name="delete_category_message">
-        이 카테고리의 모든 기록이 삭제됩니다.
-    </string>
+    <string name="delete_category_message">이 카테고리의 모든 기록이 삭제됩니다.</string>
 
     <!-- ==================== Dialogs - Language ==================== -->
     <string name="language_confirm_title">언어를 적용할까요?</string>
-    <string name="language_confirm_message">
-        새로운 언어 설정을 적용합니다.
-    </string>
+    <string name="language_confirm_message">새 언어 설정을 적용합니다.</string>
     <string name="applying_language">언어를 적용하는 중…</string>
 
-    <!-- ==================== Graph Screen ==================== -->
+    <!-- Graph Screen -->
     <string name="cumulative_calories">누적 소모 칼로리</string>
     <string name="now">현재</string>
     <string name="no_data">데이터 없음</string>
     <string name="graph_reset_link">그래프 초기화</string>
     <string name="graph_reset">그래프 초기화</string>
     <string name="graph_reset_title">그래프를 초기화할까요?</string>
-    <string name="graph_reset_confirm">
-        그래프 데이터가 삭제됩니다. 계속할까요?
-    </string>
-    <string name="graph_reset_message">
-        그래프 데이터가 삭제됩니다.\n(기록과 캘린더 데이터는 유지됩니다.)
-    </string>
-    <string name="which_graph_to_see">어떤 그래프를 보시겠습니까?</string>
+    <string name="graph_reset_confirm">지금까지의 그래프 기록이 삭제됩니다. 계속할까요?</string>
+    <string name="graph_reset_message">지금까지의 그래프 기록이 삭제됩니다.\n(기록/캘린더는 유지됩니다)</string>
+    <string name="which_graph_to_see">어떤 그래프를 볼까요?</string>
 
-    <!-- ==================== Graph Picker ==================== -->
+    <!-- Graph Picker (Phase0) -->
     <string name="graph_picker_title">그래프 선택</string>
-    <string name="graph_picker_strength">근력 (최대 중량)</string>
-    <string name="graph_picker_cardio">유산소 (누적 거리)</string>
-    <string name="graph_picker_studio">스튜디오 (총 횟수)</string>
+    <string name="graph_picker_strength">근력 운동(최대 kg 추이)</string>
+    <string name="graph_picker_cardio">유산소 운동(누적 거리)</string>
+    <string name="graph_picker_studio">스튜디오(누적 횟수)</string>
 
-    <!-- ==================== Duration input placeholders ==================== -->
+    <!-- Duration input placeholders -->
     <string name="duration_hours_placeholder">시간</string>
     <string name="duration_minutes_placeholder">분</string>
     <string name="duration_seconds_placeholder">초</string>
 
+    <!-- Interval Timer (Level B) -->
+    <string name="total_elapsed">합계: %1$s</string>
+    <string name="edit_interval_result">결과 편집</string>
+    <string name="input_result">결과 입력</string>
+    <string name="duration">운동 시간</string>
+    <string name="timer_settings">타이머 설정</string>
+
+    <string name="warm_up">워밍업</string>
+    <string name="training">트레이닝</string>
+    <string name="rest">휴식</string>
+    <string name="cooldown">쿨다운</string>
+
+    <string name="seconds_unit">초</string>
+
+    <string name="sets_count">세트 수</string>
+    <string name="sets_unit">세트</string>
+
+    <string name="total_time_estimate">총 시간: %1$s</string>
+
+    <string name="start">시작</string>
+    <string name="cancel">취소</string>
+
+    <!-- Interval Timer Notification -->
+    <string name="interval_timer_channel_name">인터벌 타이머</string>
+    <string name="interval_timer_channel_description">인터벌 타이머 진행 상황을 표시</string>
+    <string name="interval_timer">인터벌 타이머</string>
+
+    <!-- Timer Settings -->
+    <string name="timer_settings_section">타이머 설정</string>
+    <string name="timer_sound">타이머 소리</string>
+    <string name="timer_sound_desc">타이머 소리를 켜거나 끕니다</string>
+    <string name="timer_vibration">타이머 진동</string>
+    <string name="timer_vibration_desc">진동 알림을 켜거나 끕니다</string>
+    <string name="countdown_last_5_seconds">마지막 5초 카운트다운</string>
+    <string name="countdown_last_5_seconds_desc">각 페이즈 종료 5~1초 전에 알림</string>
+
+    <!-- Interval Presets -->
+    <string name="preset_tabata_desc">20초 운동 / 10초 휴식 × 8라운드</string>
+    <string name="preset_hiit_desc">고강도 인터벌 트레이닝\n운동과 휴식을 자유롭게 설정</string>
+    <string name="preset_emom_desc">Every Minute On the Minute\n매 분 새로운 라운드를 시작</string>
 </resources>
