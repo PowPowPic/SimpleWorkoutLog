@@ -32,6 +32,9 @@
     <string name="card_today_menu">Bugünkü antrenman</string>
     <string name="midnight_rule_note">00:00–03:00 arasındaki kayıtlar önceki gün olarak kaydedilir</string>
 
+    <string name="add_past_workout">Geçmiş antrenmanı ekle</string>
+
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Egzersiz türünü seç</string>
     <string name="workout_strength">Ağırlık</string>

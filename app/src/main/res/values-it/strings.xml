@@ -32,6 +32,8 @@
     <string name="card_today_menu">Allenamento di oggi</string>
     <string name="midnight_rule_note">Le registrazioni tra le 0:00 e le 3:00 vengono salvate come giorno precedente</string>
 
+    <string name="add_past_workout">Tambahkan latihan sebelumnya</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Seleziona tipo di allenamento</string>
     <string name="workout_strength">Forza</string>

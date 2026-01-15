@@ -32,6 +32,8 @@
     <string name="card_today_menu">เมนูการฝึกวันนี้</string>
     <string name="midnight_rule_note">บันทึกช่วง 0:00–3:00 จะถูกบันทึกเป็นของวันก่อนหน้า</string>
 
+    <string name="add_past_workout">เพิ่มการออกกำลังกายในอดีต</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">เลือกประเภทการออกกำลังกาย</string>
     <string name="workout_strength">เวทเทรนนิ่ง</string>

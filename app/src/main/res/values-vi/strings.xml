@@ -32,6 +32,8 @@
     <string name="card_today_menu">Bài tập hôm nay</string>
     <string name="midnight_rule_note">Các bản ghi từ 0:00 đến 3:00 sẽ được lưu cho ngày hôm trước</string>
 
+    <string name="add_past_workout">Thêm buổi tập trước đó</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Chọn loại bài tập</string>
     <string name="workout_strength">Tập tạ</string>

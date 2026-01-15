@@ -32,6 +32,8 @@
     <string name="card_today_menu">今日訓練內容</string>
     <string name="midnight_rule_note">凌晨 0:00 至 3:00 的紀錄會儲存為前一天</string>
 
+    <string name="add_past_workout">新增過去的訓練</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">選擇運動類型</string>
     <string name="workout_strength">重量訓練</string>

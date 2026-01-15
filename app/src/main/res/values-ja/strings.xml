@@ -32,6 +32,7 @@
     <string name="card_today_menu">今日のトレーニングメニュー</string>
     <string name="midnight_rule_note">午前0時から午前3時の記録は前日の記録として保存されます</string>
 
+    <string name="add_past_workout">過去のトレーニングを追加</string>
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">運動種別を選択</string>

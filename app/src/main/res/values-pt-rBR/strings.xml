@@ -32,6 +32,8 @@
     <string name="card_today_menu">Treino de hoje</string>
     <string name="midnight_rule_note">Registros entre 0:00 e 3:00 são salvos como o dia anterior</string>
 
+    <string name="add_past_workout">Adicionar treino passado</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Selecione o tipo de treino</string>
     <string name="workout_strength">Musculação</string>

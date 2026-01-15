@@ -1,5 +1,6 @@
 package com.poweder.simpleworkoutlog.ui.screen
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -38,6 +39,7 @@ import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
 import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -67,6 +69,10 @@ fun MainScreen(
     val otherExercises by viewModel.otherExercises.collectAsState()
 
     var showWorkoutTypeDialog by remember { mutableStateOf(false) }
+
+    // 過去のトレーニング追加用
+    var showPastWorkoutTypeDialog by remember { mutableStateOf(false) }
+    var selectedPastDate by remember { mutableStateOf<LocalDate?>(null) }
 
     // 筋トレ用ダイアログ
     var showStrengthExerciseDialog by remember { mutableStateOf(false) }
@@ -167,6 +173,51 @@ fun MainScreen(
                 showOtherExerciseDialog = true
             },
             onDismiss = { showWorkoutTypeDialog = false }
+        )
+    }
+
+    // 過去のトレーニング用：運動種別選択ダイアログ
+    if (showPastWorkoutTypeDialog && selectedPastDate != null) {
+        WorkoutTypeSelectDialog(
+            onStrengthSelect = {
+                showPastWorkoutTypeDialog = false
+                selectedPastDate?.let { date ->
+                    viewModel.setTargetDate(date)
+                }
+                showStrengthExerciseDialog = true
+            },
+            onCardioSelect = {
+                showPastWorkoutTypeDialog = false
+                selectedPastDate?.let { date ->
+                    viewModel.setTargetDate(date)
+                }
+                showCardioExerciseDialog = true
+            },
+            onIntervalSelect = {
+                showPastWorkoutTypeDialog = false
+                selectedPastDate?.let { date ->
+                    viewModel.setTargetDate(date)
+                }
+                showIntervalExerciseDialog = true
+            },
+            onStudioSelect = {
+                showPastWorkoutTypeDialog = false
+                selectedPastDate?.let { date ->
+                    viewModel.setTargetDate(date)
+                }
+                showStudioExerciseDialog = true
+            },
+            onOtherSelect = {
+                showPastWorkoutTypeDialog = false
+                selectedPastDate?.let { date ->
+                    viewModel.setTargetDate(date)
+                }
+                showOtherExerciseDialog = true
+            },
+            onDismiss = {
+                showPastWorkoutTypeDialog = false
+                selectedPastDate = null
+            }
         )
     }
 
@@ -425,6 +476,33 @@ fun MainScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // 過去のトレーニングを追加ボタン
+            PastWorkoutButton(
+                onClick = {
+                    // 日付選択ダイアログを表示
+                    val today = currentLogicalDate()
+                    DatePickerDialog(
+                        context,
+                        { _, year, month, dayOfMonth ->
+                            val selected = LocalDate.of(year, month + 1, dayOfMonth)
+                            // 未来の日付は選択不可
+                            if (!selected.isAfter(today)) {
+                                selectedPastDate = selected
+                                showPastWorkoutTypeDialog = true
+                            }
+                        },
+                        today.year,
+                        today.monthValue - 1,
+                        today.dayOfMonth
+                    ).apply {
+                        // 未来の日付を選択不可に
+                        datePicker.maxDate = System.currentTimeMillis()
+                    }.show()
+                }
+            )
+
             Spacer(modifier = Modifier.weight(1f))
 
             // 設定案内（青文字、クリック可能）
@@ -538,6 +616,31 @@ private fun MainActionCard(
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = WorkoutColors.TextPrimary
+        )
+    }
+}
+
+/**
+ * 過去のトレーニングを追加ボタン
+ */
+@Composable
+private fun PastWorkoutButton(
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(WorkoutColors.GrandTotalBackground)
+            .clickable { onClick() }
+            .padding(vertical = 16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.add_past_workout),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+            color = WorkoutColors.TextSecondary
         )
     }
 }

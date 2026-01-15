@@ -32,6 +32,8 @@
     <string name="card_today_menu">Heutiges Training</string>
     <string name="midnight_rule_note">Aufzeichnungen zwischen 0:00 und 3:00 Uhr werden dem Vortag zugeordnet</string>
 
+    <string name="add_past_workout">Vergangenes Training hinzufügen</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Trainingsart wählen</string>
     <string name="workout_strength">Krafttraining</string>

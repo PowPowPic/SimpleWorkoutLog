@@ -83,13 +83,19 @@ class WorkoutRepository(
     }
 
     suspend fun getOrCreateSession(exerciseId: Long, workoutType: String): WorkoutSessionEntity {
-        val date = currentLogicalDate().toEpochDay()
-        val existing = workoutSessionDao.getSessionByExerciseAndDate(exerciseId, date)
+        return getOrCreateSession(exerciseId, workoutType, currentLogicalDate().toEpochDay())
+    }
+
+    /**
+     * 指定日付でセッションを取得または作成（過去のトレーニング追加用）
+     */
+    suspend fun getOrCreateSession(exerciseId: Long, workoutType: String, logicalDate: Long): WorkoutSessionEntity {
+        val existing = workoutSessionDao.getSessionByExerciseAndDate(exerciseId, logicalDate)
 
         return existing ?: run {
             val newSession = WorkoutSessionEntity(
                 exerciseId = exerciseId,
-                logicalDate = date,
+                logicalDate = logicalDate,
                 workoutType = workoutType
             )
             val id = workoutSessionDao.insert(newSession)

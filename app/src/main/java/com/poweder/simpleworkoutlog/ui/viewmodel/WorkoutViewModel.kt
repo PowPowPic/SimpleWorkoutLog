@@ -113,6 +113,24 @@ class WorkoutViewModel(
         }
     }
 
+    // ===== 記録対象日（デフォルトは今日）=====
+    private val _targetDate = MutableStateFlow<LocalDate>(currentLogicalDate())
+    val targetDate: StateFlow<LocalDate> = _targetDate.asStateFlow()
+
+    /**
+     * 記録対象日を設定（過去のトレーニング追加用）
+     */
+    fun setTargetDate(date: LocalDate) {
+        _targetDate.value = date
+    }
+
+    /**
+     * 記録対象日を今日にリセット
+     */
+    fun resetTargetDateToToday() {
+        _targetDate.value = currentLogicalDate()
+    }
+
     // ===== 今日のサマリー（セッションから直接計算）=====
 
     // 今日のセッション
@@ -416,7 +434,9 @@ class WorkoutViewModel(
                 return@launch
             }
 
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STRENGTH)
+            // targetDateを使用してセッションを作成
+            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STRENGTH, targetLogicalDate)
 
             // 有効なセットを全て保存
             validSets.forEach { setItem ->
@@ -437,6 +457,8 @@ class WorkoutViewModel(
             repository.updateSession(updatedSession)
 
             clearStrengthSession()
+            // 記録後、targetDateを今日にリセット
+            resetTargetDateToToday()
         }
     }
 
@@ -619,7 +641,8 @@ class WorkoutViewModel(
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.OTHER)
+            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.OTHER, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -627,6 +650,7 @@ class WorkoutViewModel(
                 updatedAt = System.currentTimeMillis()
             )
             repository.updateSession(updatedSession)
+            resetTargetDateToToday()
         }
     }
 
@@ -641,7 +665,8 @@ class WorkoutViewModel(
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.CARDIO)
+            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.CARDIO, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -650,6 +675,7 @@ class WorkoutViewModel(
                 updatedAt = System.currentTimeMillis()
             )
             repository.updateSession(updatedSession)
+            resetTargetDateToToday()
         }
     }
 
@@ -663,7 +689,8 @@ class WorkoutViewModel(
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STUDIO)
+            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STUDIO, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -671,6 +698,7 @@ class WorkoutViewModel(
                 updatedAt = System.currentTimeMillis()
             )
             repository.updateSession(updatedSession)
+            resetTargetDateToToday()
         }
     }
 
@@ -684,13 +712,15 @@ class WorkoutViewModel(
         sets: Int
     ) {
         viewModelScope.launch {
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.INTERVAL)
+            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val session = repository.getOrCreateSession(exerciseId, WorkoutType.INTERVAL, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
                 updatedAt = System.currentTimeMillis()
             )
             repository.updateSession(updatedSession)
+            resetTargetDateToToday()
         }
     }
 
@@ -719,7 +749,8 @@ class WorkoutViewModel(
                 )
             }
 
-            val session = repository.getOrCreateSession(exercise.id, WorkoutType.INTERVAL)
+            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val session = repository.getOrCreateSession(exercise.id, WorkoutType.INTERVAL, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -727,6 +758,7 @@ class WorkoutViewModel(
                 updatedAt = System.currentTimeMillis()
             )
             repository.updateSession(updatedSession)
+            resetTargetDateToToday()
         }
     }
 

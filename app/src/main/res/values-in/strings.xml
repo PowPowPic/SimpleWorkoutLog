@@ -32,6 +32,8 @@
     <string name="card_today_menu">Menu latihan hari ini</string>
     <string name="midnight_rule_note">Catatan antara 00.00–03.00 akan disimpan sebagai catatan hari sebelumnya</string>
 
+    <string name="add_past_workout">Tambahkan latihan sebelumnya</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Pilih jenis latihan</string>
     <string name="workout_strength">Latihan beban</string>

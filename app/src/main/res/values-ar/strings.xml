@@ -32,6 +32,8 @@
     <string name="card_today_menu">تمرين اليوم</string>
     <string name="midnight_rule_note">يتم حفظ السجلات بين 12:00 و3:00 صباحًا ضمن سجل اليوم السابق</string>
 
+    <string name="add_past_workout">إضافة تمرين سابق</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">اختر نوع التمرين</string>
     <string name="workout_strength">تمارين القوة</string>

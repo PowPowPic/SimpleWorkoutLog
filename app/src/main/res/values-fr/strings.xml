@@ -32,6 +32,8 @@
     <string name="card_today_menu">Entraînement du jour</string>
     <string name="midnight_rule_note">Les enregistrements entre 0:00 et 3:00 sont enregistrés comme la veille</string>
 
+    <string name="add_past_workout">Ajouter un entraînement passé</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Choisir le type d’entraînement</string>
     <string name="workout_strength">Musculation</string>

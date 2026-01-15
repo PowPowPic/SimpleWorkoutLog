@@ -32,6 +32,8 @@
     <string name="card_today_menu">오늘의 운동 메뉴</string>
     <string name="midnight_rule_note">오전 0시~오전 3시 기록은 전날 기록으로 저장됩니다</string>
 
+    <string name="add_past_workout">과거 운동 추가</string>
+
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">운동 종류 선택</string>
     <string name="workout_strength">근력 운동</string>
