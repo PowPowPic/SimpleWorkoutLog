@@ -1,6 +1,7 @@
 package com.poweder.simpleworkoutlog.data.entity
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
@@ -9,11 +10,16 @@ import androidx.room.PrimaryKey
  * テンプレート種目（isTemplate=true）:
  *   - templateKey を使用して表示名を取得
  *   - templateKey は strings.xml のキー名と一致（例: "exercise_bench_press"）
+ *   - templateKey には UNIQUE インデックスを設定（NULLは複数可）
  * 
  * カスタム種目（isTemplate=false）:
  *   - customName または name を使用
+ *   - templateKey は null
  */
-@Entity(tableName = "exercises")
+@Entity(
+    tableName = "exercises",
+    indices = [Index(value = ["templateKey"], unique = true)]
+)
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

@@ -12,38 +12,41 @@ class WorkoutApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // テンプレート種目の初期化・更新
+        // テンプレート種目の初期化・更新（Upsert方式）
         ensureLatestTemplates()
     }
 
     /**
-     * テンプレート種目を最新状態に保つ
-     * - 旧テンプレ（isTemplate=true）をすべて削除
-     * - 最新テンプレ（templateKey方式）を挿入
-     * - カスタム種目（isTemplate=false）は一切触らない
+     * テンプレート種目を最新状態に保つ（Upsert方式）
      * 
-     * これにより、アップデート後のnameResId化け問題を根治する
+     * ⚠️ 重要：テンプレートは「削除」してはいけない
+     * WorkoutSessionEntity が ExerciseEntity を ForeignKey.CASCADE で参照しているため、
+     * テンプレートを削除すると、それに紐づくセッション・セットが連鎖削除される。
+     * 
+     * 方式：
+     * - templateKey で既存テンプレを検索
+     * - あれば sortOrder のみ更新（idは維持 → 外部キー参照を壊さない）
+     * - なければ新規挿入
+     * - カスタム種目（isTemplate=false）は一切触らない
      */
     private fun ensureLatestTemplates() {
         CoroutineScope(Dispatchers.IO).launch {
             val database = AppDatabase.getInstance(applicationContext)
             val exerciseDao = database.exerciseDao()
 
-            // 旧テンプレをすべて削除
-            exerciseDao.deleteTemplates()
-
-            // 最新テンプレを挿入
-            insertLatestTemplates(exerciseDao)
+            // 最新テンプレをUpsert（削除は行わない）
+            upsertLatestTemplates(exerciseDao)
         }
     }
 
     /**
-     * 最新テンプレート種目を挿入
+     * 最新テンプレート種目をUpsert
      * templateKey は strings.xml のキー名と一致させる
      */
-    private suspend fun insertLatestTemplates(exerciseDao: com.poweder.simpleworkoutlog.data.dao.ExerciseDao) {
-        // 筋トレ種目
-        val strengthExercises = listOf(
+    private suspend fun upsertLatestTemplates(exerciseDao: com.poweder.simpleworkoutlog.data.dao.ExerciseDao) {
+        // 全テンプレート定義
+        val allTemplates = listOf(
+            // 筋トレ種目
             ExerciseEntity(
                 workoutType = WorkoutType.STRENGTH,
                 sortOrder = 1,
@@ -61,11 +64,9 @@ class WorkoutApplication : Application() {
                 sortOrder = 3,
                 templateKey = "exercise_deadlift",
                 isTemplate = true
-            )
-        )
+            ),
 
-        // 有酸素運動種目
-        val cardioExercises = listOf(
+            // 有酸素運動種目
             ExerciseEntity(
                 workoutType = WorkoutType.CARDIO,
                 sortOrder = 1,
@@ -83,11 +84,9 @@ class WorkoutApplication : Application() {
                 sortOrder = 3,
                 templateKey = "exercise_indoor_bike",
                 isTemplate = true
-            )
-        )
+            ),
 
-        // インターバル種目（順序: TABATA → HIIT → EMOM）
-        val intervalExercises = listOf(
+            // インターバル種目（順序: TABATA → HIIT → EMOM）
             ExerciseEntity(
                 workoutType = WorkoutType.INTERVAL,
                 sortOrder = 1,
@@ -105,11 +104,9 @@ class WorkoutApplication : Application() {
                 sortOrder = 3,
                 templateKey = "exercise_emom",
                 isTemplate = true
-            )
-        )
+            ),
 
-        // スタジオ種目
-        val studioExercises = listOf(
+            // スタジオ種目
             ExerciseEntity(
                 workoutType = WorkoutType.STUDIO,
                 sortOrder = 1,
@@ -121,11 +118,9 @@ class WorkoutApplication : Application() {
                 sortOrder = 2,
                 templateKey = "exercise_pilates",
                 isTemplate = true
-            )
-        )
+            ),
 
-        // その他種目
-        val otherExercises = listOf(
+            // その他種目
             ExerciseEntity(
                 workoutType = WorkoutType.OTHER,
                 sortOrder = 1,
@@ -140,9 +135,9 @@ class WorkoutApplication : Application() {
             )
         )
 
-        // データベースに挿入
-        (strengthExercises + cardioExercises + intervalExercises + studioExercises + otherExercises).forEach { exercise ->
-            exerciseDao.insert(exercise)
+        // 各テンプレートをUpsert（既存ならsortOrder更新、なければ挿入）
+        allTemplates.forEach { template ->
+            exerciseDao.upsertTemplate(template)
         }
     }
 }

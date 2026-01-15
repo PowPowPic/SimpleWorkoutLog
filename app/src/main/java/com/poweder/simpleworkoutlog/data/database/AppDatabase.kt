@@ -22,7 +22,7 @@ import com.poweder.simpleworkoutlog.data.entity.WorkoutSetEntity
         WorkoutSessionEntity::class,
         WorkoutSetEntity::class
     ],
-    version = 6,  // 5 → 6: nameResId撤廃、templateKey追加
+    version = 7,  // 6 → 7: templateKeyにUNIQUEインデックス追加
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -70,6 +70,18 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Migration 6→7: templateKeyにUNIQUEインデックス追加
+         * Upsert方式でテンプレートを安全に更新するため
+         */
+        private val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // templateKey に UNIQUE インデックスを追加
+                // SQLiteではNULLは複数可なので、カスタム種目（templateKey=null）と共存できる
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_exercises_templateKey ON exercises(templateKey)")
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -77,7 +89,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "workout_log_database"
                 )
-                    .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_5_6, MIGRATION_6_7)
                     // クローズドテスト中：Migrationが失敗した場合のfallback
                     .fallbackToDestructiveMigration()
                     .build()
