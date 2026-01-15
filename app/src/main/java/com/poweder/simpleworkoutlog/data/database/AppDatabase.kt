@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.poweder.simpleworkoutlog.BuildConfig
 import com.poweder.simpleworkoutlog.data.dao.DailyWorkoutDao
 import com.poweder.simpleworkoutlog.data.dao.ExerciseDao
 import com.poweder.simpleworkoutlog.data.dao.WorkoutSessionDao
@@ -84,15 +85,20 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
+                val builder = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "workout_log_database"
                 )
                     .addMigrations(MIGRATION_5_6, MIGRATION_6_7)
-                    // クローズドテスト中：Migrationが失敗した場合のfallback
-                    .fallbackToDestructiveMigration()
-                    .build()
+
+                // ⚠️ fallbackToDestructiveMigration は debugビルドのみ許可
+                // release/closedTest では DB破棄を許可しない（データ保持が最優先）
+                if (BuildConfig.DEBUG) {
+                    builder.fallbackToDestructiveMigration()
+                }
+
+                val instance = builder.build()
                 INSTANCE = instance
                 instance
             }
