@@ -3,8 +3,10 @@ package com.poweder.simpleworkoutlog.ui.other
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -173,9 +175,11 @@ fun OtherScreen(
                 .padding(bottom = 16.dp)
         )
 
+        // スクロール可能なコンテンツエリア（高齢者対応）
         Column(
             modifier = Modifier
                 .weight(1f)
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -241,6 +245,7 @@ fun OtherScreen(
             Box(
                 modifier = Modifier
                     .weight(1f)
+                    .heightIn(min = 48.dp)  // 最低タップサイズ保証（高齢者対応）
                     .clip(RoundedCornerShape(12.dp))
                     .background(WorkoutColors.ButtonCancel)
                     .clickable {
@@ -258,7 +263,8 @@ fun OtherScreen(
                     text = stringResource(R.string.go_home),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = WorkoutColors.TextPrimary
+                    color = WorkoutColors.TextPrimary,
+                    maxLines = 2  // 高齢者対応
                 )
             }
 
@@ -266,6 +272,7 @@ fun OtherScreen(
             Box(
                 modifier = Modifier
                     .weight(1f)
+                    .heightIn(min = 48.dp)  // 最低タップサイズ保証（高齢者対応）
                     .clip(RoundedCornerShape(12.dp))
                     .background(WorkoutColors.ButtonConfirm)
                     .clickable {
@@ -304,7 +311,8 @@ fun OtherScreen(
                     text = stringResource(R.string.finish_and_save),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = WorkoutColors.TextPrimary
+                    color = WorkoutColors.TextPrimary,
+                    maxLines = 2  // 高齢者対応
                 )
             }
         }
