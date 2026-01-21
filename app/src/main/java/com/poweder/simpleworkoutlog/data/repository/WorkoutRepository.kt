@@ -27,6 +27,13 @@ class WorkoutRepository(
     fun getExercisesByType(type: String): Flow<List<ExerciseEntity>> {
         return exerciseDao.getExercisesByType(type)
     }
+    
+    /**
+     * IDで種目を取得
+     */
+    suspend fun getExerciseById(id: Long): ExerciseEntity? {
+        return exerciseDao.getExerciseById(id)
+    }
 
     suspend fun insertExercise(name: String, type: String): Long {
         val maxOrder = exerciseDao.getMaxSortOrder(type) ?: 0
@@ -44,6 +51,16 @@ class WorkoutRepository(
 
     suspend fun deleteExercise(id: Long) {
         exerciseDao.deleteById(id)
+    }
+    
+    /**
+     * 種目の並び順を一括更新
+     * リストのインデックスをsortOrderとして保存
+     */
+    suspend fun updateExerciseSortOrders(exercises: List<ExerciseEntity>) {
+        exercises.forEachIndexed { index, exercise ->
+            exerciseDao.updateSortOrder(exercise.id, index)
+        }
     }
 
     // ===== Daily Workout（日別サマリー）操作 =====

@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.WorkoutDayDetailDialog
+import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
@@ -45,6 +47,7 @@ fun CalendarScreen(
     onNavigateToStudioEdit: (Long) -> Unit = {},
     onNavigateToOtherEdit: (Long) -> Unit = {}
 ) {
+    val context = LocalContext.current
     val weightUnit by viewModel.weightUnit.collectAsState()
     val distanceUnit by viewModel.distanceUnit.collectAsState()
     val adRemoved by viewModel.adRemoved.collectAsState()
@@ -74,10 +77,10 @@ fun CalendarScreen(
     // 全種目リスト（直接取得）
     val allExercises by viewModel.allExercises.collectAsState()
 
-    // 種目名マップを作成（allExercisesから直接）
-    val exerciseNames = remember(allExercises) {
+    // 種目名マップを作成（getDisplayNameを使用してテンプレート種目も正しく表示）
+    val exerciseNames = remember(allExercises, context) {
         allExercises.associate { exercise ->
-            exercise.id to (exercise.customName ?: exercise.name)
+            exercise.id to exercise.getDisplayName(context)
         }
     }
 

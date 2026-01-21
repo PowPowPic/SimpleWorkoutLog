@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 s trabajo / 10 s descanso × 8 rondas</string>
     <string name="preset_hiit_desc">Entrenamiento interválico de alta intensidad\nPersonaliza trabajo y descanso</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nComienza una nueva ronda cada minuto</string>
+
+    <string name="drag_to_reorder">Mantén pulsado y arrastra para reordenar</string>
+
 </resources>

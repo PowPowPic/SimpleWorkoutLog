@@ -7,10 +7,12 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -23,6 +25,9 @@ class SettingsDataStore(private val context: Context) {
         private val DISTANCE_UNIT_KEY = stringPreferencesKey("distance_unit")
         private val AD_REMOVED_KEY = booleanPreferencesKey("ad_removed")
         private val GRAPH_RESET_DATE_KEY = longPreferencesKey("graph_reset_logical_date")
+        
+        // 削除されたテンプレートキーを保存するキー
+        private val DELETED_TEMPLATE_KEYS = stringSetPreferencesKey("deleted_template_keys")
     }
 
     // 言語設定
@@ -90,6 +95,51 @@ class SettingsDataStore(private val context: Context) {
     suspend fun clearGraphResetDate() {
         context.dataStore.edit { preferences ->
             preferences.remove(GRAPH_RESET_DATE_KEY)
+        }
+    }
+
+    // ===== 削除されたテンプレートキー管理 =====
+    
+    /**
+     * 削除されたテンプレートキーのFlowを取得
+     */
+    val deletedTemplateKeysFlow: Flow<Set<String>> = context.dataStore.data.map { preferences ->
+        preferences[DELETED_TEMPLATE_KEYS] ?: emptySet()
+    }
+    
+    /**
+     * 削除されたテンプレートキーを同期的に取得
+     */
+    suspend fun getDeletedTemplateKeys(): Set<String> {
+        return deletedTemplateKeysFlow.first()
+    }
+    
+    /**
+     * テンプレートキーを削除済みとして追加
+     */
+    suspend fun addDeletedTemplateKey(templateKey: String) {
+        context.dataStore.edit { preferences ->
+            val current = preferences[DELETED_TEMPLATE_KEYS] ?: emptySet()
+            preferences[DELETED_TEMPLATE_KEYS] = current + templateKey
+        }
+    }
+    
+    /**
+     * テンプレートキーを削除済みリストから除去（復元用）
+     */
+    suspend fun removeDeletedTemplateKey(templateKey: String) {
+        context.dataStore.edit { preferences ->
+            val current = preferences[DELETED_TEMPLATE_KEYS] ?: emptySet()
+            preferences[DELETED_TEMPLATE_KEYS] = current - templateKey
+        }
+    }
+    
+    /**
+     * 削除されたテンプレートキーをすべてクリア
+     */
+    suspend fun clearDeletedTemplateKeys() {
+        context.dataStore.edit { preferences ->
+            preferences.remove(DELETED_TEMPLATE_KEYS)
         }
     }
 

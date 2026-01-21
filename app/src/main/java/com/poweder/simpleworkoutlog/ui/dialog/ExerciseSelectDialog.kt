@@ -1,23 +1,30 @@
 package com.poweder.simpleworkoutlog.ui.dialog
 
 import android.content.Context
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +38,7 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 
 /**
  * ExerciseEntityの表示名を取得する拡張関数
- * 
+ *
  * テンプレート種目: templateKey → stringResource で表示名を取得
  * カスタム種目: customName または name を使用
  */
@@ -55,8 +62,11 @@ fun ExerciseEntity.getDisplayName(context: Context): String {
     }
 }
 
+// 編集アイコンの色（真っ青）
+private val EditIconColor = Color(0xFF0000FF)
+
 /**
- * 種目選択ダイアログ（編集/削除アイコン付き）
+ * 種目選択ダイアログ（編集/削除アイコン付き、並び替え対応）
  */
 @Composable
 fun ExerciseSelectDialog(
@@ -66,11 +76,23 @@ fun ExerciseSelectDialog(
     onAddNewExercise: () -> Unit,
     onRenameExercise: (ExerciseEntity) -> Unit,
     onDeleteExercise: (ExerciseEntity) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onReorderExercises: (List<ExerciseEntity>) -> Unit = {}
 ) {
     val context = LocalContext.current
+    val density = LocalDensity.current
     var exerciseToDelete by remember { mutableStateOf<ExerciseEntity?>(null) }
-    
+
+    // 並び替え用のローカルリスト
+    var reorderedExercises by remember(exercises) { mutableStateOf(exercises) }
+
+    // ドラッグ状態
+    var draggedItemIndex by remember { mutableStateOf<Int?>(null) }
+    var dragOffsetY by remember { mutableStateOf(0f) }
+
+    // LazyListState
+    val listState = rememberLazyListState()
+
     exerciseToDelete?.let { exercise ->
         DeleteConfirmDialog(
             itemName = exercise.getDisplayName(context),
@@ -81,7 +103,7 @@ fun ExerciseSelectDialog(
             onDismiss = { exerciseToDelete = null }
         )
     }
-    
+
     val colorType = when (workoutType) {
         WorkoutType.STRENGTH -> ExerciseColorType.STRENGTH
         WorkoutType.CARDIO -> ExerciseColorType.CARDIO
@@ -90,7 +112,7 @@ fun ExerciseSelectDialog(
         WorkoutType.OTHER -> ExerciseColorType.OTHER
         else -> ExerciseColorType.CARDIO
     }
-    
+
     Dialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
@@ -105,27 +127,80 @@ fun ExerciseSelectDialog(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = WorkoutColors.TextPrimary,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
-                
-                // 種目がある場合のみグリッド表示
+
+                // 並び替えヒント
                 if (exercises.isNotEmpty()) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    Text(
+                        text = stringResource(R.string.drag_to_reorder),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color(0xFFFF0000),
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                }
+
+                // 種目がある場合はリスト表示
+                if (reorderedExercises.isNotEmpty()) {
+                    LazyColumn(
+                        state = listState,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.heightIn(max = 450.dp)
+                        modifier = Modifier.heightIn(max = 450.dp),
+                        // ドラッグ中はスクロールを無効化
+                        userScrollEnabled = draggedItemIndex == null
                     ) {
-                        items(
-                            items = exercises,
-                            key = { it.id }
-                        ) { exercise ->
-                            ExerciseSlot(
-                                name = exercise.getDisplayName(context),
+                        itemsIndexed(
+                            items = reorderedExercises,
+                            key = { _, exercise -> exercise.id }
+                        ) { index, exercise ->
+                            val isDragging = draggedItemIndex == index
+
+                            DraggableExerciseSlot(
+                                exercise = exercise,
                                 colorType = colorType,
+                                isDragging = isDragging,
+                                context = context,
                                 onClick = { onExerciseSelect(exercise) },
                                 onEdit = { onRenameExercise(exercise) },
-                                onDelete = { exerciseToDelete = exercise }
+                                onDelete = { exerciseToDelete = exercise },
+                                onDragStart = {
+                                    draggedItemIndex = index
+                                    dragOffsetY = 0f
+                                },
+                                onDrag = { deltaY ->
+                                    dragOffsetY += deltaY
+
+                                    // アイテムの高さ（約72dp + 8dp spacing = 80dp）
+                                    val itemHeightPx = with(density) { 80.dp.toPx() }
+                                    val movedPositions = (dragOffsetY / itemHeightPx).toInt()
+
+                                    if (movedPositions != 0) {
+                                        val currentIndex = draggedItemIndex ?: return@DraggableExerciseSlot
+                                        val targetIndex = (currentIndex + movedPositions)
+                                            .coerceIn(0, reorderedExercises.size - 1)
+
+                                        if (targetIndex != currentIndex) {
+                                            // リストを並び替え
+                                            val mutableList = reorderedExercises.toMutableList()
+                                            val item = mutableList.removeAt(currentIndex)
+                                            mutableList.add(targetIndex, item)
+                                            reorderedExercises = mutableList
+                                            draggedItemIndex = targetIndex
+                                            // 移動分のオフセットをリセット
+                                            dragOffsetY -= movedPositions * itemHeightPx
+                                        }
+                                    }
+                                },
+                                onDragEnd = {
+                                    draggedItemIndex = null
+                                    dragOffsetY = 0f
+                                    // 並び替え結果を保存
+                                    onReorderExercises(reorderedExercises)
+                                },
+                                onDragCancel = {
+                                    draggedItemIndex = null
+                                    dragOffsetY = 0f
+                                }
                             )
                         }
                     }
@@ -141,9 +216,9 @@ fun ExerciseSelectDialog(
                             .padding(vertical = 24.dp)
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 // + 新規種目を追加 ボタン
                 Box(
                     modifier = Modifier
@@ -161,9 +236,9 @@ fun ExerciseSelectDialog(
                         color = WorkoutColors.AccentOrange
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 TextButton(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
@@ -182,13 +257,22 @@ private enum class ExerciseColorType {
     STRENGTH, CARDIO, INTERVAL, STUDIO, OTHER
 }
 
+/**
+ * ドラッグ可能な種目スロット
+ */
 @Composable
-private fun ExerciseSlot(
-    name: String,
+private fun DraggableExerciseSlot(
+    exercise: ExerciseEntity,
     colorType: ExerciseColorType,
+    isDragging: Boolean,
+    context: Context,
     onClick: () -> Unit,
     onEdit: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onDragStart: () -> Unit,
+    onDrag: (Float) -> Unit,
+    onDragEnd: () -> Unit,
+    onDragCancel: () -> Unit
 ) {
     val gradient = when (colorType) {
         ExerciseColorType.STRENGTH -> Brush.horizontalGradient(
@@ -207,56 +291,87 @@ private fun ExerciseSlot(
             colors = listOf(WorkoutColors.OtherCardStart, WorkoutColors.OtherCardEnd)
         )
     }
-    
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(bottom = 8.dp)
+
+    // ドラッグ中のエレベーション（影）
+    val elevation by animateDpAsState(
+        targetValue = if (isDragging) 8.dp else 0.dp,
+        label = "dragElevation"
+    )
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(elevation, RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(12.dp))
+            .background(gradient)
+            .clickable(enabled = !isDragging) { onClick() }
+            .padding(vertical = 12.dp, horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        // ドラッグハンドル（長押しでドラッグ開始）
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp))
-                .background(gradient)
-                .clickable { onClick() }
-                .padding(vertical = 24.dp, horizontal = 8.dp),
+                .size(40.dp)
+                .pointerInput(exercise.id) {
+                    detectDragGesturesAfterLongPress(
+                        onDragStart = { onDragStart() },
+                        onDrag = { change, dragAmount ->
+                            change.consume()
+                            onDrag(dragAmount.y)
+                        },
+                        onDragEnd = { onDragEnd() },
+                        onDragCancel = { onDragCancel() }
+                    )
+                },
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = name,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                color = WorkoutColors.TextPrimary,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+            Icon(
+                imageVector = Icons.Default.DragHandle,
+                contentDescription = "Drag to reorder",
+                tint = if (isDragging) WorkoutColors.TextPrimary else WorkoutColors.TextSecondary,
+                modifier = Modifier.size(24.dp)
             )
         }
-        
-        // 編集/削除アイコン（常に表示）
-        Row(
+
+        // 種目名
+        Text(
+            text = exercise.getDisplayName(context),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            color = WorkoutColors.TextPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+        )
+
+        // 編集アイコン（青色）
+        IconButton(
+            onClick = onEdit,
+            modifier = Modifier.size(36.dp),
+            enabled = !isDragging
         ) {
-            IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
-                Icon(
-                    Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.edit),
-                    tint = WorkoutColors.TextSecondary,
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
-                Icon(
-                    Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.delete),
-                    tint = WorkoutColors.PureRed.copy(alpha = 0.7f),
-                    modifier = Modifier.size(18.dp)
-                )
-            }
+            Icon(
+                Icons.Default.Edit,
+                contentDescription = stringResource(R.string.edit),
+                tint = EditIconColor,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
+        // 削除アイコン（赤色）
+        IconButton(
+            onClick = onDelete,
+            modifier = Modifier.size(36.dp),
+            enabled = !isDragging
+        ) {
+            Icon(
+                Icons.Default.Delete,
+                contentDescription = stringResource(R.string.delete),
+                tint = WorkoutColors.PureRed,
+                modifier = Modifier.size(20.dp)
+            )
         }
     }
 }

@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 Sek. Arbeit / 10 Sek. Pause × 8 Runden</string>
     <string name="preset_hiit_desc">Hochintensives Intervalltraining\nArbeit und Pause frei anpassen</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nJede Minute eine neue Runde starten</string>
+
+    <string name="drag_to_reorder">Gedrückt halten und ziehen, um neu zu sortieren</string>
+
 </resources>

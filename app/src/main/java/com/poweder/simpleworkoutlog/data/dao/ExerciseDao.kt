@@ -20,6 +20,12 @@ interface ExerciseDao {
 
     @Update
     suspend fun update(exercise: ExerciseEntity)
+    
+    /**
+     * 複数の種目を一括更新（並び替え用）
+     */
+    @Update
+    suspend fun updateAll(exercises: List<ExerciseEntity>)
 
     @Delete
     suspend fun delete(exercise: ExerciseEntity)
@@ -32,6 +38,12 @@ interface ExerciseDao {
 
     @Query("SELECT MAX(sortOrder) FROM exercises WHERE workoutType = :type")
     suspend fun getMaxSortOrder(type: String): Int?
+    
+    /**
+     * 指定IDの種目のsortOrderを更新
+     */
+    @Query("UPDATE exercises SET sortOrder = :sortOrder WHERE id = :id")
+    suspend fun updateSortOrder(id: Long, sortOrder: Int)
 
     // ===== テンプレート管理用（Upsert方式） =====
 

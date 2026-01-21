@@ -269,6 +269,10 @@
 
     <!-- ==================== Settings Hint (English Only) ==================== -->
     <string name="settings_hint" translatable="false">
-        Language and kg/lbs, km/mile can be changed in Settings.
-    </string>
+    Language and units (kg/lb, km/mi) can be changed in Settings.
+</string>
+
+
+    <string name="drag_to_reorder">Long press and drag to reorder</string>
+
 </resources>

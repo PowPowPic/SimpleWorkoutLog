@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 dtk kerja / 10 dtk istirahat × 8 ronde</string>
     <string name="preset_hiit_desc">Latihan interval intensitas tinggi\nBebas atur kerja dan istirahat</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nMulai ronde baru tiap menit</string>
+
+    <string name="drag_to_reorder">Tekan lama lalu seret untuk mengurutkan ulang</string>
+
 </resources>

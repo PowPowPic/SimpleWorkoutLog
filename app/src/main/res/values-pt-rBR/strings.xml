@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 s trabalho / 10 s descanso × 8 rounds</string>
     <string name="preset_hiit_desc">Treino intervalado de alta intensidade\nPersonalize trabalho e descanso</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nComece um novo round a cada minuto</string>
+
+    <string name="drag_to_reorder">Pressione e segure, depois arraste para reorganizar</string>
+
 </resources>

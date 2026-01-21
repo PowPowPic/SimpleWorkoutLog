@@ -1,9 +1,11 @@
 package com.poweder.simpleworkoutlog
 
 import android.app.Application
+import com.poweder.simpleworkoutlog.data.dao.ExerciseDao
 import com.poweder.simpleworkoutlog.data.database.AppDatabase
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.data.entity.WorkoutType
+import com.poweder.simpleworkoutlog.data.preferences.SettingsDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,22 +30,33 @@ class WorkoutApplication : Application() {
      * - あれば sortOrder のみ更新（idは維持 → 外部キー参照を壊さない）
      * - なければ新規挿入
      * - カスタム種目（isTemplate=false）は一切触らない
+     * - ユーザーが削除したテンプレートはスキップ（復活させない）
      */
     private fun ensureLatestTemplates() {
         CoroutineScope(Dispatchers.IO).launch {
             val database = AppDatabase.getInstance(applicationContext)
             val exerciseDao = database.exerciseDao()
+            val settingsDataStore = SettingsDataStore(applicationContext)
+            
+            // 削除済みテンプレートキーを取得
+            val deletedTemplateKeys = settingsDataStore.getDeletedTemplateKeys()
 
-            // 最新テンプレをUpsert（削除は行わない）
-            upsertLatestTemplates(exerciseDao)
+            // 最新テンプレをUpsert（削除は行わない、削除済みはスキップ）
+            upsertLatestTemplates(exerciseDao, deletedTemplateKeys)
         }
     }
 
     /**
      * 最新テンプレート種目をUpsert
      * templateKey は strings.xml のキー名と一致させる
+     * 
+     * @param exerciseDao ExerciseDao
+     * @param deletedTemplateKeys ユーザーが削除したテンプレートキーのセット
      */
-    private suspend fun upsertLatestTemplates(exerciseDao: com.poweder.simpleworkoutlog.data.dao.ExerciseDao) {
+    private suspend fun upsertLatestTemplates(
+        exerciseDao: ExerciseDao,
+        deletedTemplateKeys: Set<String>
+    ) {
         // 全テンプレート定義
         val allTemplates = listOf(
             // 筋トレ種目
@@ -136,7 +149,15 @@ class WorkoutApplication : Application() {
         )
 
         // 各テンプレートをUpsert（既存ならsortOrder更新、なければ挿入）
+        // ただし、ユーザーが削除したテンプレートはスキップ
         allTemplates.forEach { template ->
+            val templateKey = template.templateKey ?: return@forEach
+            
+            // 削除済みテンプレートはスキップ（復活させない）
+            if (templateKey in deletedTemplateKeys) {
+                return@forEach
+            }
+            
             exerciseDao.upsertTemplate(template)
         }
     }

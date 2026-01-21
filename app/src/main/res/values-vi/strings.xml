@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 giây tập / 10 giây nghỉ × 8 vòng</string>
     <string name="preset_hiit_desc">Bài tập ngắt quãng cường độ cao\nTùy chỉnh thời gian tập và nghỉ</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nBắt đầu vòng mới mỗi phút</string>
+
+    <string name="drag_to_reorder">Nhấn giữ và kéo để sắp xếp lại</string>
+
 </resources>

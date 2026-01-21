@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 ثانية عمل / 10 ثوانٍ راحة × 8 جولات</string>
     <string name="preset_hiit_desc">تمرين متقطع عالي الشدة\nتخصيص العمل والراحة بحرية</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nبدء جولة جديدة كل دقيقة</string>
+
+    <string name="drag_to_reorder">اضغط مطولًا ثم اسحب لإعادة الترتيب</string>
+
 </resources>

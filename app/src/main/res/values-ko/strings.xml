@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20초 운동 / 10초 휴식 × 8라운드</string>
     <string name="preset_hiit_desc">고강도 인터벌 트레이닝\n운동과 휴식을 자유롭게 설정</string>
     <string name="preset_emom_desc">Every Minute On the Minute\n매 분 새로운 라운드를 시작</string>
+
+    <string name="drag_to_reorder">길게 눌러 드래그하여 순서를 변경하세요</string>
+
 </resources>

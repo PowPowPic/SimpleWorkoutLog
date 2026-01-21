@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 s travail / 10 s repos × 8 rounds</string>
     <string name="preset_hiit_desc">Entraînement fractionné haute intensité\nPersonnalisez travail et repos</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nDémarrer un nouveau round chaque minute</string>
+
+    <string name="drag_to_reorder">Appuyez longuement et faites glisser pour réorganiser</string>
+
 </resources>

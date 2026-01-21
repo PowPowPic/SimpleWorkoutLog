@@ -4,7 +4,9 @@ import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -244,7 +246,10 @@ fun MainScreen(
             onDeleteExercise = { exercise ->
                 viewModel.deleteExercise(exercise.id)
             },
-            onDismiss = { showStrengthExerciseDialog = false }
+            onDismiss = { showStrengthExerciseDialog = false },
+            onReorderExercises = { reorderedList ->
+                viewModel.updateExerciseSortOrders(reorderedList)
+            }
         )
     }
 
@@ -285,7 +290,10 @@ fun MainScreen(
             onDeleteExercise = { exercise ->
                 viewModel.deleteExercise(exercise.id)
             },
-            onDismiss = { showCardioExerciseDialog = false }
+            onDismiss = { showCardioExerciseDialog = false },
+            onReorderExercises = { reorderedList ->
+                viewModel.updateExerciseSortOrders(reorderedList)
+            }
         )
     }
 
@@ -348,7 +356,10 @@ fun MainScreen(
             onDeleteExercise = { exercise ->
                 viewModel.deleteExercise(exercise.id)
             },
-            onDismiss = { showStudioExerciseDialog = false }
+            onDismiss = { showStudioExerciseDialog = false },
+            onReorderExercises = { reorderedList ->
+                viewModel.updateExerciseSortOrders(reorderedList)
+            }
         )
     }
 
@@ -389,7 +400,10 @@ fun MainScreen(
             onDeleteExercise = { exercise ->
                 viewModel.deleteExercise(exercise.id)
             },
-            onDismiss = { showOtherExerciseDialog = false }
+            onDismiss = { showOtherExerciseDialog = false },
+            onReorderExercises = { reorderedList ->
+                viewModel.updateExerciseSortOrders(reorderedList)
+            }
         )
     }
 
@@ -427,9 +441,11 @@ fun MainScreen(
                 .padding(vertical = 8.dp)
         )
 
+        // スクロール可能なコンテンツエリア（高齢者対応）
         Column(
             modifier = Modifier
                 .weight(1f)
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -503,7 +519,7 @@ fun MainScreen(
                 }
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // 設定案内（青文字、クリック可能）
             Text(
@@ -605,6 +621,7 @@ private fun MainActionCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = 48.dp)  // 最低タップサイズ保証（高齢者対応）
             .clip(RoundedCornerShape(12.dp))
             .background(gradient)
             .clickable { onClick() }
@@ -615,7 +632,8 @@ private fun MainActionCard(
             text = text,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = WorkoutColors.TextPrimary
+            color = WorkoutColors.TextPrimary,
+            maxLines = 2  // 高齢者対応：文字が大きくても2行まで表示
         )
     }
 }
@@ -630,6 +648,7 @@ private fun PastWorkoutButton(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = 48.dp)  // 最低タップサイズ保証（高齢者対応）
             .clip(RoundedCornerShape(12.dp))
             .background(WorkoutColors.GrandTotalBackground)
             .clickable { onClick() }
@@ -640,7 +659,8 @@ private fun PastWorkoutButton(
             text = stringResource(R.string.add_past_workout),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
-            color = WorkoutColors.TextSecondary
+            color = WorkoutColors.TextSecondary,
+            maxLines = 2  // 高齢者対応：文字が大きくても2行まで表示
         )
     }
 }

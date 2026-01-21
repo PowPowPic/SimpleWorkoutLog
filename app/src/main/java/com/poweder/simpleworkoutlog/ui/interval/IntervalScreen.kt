@@ -2,8 +2,10 @@ package com.poweder.simpleworkoutlog.ui.interval
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -171,10 +173,11 @@ fun IntervalScreen(
             )
         )
 
-        // メインコンテンツ
+        // メインコンテンツ（スクロール可能：高齢者対応）
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -400,11 +403,15 @@ private fun FinishedSection(
         // 完了ボタン → 結果入力画面へ
         Button(
             onClick = onComplete,
+            modifier = Modifier.heightIn(min = 48.dp),  // 最低タップサイズ保証（高齢者対応）
             colors = ButtonDefaults.buttonColors(
                 containerColor = WorkoutColors.ButtonConfirm
             )
         ) {
-            Text(stringResource(R.string.complete))
+            Text(
+                text = stringResource(R.string.complete),
+                maxLines = 2  // 高齢者対応
+            )
         }
     }
 }
@@ -556,17 +563,27 @@ private fun ResultInputSection(
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            OutlinedButton(onClick = onCancel) {
-                Text(stringResource(R.string.common_cancel))
+            OutlinedButton(
+                onClick = onCancel,
+                modifier = Modifier.heightIn(min = 48.dp)  // 最低タップサイズ保証（高齢者対応）
+            ) {
+                Text(
+                    text = stringResource(R.string.common_cancel),
+                    maxLines = 2  // 高齢者対応
+                )
             }
 
             Button(
                 onClick = onSave,
+                modifier = Modifier.heightIn(min = 48.dp),  // 最低タップサイズ保証（高齢者対応）
                 colors = ButtonDefaults.buttonColors(
                     containerColor = WorkoutColors.ButtonConfirm
                 )
             ) {
-                Text(stringResource(R.string.save))
+                Text(
+                    text = stringResource(R.string.save),
+                    maxLines = 2  // 高齢者対応
+                )
             }
         }
     }

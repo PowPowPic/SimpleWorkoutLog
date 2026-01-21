@@ -241,9 +241,30 @@ class WorkoutViewModel(
         }
     }
 
+    /**
+     * 種目を削除
+     * テンプレート種目の場合は、削除されたtemplateKeyを保存して復活を防ぐ
+     */
     fun deleteExercise(id: Long) {
         viewModelScope.launch {
+            // 削除前に種目情報を取得
+            val exercise = repository.getExerciseById(id)
+            
+            // テンプレート種目の場合は、templateKeyを削除済みリストに追加
+            if (exercise?.isTemplate == true && exercise.templateKey != null) {
+                settingsDataStore.addDeletedTemplateKey(exercise.templateKey)
+            }
+            
             repository.deleteExercise(id)
+        }
+    }
+    
+    /**
+     * 種目の並び順を更新（ドラッグ&ドロップ後）
+     */
+    fun updateExerciseSortOrders(exercises: List<ExerciseEntity>) {
+        viewModelScope.launch {
+            repository.updateExerciseSortOrders(exercises)
         }
     }
 
@@ -545,6 +566,8 @@ class WorkoutViewModel(
         viewModelScope.launch {
             repository.deleteAllData()
             lastInputDataStore.clearAll()
+            // 削除されたテンプレートキーもクリア（テンプレートを復活させる）
+            settingsDataStore.clearDeletedTemplateKeys()
         }
     }
 

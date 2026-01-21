@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">ทำงาน 20 วิ / พัก 10 วิ × 8 รอบ</string>
     <string name="preset_hiit_desc">การฝึกแบบอินเทอร์วัลความเข้มข้นสูง\nปรับเวลาออกแรงและพักได้ตามต้องการ</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nเริ่มรอบใหม่ทุกๆ นาที</string>
+
+    <string name="drag_to_reorder">กดค้างไว้แล้วลากเพื่อจัดลำดับใหม่</string>
+
 </resources>

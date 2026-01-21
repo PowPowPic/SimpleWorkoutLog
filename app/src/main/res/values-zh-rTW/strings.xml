@@ -234,4 +234,7 @@
     <string name="preset_tabata_desc">20 秒訓練 / 10 秒休息 × 8 回合</string>
     <string name="preset_hiit_desc">高強度間歇訓練\n可自由調整訓練與休息時間</string>
     <string name="preset_emom_desc">Every Minute On the Minute\n每分鐘開始新一回合</string>
+
+    <string name="drag_to_reorder">長按並拖曳以重新排序</string>
+
 </resources>

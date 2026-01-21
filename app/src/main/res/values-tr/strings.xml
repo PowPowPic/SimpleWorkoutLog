@@ -235,4 +235,7 @@
     <string name="preset_tabata_desc">20 sn çalışma / 10 sn dinlenme × 8 tur</string>
     <string name="preset_hiit_desc">Yüksek yoğunluklu interval antrenman\nÇalışma ve dinlenmeyi özelleştir</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nHer dakika yeni bir tur başlat</string>
+
+    <string name="drag_to_reorder">Yeniden sıralamak için basılı tutup sürükleyin</string>
+
 </resources>
