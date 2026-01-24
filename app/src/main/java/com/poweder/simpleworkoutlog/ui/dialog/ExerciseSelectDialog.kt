@@ -90,8 +90,8 @@ fun ExerciseSelectDialog(
     // 並び替え用のローカルリスト
     var reorderedExercises by remember(exercises) { mutableStateOf(exercises) }
 
-    // ドラッグ状態
-    var draggedItemIndex by remember { mutableStateOf<Int?>(null) }
+    // ドラッグ状態（indexではなくIDで管理する：これが重要）
+    var draggedItemId by remember { mutableStateOf<Long?>(null) }
     var dragOffsetY by remember { mutableStateOf(0f) }
 
     // アイテムの高さ（dp）
@@ -140,11 +140,11 @@ fun ExerciseSelectDialog(
                 )
 
                 // 並び替えヒント
-                if (exercises.isNotEmpty()) {
+                if (reorderedExercises.isNotEmpty()) {
                     Text(
                         text = stringResource(R.string.drag_to_reorder),
                         style = MaterialTheme.typography.bodySmall,
-                        color = WorkoutColors.TextSecondary,
+                        color = Color(0xFFFF0000),
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                 }
@@ -156,15 +156,15 @@ fun ExerciseSelectDialog(
                         verticalArrangement = Arrangement.spacedBy(itemSpacingDp),
                         modifier = Modifier.heightIn(max = 450.dp),
                         // ドラッグ中はスクロールを無効化
-                        userScrollEnabled = draggedItemIndex == null
+                        userScrollEnabled = draggedItemId == null
                     ) {
                         itemsIndexed(
                             items = reorderedExercises,
                             key = { _, exercise -> exercise.id }
                         ) { index, exercise ->
-                            val isDragging = draggedItemIndex == index
+                            val isDragging = draggedItemId == exercise.id
 
-                            // ドラッグ中のアイテムのY方向オフセット（アニメーション付き）
+                            // ドラッグ中のアイテムのY方向オフセット
                             val offsetY = if (isDragging) dragOffsetY else 0f
 
                             // ドラッグ中のスケールアニメーション
@@ -184,9 +184,7 @@ fun ExerciseSelectDialog(
                             Box(
                                 modifier = Modifier
                                     .zIndex(if (isDragging) 1f else 0f)
-                                    .graphicsLayer {
-                                        translationY = offsetY
-                                    }
+                                    .graphicsLayer { translationY = offsetY }
                                     .scale(scale)
                                     .animateItem(
                                         fadeInSpec = null,
@@ -200,56 +198,53 @@ fun ExerciseSelectDialog(
                                     elevation = elevation,
                                     context = context,
                                     onClick = {
-                                        if (draggedItemIndex == null) {
-                                            onExerciseSelect(exercise)
-                                        }
+                                        if (draggedItemId == null) onExerciseSelect(exercise)
                                     },
                                     onEdit = {
-                                        if (draggedItemIndex == null) {
-                                            onRenameExercise(exercise)
-                                        }
+                                        if (draggedItemId == null) onRenameExercise(exercise)
                                     },
                                     onDelete = {
-                                        if (draggedItemIndex == null) {
-                                            exerciseToDelete = exercise
-                                        }
+                                        if (draggedItemId == null) exerciseToDelete = exercise
                                     },
                                     onDragStart = {
-                                        draggedItemIndex = index
+                                        // ★IDで固定
+                                        draggedItemId = exercise.id
                                         dragOffsetY = 0f
                                     },
                                     onDrag = { deltaY ->
+                                        val currentId = draggedItemId ?: return@DraggableExerciseCard
                                         dragOffsetY += deltaY
+
+                                        // 現在のindexは毎回リストから引く（順番が変わってもズレない）
+                                        val currentIndex = reorderedExercises.indexOfFirst { it.id == currentId }
+                                        if (currentIndex == -1) return@DraggableExerciseCard
 
                                         // アイテムの高さをピクセルで計算
                                         val itemHeightPx = with(density) { totalItemHeightDp.toPx() }
                                         val movedPositions = (dragOffsetY / itemHeightPx).toInt()
 
                                         if (movedPositions != 0) {
-                                            val currentIndex = draggedItemIndex ?: return@DraggableExerciseCard
                                             val targetIndex = (currentIndex + movedPositions)
                                                 .coerceIn(0, reorderedExercises.size - 1)
 
                                             if (targetIndex != currentIndex) {
-                                                // リストを並び替え（入れ替え）
                                                 val mutableList = reorderedExercises.toMutableList()
                                                 val item = mutableList.removeAt(currentIndex)
                                                 mutableList.add(targetIndex, item)
                                                 reorderedExercises = mutableList
-                                                draggedItemIndex = targetIndex
+
                                                 // 移動分のオフセットを調整
                                                 dragOffsetY -= movedPositions * itemHeightPx
                                             }
                                         }
                                     },
                                     onDragEnd = {
-                                        draggedItemIndex = null
+                                        draggedItemId = null
                                         dragOffsetY = 0f
-                                        // 並び替え結果を保存
                                         onReorderExercises(reorderedExercises)
                                     },
                                     onDragCancel = {
-                                        draggedItemIndex = null
+                                        draggedItemId = null
                                         dragOffsetY = 0f
                                     },
                                     itemHeight = itemHeightDp
@@ -312,6 +307,9 @@ private enum class ExerciseColorType {
 
 /**
  * ドラッグ可能な種目カード（カード全体を長押しでドラッグ）
+ *
+ * ★重要：pointerInput 内で使うコールバックは rememberUpdatedState で常に最新を参照する
+ * （そうしないと並び替え後に「古いラムダ」を呼んでズレることがある）
  */
 @Composable
 private fun DraggableExerciseCard(
@@ -347,6 +345,12 @@ private fun DraggableExerciseCard(
         )
     }
 
+    // ★pointerInput内で最新コールバックを使うためのラップ
+    val onDragStartState by rememberUpdatedState(onDragStart)
+    val onDragState by rememberUpdatedState(onDrag)
+    val onDragEndState by rememberUpdatedState(onDragEnd)
+    val onDragCancelState by rememberUpdatedState(onDragCancel)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -354,15 +358,16 @@ private fun DraggableExerciseCard(
             .shadow(elevation, RoundedCornerShape(12.dp))
             .clip(RoundedCornerShape(12.dp))
             .background(gradient)
+            // keyはidでOK。中のコールバックは rememberUpdatedState で最新化する
             .pointerInput(exercise.id) {
                 detectDragGesturesAfterLongPress(
-                    onDragStart = { onDragStart() },
+                    onDragStart = { onDragStartState() },
                     onDrag = { change, dragAmount ->
                         change.consume()
-                        onDrag(dragAmount.y)
+                        onDragState(dragAmount.y)
                     },
-                    onDragEnd = { onDragEnd() },
-                    onDragCancel = { onDragCancel() }
+                    onDragEnd = { onDragEndState() },
+                    onDragCancel = { onDragCancelState() }
                 )
             }
             .clickable(enabled = !isDragging) { onClick() }
@@ -428,11 +433,16 @@ fun AddExerciseDialog(onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
             )
         },
         confirmButton = {
-            TextButton(onClick = { if (name.isNotBlank()) onConfirm(name.trim()) }, enabled = name.isNotBlank()) {
+            TextButton(
+                onClick = { if (name.isNotBlank()) onConfirm(name.trim()) },
+                enabled = name.isNotBlank()
+            ) {
                 Text(stringResource(R.string.common_ok))
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) } }
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) }
+        }
     )
 }
 
@@ -452,11 +462,16 @@ fun RenameDialog(currentName: String, title: String, onConfirm: (String) -> Unit
             )
         },
         confirmButton = {
-            TextButton(onClick = { if (newName.isNotBlank()) onConfirm(newName.trim()) }, enabled = newName.isNotBlank()) {
+            TextButton(
+                onClick = { if (newName.isNotBlank()) onConfirm(newName.trim()) },
+                enabled = newName.isNotBlank()
+            ) {
                 Text(stringResource(R.string.common_ok))
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) } }
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) }
+        }
     )
 }
 
@@ -466,7 +481,13 @@ fun DeleteConfirmDialog(itemName: String, onConfirm: () -> Unit, onDismiss: () -
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.delete_confirm_title)) },
         text = { Text(stringResource(R.string.delete_confirm_message, itemName)) },
-        confirmButton = { TextButton(onClick = onConfirm) { Text(stringResource(R.string.delete), color = WorkoutColors.PureRed) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) } }
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(stringResource(R.string.delete), color = WorkoutColors.PureRed)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) }
+        }
     )
 }

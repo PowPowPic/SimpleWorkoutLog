@@ -514,7 +514,7 @@ private fun LanguageSettingDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { onLanguageSelected(code) }
-                            .padding(vertical = 12.dp, horizontal = 4.dp),
+                            .padding(vertical = 9.dp, horizontal = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
