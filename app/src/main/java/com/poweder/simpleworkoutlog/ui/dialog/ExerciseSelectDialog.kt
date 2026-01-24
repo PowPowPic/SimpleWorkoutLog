@@ -2,6 +2,8 @@ package com.poweder.simpleworkoutlog.ui.dialog
 
 import android.content.Context
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -12,16 +14,17 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -31,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.zIndex
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.data.entity.WorkoutType
@@ -90,6 +94,11 @@ fun ExerciseSelectDialog(
     var draggedItemIndex by remember { mutableStateOf<Int?>(null) }
     var dragOffsetY by remember { mutableStateOf(0f) }
 
+    // アイテムの高さ（dp）
+    val itemHeightDp = 64.dp
+    val itemSpacingDp = 8.dp
+    val totalItemHeightDp = itemHeightDp + itemSpacingDp
+
     // LazyListState
     val listState = rememberLazyListState()
 
@@ -135,7 +144,7 @@ fun ExerciseSelectDialog(
                     Text(
                         text = stringResource(R.string.drag_to_reorder),
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color(0xFFFF0000),
+                        color = WorkoutColors.TextSecondary,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                 }
@@ -144,7 +153,7 @@ fun ExerciseSelectDialog(
                 if (reorderedExercises.isNotEmpty()) {
                     LazyColumn(
                         state = listState,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(itemSpacingDp),
                         modifier = Modifier.heightIn(max = 450.dp),
                         // ドラッグ中はスクロールを無効化
                         userScrollEnabled = draggedItemIndex == null
@@ -155,53 +164,97 @@ fun ExerciseSelectDialog(
                         ) { index, exercise ->
                             val isDragging = draggedItemIndex == index
 
-                            DraggableExerciseSlot(
-                                exercise = exercise,
-                                colorType = colorType,
-                                isDragging = isDragging,
-                                context = context,
-                                onClick = { onExerciseSelect(exercise) },
-                                onEdit = { onRenameExercise(exercise) },
-                                onDelete = { exerciseToDelete = exercise },
-                                onDragStart = {
-                                    draggedItemIndex = index
-                                    dragOffsetY = 0f
-                                },
-                                onDrag = { deltaY ->
-                                    dragOffsetY += deltaY
+                            // ドラッグ中のアイテムのY方向オフセット（アニメーション付き）
+                            val offsetY = if (isDragging) dragOffsetY else 0f
 
-                                    // アイテムの高さ（約72dp + 8dp spacing = 80dp）
-                                    val itemHeightPx = with(density) { 80.dp.toPx() }
-                                    val movedPositions = (dragOffsetY / itemHeightPx).toInt()
-
-                                    if (movedPositions != 0) {
-                                        val currentIndex = draggedItemIndex ?: return@DraggableExerciseSlot
-                                        val targetIndex = (currentIndex + movedPositions)
-                                            .coerceIn(0, reorderedExercises.size - 1)
-
-                                        if (targetIndex != currentIndex) {
-                                            // リストを並び替え
-                                            val mutableList = reorderedExercises.toMutableList()
-                                            val item = mutableList.removeAt(currentIndex)
-                                            mutableList.add(targetIndex, item)
-                                            reorderedExercises = mutableList
-                                            draggedItemIndex = targetIndex
-                                            // 移動分のオフセットをリセット
-                                            dragOffsetY -= movedPositions * itemHeightPx
-                                        }
-                                    }
-                                },
-                                onDragEnd = {
-                                    draggedItemIndex = null
-                                    dragOffsetY = 0f
-                                    // 並び替え結果を保存
-                                    onReorderExercises(reorderedExercises)
-                                },
-                                onDragCancel = {
-                                    draggedItemIndex = null
-                                    dragOffsetY = 0f
-                                }
+                            // ドラッグ中のスケールアニメーション
+                            val scale by animateFloatAsState(
+                                targetValue = if (isDragging) 1.05f else 1f,
+                                animationSpec = spring(),
+                                label = "scale"
                             )
+
+                            // ドラッグ中のエレベーション
+                            val elevation by animateDpAsState(
+                                targetValue = if (isDragging) 12.dp else 0.dp,
+                                animationSpec = spring(),
+                                label = "elevation"
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .zIndex(if (isDragging) 1f else 0f)
+                                    .graphicsLayer {
+                                        translationY = offsetY
+                                    }
+                                    .scale(scale)
+                                    .animateItem(
+                                        fadeInSpec = null,
+                                        fadeOutSpec = null
+                                    )
+                            ) {
+                                DraggableExerciseCard(
+                                    exercise = exercise,
+                                    colorType = colorType,
+                                    isDragging = isDragging,
+                                    elevation = elevation,
+                                    context = context,
+                                    onClick = {
+                                        if (draggedItemIndex == null) {
+                                            onExerciseSelect(exercise)
+                                        }
+                                    },
+                                    onEdit = {
+                                        if (draggedItemIndex == null) {
+                                            onRenameExercise(exercise)
+                                        }
+                                    },
+                                    onDelete = {
+                                        if (draggedItemIndex == null) {
+                                            exerciseToDelete = exercise
+                                        }
+                                    },
+                                    onDragStart = {
+                                        draggedItemIndex = index
+                                        dragOffsetY = 0f
+                                    },
+                                    onDrag = { deltaY ->
+                                        dragOffsetY += deltaY
+
+                                        // アイテムの高さをピクセルで計算
+                                        val itemHeightPx = with(density) { totalItemHeightDp.toPx() }
+                                        val movedPositions = (dragOffsetY / itemHeightPx).toInt()
+
+                                        if (movedPositions != 0) {
+                                            val currentIndex = draggedItemIndex ?: return@DraggableExerciseCard
+                                            val targetIndex = (currentIndex + movedPositions)
+                                                .coerceIn(0, reorderedExercises.size - 1)
+
+                                            if (targetIndex != currentIndex) {
+                                                // リストを並び替え（入れ替え）
+                                                val mutableList = reorderedExercises.toMutableList()
+                                                val item = mutableList.removeAt(currentIndex)
+                                                mutableList.add(targetIndex, item)
+                                                reorderedExercises = mutableList
+                                                draggedItemIndex = targetIndex
+                                                // 移動分のオフセットを調整
+                                                dragOffsetY -= movedPositions * itemHeightPx
+                                            }
+                                        }
+                                    },
+                                    onDragEnd = {
+                                        draggedItemIndex = null
+                                        dragOffsetY = 0f
+                                        // 並び替え結果を保存
+                                        onReorderExercises(reorderedExercises)
+                                    },
+                                    onDragCancel = {
+                                        draggedItemIndex = null
+                                        dragOffsetY = 0f
+                                    },
+                                    itemHeight = itemHeightDp
+                                )
+                            }
                         }
                     }
                 } else {
@@ -258,13 +311,14 @@ private enum class ExerciseColorType {
 }
 
 /**
- * ドラッグ可能な種目スロット
+ * ドラッグ可能な種目カード（カード全体を長押しでドラッグ）
  */
 @Composable
-private fun DraggableExerciseSlot(
+private fun DraggableExerciseCard(
     exercise: ExerciseEntity,
     colorType: ExerciseColorType,
     isDragging: Boolean,
+    elevation: androidx.compose.ui.unit.Dp,
     context: Context,
     onClick: () -> Unit,
     onEdit: () -> Unit,
@@ -272,7 +326,8 @@ private fun DraggableExerciseSlot(
     onDragStart: () -> Unit,
     onDrag: (Float) -> Unit,
     onDragEnd: () -> Unit,
-    onDragCancel: () -> Unit
+    onDragCancel: () -> Unit,
+    itemHeight: androidx.compose.ui.unit.Dp
 ) {
     val gradient = when (colorType) {
         ExerciseColorType.STRENGTH -> Brush.horizontalGradient(
@@ -292,47 +347,28 @@ private fun DraggableExerciseSlot(
         )
     }
 
-    // ドラッグ中のエレベーション（影）
-    val elevation by animateDpAsState(
-        targetValue = if (isDragging) 8.dp else 0.dp,
-        label = "dragElevation"
-    )
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(itemHeight)
             .shadow(elevation, RoundedCornerShape(12.dp))
             .clip(RoundedCornerShape(12.dp))
             .background(gradient)
+            .pointerInput(exercise.id) {
+                detectDragGesturesAfterLongPress(
+                    onDragStart = { onDragStart() },
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+                        onDrag(dragAmount.y)
+                    },
+                    onDragEnd = { onDragEnd() },
+                    onDragCancel = { onDragCancel() }
+                )
+            }
             .clickable(enabled = !isDragging) { onClick() }
-            .padding(vertical = 12.dp, horizontal = 8.dp),
+            .padding(vertical = 12.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // ドラッグハンドル（長押しでドラッグ開始）
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .pointerInput(exercise.id) {
-                    detectDragGesturesAfterLongPress(
-                        onDragStart = { onDragStart() },
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            onDrag(dragAmount.y)
-                        },
-                        onDragEnd = { onDragEnd() },
-                        onDragCancel = { onDragCancel() }
-                    )
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.DragHandle,
-                contentDescription = "Drag to reorder",
-                tint = if (isDragging) WorkoutColors.TextPrimary else WorkoutColors.TextSecondary,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-
         // 種目名
         Text(
             text = exercise.getDisplayName(context),
@@ -343,7 +379,7 @@ private fun DraggableExerciseSlot(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 8.dp)
+                .padding(end = 8.dp)
         )
 
         // 編集アイコン（青色）

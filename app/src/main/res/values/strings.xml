@@ -269,7 +269,7 @@
 
     <!-- ==================== Settings Hint (English Only) ==================== -->
     <string name="settings_hint" translatable="false">
-    Language and units (kg/lb, km/mi) can be changed in Settings.
+    Language and units (kg/lb, km/mi)\n can be changed in Settings.
 </string>
 
 
