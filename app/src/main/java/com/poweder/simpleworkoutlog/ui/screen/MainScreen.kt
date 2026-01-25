@@ -44,6 +44,7 @@ import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.Calendar
 import java.util.Locale
 
 @Composable
@@ -497,7 +498,7 @@ fun MainScreen(
             // 過去のトレーニングを追加ボタン
             PastWorkoutButton(
                 onClick = {
-                    // 日付選択ダイアログを表示
+                    // 日付選択ダイアログを表示（月曜始まり）
                     val today = currentLogicalDate()
                     DatePickerDialog(
                         context,
@@ -513,6 +514,8 @@ fun MainScreen(
                         today.monthValue - 1,
                         today.dayOfMonth
                     ).apply {
+                        // カレンダーを月曜始まりに設定
+                        datePicker.firstDayOfWeek = Calendar.MONDAY
                         // 未来の日付を選択不可に
                         datePicker.maxDate = System.currentTimeMillis()
                     }.show()
