@@ -31,9 +31,10 @@ import com.poweder.simpleworkoutlog.ui.dialog.WorkoutDayDetailDialog
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
+import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
-import com.poweder.simpleworkoutlog.util.formatHms
+import com.poweder.simpleworkoutlog.util.formatDistance
 import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.LocalDate
@@ -270,6 +271,7 @@ fun HistoryScreen(
                         exerciseNames = exerciseNames,
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
+                        distanceUnit = distanceUnit,
                         categoryWeight = categoryWeight,
                         categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
@@ -294,6 +296,7 @@ fun HistoryScreen(
                         exerciseNames = exerciseNames,
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
+                        distanceUnit = distanceUnit,
                         categoryWeight = 0.0,
                         categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
@@ -318,6 +321,7 @@ fun HistoryScreen(
                         exerciseNames = exerciseNames,
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
+                        distanceUnit = distanceUnit,
                         categoryWeight = 0.0,
                         categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
@@ -342,6 +346,7 @@ fun HistoryScreen(
                         exerciseNames = exerciseNames,
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
+                        distanceUnit = distanceUnit,
                         categoryWeight = 0.0,
                         categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
@@ -366,6 +371,7 @@ fun HistoryScreen(
                         exerciseNames = exerciseNames,
                         sessionWeights = sessionWeights,
                         weightUnit = weightUnit,
+                        distanceUnit = distanceUnit,
                         categoryWeight = 0.0,
                         categoryDurationSeconds = sessions.sumOf { it.durationSeconds },
                         categoryCalories = sessions.sumOf { it.caloriesBurned },
@@ -473,6 +479,7 @@ private fun CategorySummaryCard(
     exerciseNames: Map<Long, String>,
     sessionWeights: Map<Long, Double>,
     weightUnit: WeightUnit,
+    distanceUnit: DistanceUnit,
     categoryWeight: Double,
     categoryDurationSeconds: Int,
     categoryCalories: Int,
@@ -563,13 +570,41 @@ private fun CategorySummaryCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 種目一覧（種目名と重量を表示）
+            // 種目一覧（種目名と重量/距離を表示）
             sessions.forEach { session ->
                 val exerciseName = exerciseNames[session.exerciseId] ?: "Exercise #${session.exerciseId}"
                 val sessionWeight = sessionWeights[session.id] ?: 0.0
+                
+                // ワークアウトタイプに応じて表示内容を決定
+                val detailText = when (session.workoutType) {
+                    WorkoutType.CARDIO -> {
+                        // 有酸素運動の場合は距離を表示
+                        if (session.distance > 0) {
+                            " (${formatDistance(session.distance, distanceUnit)})"
+                        } else {
+                            ""
+                        }
+                    }
+                    WorkoutType.STRENGTH -> {
+                        // 筋トレの場合は重量を表示
+                        if (sessionWeight > 0) {
+                            " (${formatWeight(sessionWeight, weightUnit)})"
+                        } else {
+                            ""
+                        }
+                    }
+                    else -> {
+                        // その他の場合は重量があれば表示
+                        if (sessionWeight > 0) {
+                            " (${formatWeight(sessionWeight, weightUnit)})"
+                        } else {
+                            ""
+                        }
+                    }
+                }
 
                 Text(
-                    text = "• $exerciseName" + if (sessionWeight > 0) " (${formatWeight(sessionWeight, weightUnit)})" else "",
+                    text = "• $exerciseName$detailText",
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
                     color = WorkoutColors.TextPrimary
