@@ -26,13 +26,13 @@
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
-    <string name="today_grand_total">Tổng khối lượng hôm nay</string>
-    <string name="today_duration">Thời gian tập hôm nay</string>
-    <string name="today_calories">Calo tiêu thụ hôm nay</string>
+    <string name="today_grand_total">Tổng khối lượng nâng hôm nay</string>
+    <string name="today_duration">Thời gian tập luyện hôm nay</string>
+    <string name="today_calories">Lượng calo tiêu thụ hôm nay</string>
     <string name="card_today_menu">Bài tập hôm nay</string>
-    <string name="midnight_rule_note">Các bản ghi từ 0:00 đến 3:00 sẽ được lưu cho ngày hôm trước</string>
+    <string name="midnight_rule_note">Các bản ghi từ 0:00 đến 3:00 sẽ được tính cho ngày hôm trước</string>
 
-    <string name="add_past_workout">Thêm buổi tập trước đó</string>
+    <string name="add_past_workout">Thêm buổi tập trong quá khứ</string>
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Chọn loại bài tập</string>
@@ -76,14 +76,14 @@
     <string name="reps">Lần</string>
     <string name="add_new_set">＋ Thêm set</string>
     <string name="session_total">Tổng</string>
-    <string name="exercise_duration">Thời gian tập</string>
-    <string name="exercise_calories">Calo tiêu thụ (kcal)</string>
+    <string name="exercise_duration">Thời gian tập luyện</string>
+    <string name="exercise_calories">Lượng calo tiêu thụ (kcal)</string>
     <string name="finish_training">Kết thúc và lưu</string>
     <string name="finish_and_save">Kết thúc và lưu</string>
     <string name="go_home">Về trang chủ</string>
 
     <!-- ==================== Cardio Screen ==================== -->
-    <string name="duration_minutes">Thời gian tập</string>
+    <string name="duration_minutes">Thời gian tập luyện</string>
     <string name="distance">Khoảng cách</string>
     <string name="calories">Calo</string>
 
@@ -115,27 +115,27 @@
     <string name="resume">Tiếp tục</string>
     <string name="stop">Dừng</string>
     <string name="complete">Lưu</string>
-    <string name="save_workout_result">Lưu kết quả bài tập</string>
+    <string name="save_workout_result">Lưu kết quả tập luyện</string>
 
     <!-- ==================== Other Screen ==================== -->
-    <string name="calories_burned">Calo tiêu thụ (kcal)</string>
+    <string name="calories_burned">Lượng calo tiêu thụ (kcal)</string>
     <string name="saved_successfully">Đã lưu!</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">Bản ghi trong ngày</string>
+    <string name="day_summary">Bản ghi của ngày này</string>
     <string name="total_duration_label">Thời gian</string>
     <string name="total_calories_label">Calo</string>
     <string name="total_weight_label">Khối lượng</string>
-    <string name="no_workout_data">Không có dữ liệu tập luyện trong ngày này</string>
+    <string name="no_workout_data">Không có dữ liệu tập luyện cho ngày này</string>
 
     <!-- ==================== Calendar Screen ==================== -->
-    <string name="monthly_summary">Tổng kết tháng</string>
+    <string name="monthly_summary">Tổng kết theo tháng</string>
     <string name="workout_days">Số ngày tập luyện</string>
     <string name="days_format">%1$d ngày</string>
     <string name="average_duration">Thời gian trung bình</string>
     <string name="total_duration_month">Tổng thời gian</string>
     <string name="total_calories_month">Tổng calo</string>
-    <string name="total_weight_month">Tổng khối lượng</string>
+    <string name="total_weight_month">Tổng khối lượng nâng</string>
 
     <!-- ==================== Settings ==================== -->
     <string name="settings_title">Cài đặt</string>
@@ -157,11 +157,11 @@
 
     <!-- ==================== Dialogs - Delete ==================== -->
     <string name="delete_confirm_title">Xóa?</string>
-    <string name="delete_confirm_message">Bạn có chắc muốn xóa “%1$s” không?</string>
+    <string name="delete_confirm_message">Bạn có chắc chắn muốn xóa “%1$s” không?</string>
     <string name="delete_all_title">Xóa tất cả dữ liệu</string>
     <string name="delete_all_message">Tất cả dữ liệu sẽ bị xóa. Không thể hoàn tác.</string>
     <string name="delete_all_day_title">Xóa toàn bộ bản ghi?</string>
-    <string name="delete_all_day_message">Tất cả bản ghi trong ngày này sẽ bị xóa. Không thể hoàn tác.</string>
+    <string name="delete_all_day_message">Tất cả bản ghi của ngày này sẽ bị xóa. Không thể hoàn tác.</string>
     <string name="delete_session_title">Xóa bản ghi?</string>
     <string name="delete_session_message">Xóa bản ghi của %1$s?</string>
     <string name="delete_category_title">Xóa danh mục?</string>
@@ -198,7 +198,7 @@
     <string name="total_elapsed">Tổng: %1$s</string>
     <string name="edit_interval_result">Chỉnh sửa kết quả</string>
     <string name="input_result">Nhập kết quả</string>
-    <string name="duration">Thời gian tập</string>
+    <string name="duration">Thời gian tập luyện</string>
     <string name="timer_settings">Cài đặt bộ đếm</string>
 
     <string name="warm_up">Khởi động</string>
@@ -218,17 +218,17 @@
 
     <!-- Interval Timer Notification -->
     <string name="interval_timer_channel_name">Bộ đếm ngắt quãng</string>
-    <string name="interval_timer_channel_description">Hiển thị tiến trình bộ đếm ngắt quãng</string>
+    <string name="interval_timer_channel_description">Hiển thị tiến trình của bộ đếm ngắt quãng</string>
     <string name="interval_timer">Bộ đếm ngắt quãng</string>
 
     <!-- Timer Settings -->
     <string name="timer_settings_section">Cài đặt bộ đếm</string>
     <string name="timer_sound">Âm thanh bộ đếm</string>
-    <string name="timer_sound_desc">Bật/tắt âm thanh bộ đếm</string>
+    <string name="timer_sound_desc">Bật hoặc tắt âm thanh bộ đếm</string>
     <string name="timer_vibration">Rung</string>
-    <string name="timer_vibration_desc">Bật/tắt rung</string>
+    <string name="timer_vibration_desc">Bật hoặc tắt rung</string>
     <string name="countdown_last_5_seconds">Đếm ngược 5 giây cuối</string>
-    <string name="countdown_last_5_seconds_desc">Thông báo trước khi kết thúc mỗi giai đoạn 5–1 giây</string>
+    <string name="countdown_last_5_seconds_desc">Thông báo trước khi kết thúc mỗi giai đoạn từ 5 đến 1 giây</string>
 
     <!-- Interval Presets -->
     <string name="preset_tabata_desc">20 giây tập / 10 giây nghỉ × 8 vòng</string>

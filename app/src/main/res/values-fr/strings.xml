@@ -8,7 +8,7 @@
     <string name="nav_history">Historique</string>
     <string name="nav_calendar">Calendrier</string>
     <string name="nav_graph">Graphique</string>
-    <string name="nav_settings">Options</string>
+    <string name="nav_settings">Param.</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -185,7 +185,7 @@
 
     <!-- Graph Picker (Phase0) -->
     <string name="graph_picker_title">Choisir un graphique</string>
-    <string name="graph_picker_strength">Musculation (poids max)</string>
+    <string name="graph_picker_strength">Musculation (évolution du max kg)</string>
     <string name="graph_picker_cardio">Cardio (distance cumulée)</string>
     <string name="graph_picker_studio">Studio (nombre cumulé)</string>
 

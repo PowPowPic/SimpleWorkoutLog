@@ -8,7 +8,7 @@
     <string name="nav_history">Riwayat</string>
     <string name="nav_calendar">Kalender</string>
     <string name="nav_graph">Grafik</string>
-    <string name="nav_settings">Opsi</string>
+    <string name="nav_settings">Setelan</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -185,7 +185,7 @@
 
     <!-- Graph Picker (Phase0) -->
     <string name="graph_picker_title">Pilih grafik</string>
-    <string name="graph_picker_strength">Latihan beban (maks. kg)</string>
+    <string name="graph_picker_strength">Latihan beban (tren maks. kg)</string>
     <string name="graph_picker_cardio">Kardio (jarak kumulatif)</string>
     <string name="graph_picker_studio">Studio (jumlah kumulatif)</string>
 

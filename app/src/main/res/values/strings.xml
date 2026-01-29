@@ -209,8 +209,8 @@
 
     <!-- ==================== Graph Picker ==================== -->
     <string name="graph_picker_title">Select Graph</string>
-    <string name="graph_picker_strength">Strength (Max Weight)</string>
-    <string name="graph_picker_cardio">Cardio (Total Distance)</string>
+    <string name="graph_picker_strength">Strength (Max Weight Trend)</string>
+    <string name="graph_picker_cardio">Cardio (Cumulative Distance)</string>
     <string name="graph_picker_studio">Studio (Total Sessions)</string>
 
     <!-- ==================== Duration input placeholders ==================== -->
@@ -271,7 +271,6 @@
     <string name="settings_hint" translatable="false">
     Language and units (kg/lb, km/mi)\n can be changed in Settings.
 </string>
-
 
     <string name="drag_to_reorder">Long press and drag to reorder</string>
 

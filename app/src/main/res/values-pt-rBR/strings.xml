@@ -73,7 +73,7 @@
     <string name="exercise_golf">Golfe</string>
 
     <!-- ==================== Strength Training Screen ==================== -->
-    <string name="reps">Reps</string>
+    <string name="reps">Rep.</string>
     <string name="add_new_set">＋ Adicionar série</string>
     <string name="session_total">Total</string>
     <string name="exercise_duration">Tempo de exercício</string>

@@ -7,7 +7,7 @@
     <string name="nav_home">الرئيسية</string>
     <string name="nav_history">السجل</string>
     <string name="nav_calendar">التقويم</string>
-    <string name="nav_graph">الرسم</string>
+    <string name="nav_graph">الرسم البياني</string>
     <string name="nav_settings">الإعدادات</string>
 
     <!-- ==================== Common ==================== -->
@@ -23,7 +23,7 @@
     <string name="confirm">تأكيد</string>
     <string name="discard">نعم</string>
     <string name="rename">إعادة تسمية</string>
-    <string name="kcal">كيلو كالوري</string>
+    <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
     <string name="today_grand_total">إجمالي الوزن اليوم</string>
@@ -73,7 +73,7 @@
     <string name="exercise_golf">غولف</string>
 
     <!-- ==================== Strength Training Screen ==================== -->
-    <string name="reps">تكرار</string>
+    <string name="reps">تكرارات</string>
     <string name="add_new_set">＋ إضافة مجموعة</string>
     <string name="session_total">المجموع</string>
     <string name="exercise_duration">مدة التمرين</string>
@@ -172,7 +172,7 @@
     <string name="language_confirm_message">سيتم تطبيق إعداد اللغة الجديد.</string>
     <string name="applying_language">جارٍ تطبيق اللغة…</string>
 
-    <!-- Graph Screen -->
+    <!-- ==================== Graph Screen ==================== -->
     <string name="cumulative_calories">السعرات التراكمية</string>
     <string name="now">الآن</string>
     <string name="no_data">لا توجد بيانات</string>
@@ -183,16 +183,16 @@
     <string name="graph_reset_message">سيتم حذف بيانات الرسم.\n(سيبقى السجل والتقويم)</string>
     <string name="which_graph_to_see">أي رسم تريد عرضه؟</string>
 
-    <!-- Graph Picker (Phase0) -->
+    <!-- ==================== Graph Picker ==================== -->
     <string name="graph_picker_title">اختر الرسم</string>
-    <string name="graph_picker_strength">تمارين القوة (أقصى وزن)</string>
+    <string name="graph_picker_strength">تمارين القوة (تغيّر أقصى وزن)</string>
     <string name="graph_picker_cardio">كارديو (المسافة التراكمية)</string>
     <string name="graph_picker_studio">استوديو (عدد المرات)</string>
 
     <!-- Duration input placeholders -->
     <string name="duration_hours_placeholder">ساعات</string>
     <string name="duration_minutes_placeholder">دقائق</string>
-    <string name="duration_seconds_placeholder">ثواني</string>
+    <string name="duration_seconds_placeholder">ثوانٍ</string>
 
     <!-- Interval Timer (Level B) -->
     <string name="total_elapsed">الإجمالي: %1$s</string>
@@ -206,7 +206,7 @@
     <string name="rest">راحة</string>
     <string name="cooldown">تهدئة</string>
 
-    <string name="seconds_unit">ثانية</string>
+    <string name="seconds_unit">ثوانٍ</string>
 
     <string name="sets_count">عدد المجموعات</string>
     <string name="sets_unit">مجموعة</string>

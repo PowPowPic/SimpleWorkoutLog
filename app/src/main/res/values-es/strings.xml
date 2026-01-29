@@ -7,8 +7,8 @@
     <string name="nav_home">Inicio</string>
     <string name="nav_history">Historial</string>
     <string name="nav_calendar">Calendario</string>
-    <string name="nav_graph">Gráfica</string>
-    <string name="nav_settings">Opciones</string>
+    <string name="nav_graph">Gráfico</string>
+    <string name="nav_settings">Ajustes</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -185,7 +185,7 @@
 
     <!-- Graph Picker (Phase0) -->
     <string name="graph_picker_title">Seleccionar gráfica</string>
-    <string name="graph_picker_strength">Fuerza (peso máximo)</string>
+    <string name="graph_picker_strength">Fuerza (tendencia del peso máx.)</string>
     <string name="graph_picker_cardio">Cardio (distancia acumulada)</string>
     <string name="graph_picker_studio">Estudio (recuento total)</string>
 

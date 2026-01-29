@@ -93,7 +93,7 @@
     <string name="preset_hiit">HIIT</string>
     <string name="warmup_seconds">워밍업</string>
     <string name="training_seconds">트레이닝</string>
-    <string name="rest_seconds">인터벌</string>
+    <string name="rest_seconds">휴식</string>
     <string name="number_of_sets">세트 수</string>
     <string name="cooldown_seconds">쿨다운</string>
     <string name="total_time_format">합계: %s</string>
@@ -102,7 +102,7 @@
     <!-- ==================== Interval Timer - Phases ==================== -->
     <string name="phase_warmup">워밍업</string>
     <string name="phase_training">트레이닝</string>
-    <string name="phase_rest">인터벌</string>
+    <string name="phase_rest">휴식</string>
     <string name="phase_cooldown">쿨다운</string>
     <string name="phase_finished">완료</string>
 

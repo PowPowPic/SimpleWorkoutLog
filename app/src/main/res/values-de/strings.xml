@@ -7,8 +7,8 @@
     <string name="nav_home">Start</string>
     <string name="nav_history">Verlauf</string>
     <string name="nav_calendar">Kalender</string>
-    <string name="nav_graph">Grafik</string>
-    <string name="nav_settings">Optionen</string>
+    <string name="nav_graph">Diagramm</string>
+    <string name="nav_settings">Einst.</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -176,15 +176,15 @@
     <string name="cumulative_calories">Kumulierte Kalorien</string>
     <string name="now">Jetzt</string>
     <string name="no_data">Keine Daten</string>
-    <string name="graph_reset_link">Grafik zurücksetzen</string>
-    <string name="graph_reset">Grafik zurücksetzen</string>
-    <string name="graph_reset_title">Grafik zurücksetzen?</string>
+    <string name="graph_reset_link">Diagramm zurücksetzen</string>
+    <string name="graph_reset">Diagramm zurücksetzen</string>
+    <string name="graph_reset_title">Diagramm zurücksetzen?</string>
     <string name="graph_reset_confirm">Alle bisherigen Grafikdaten werden gelöscht. Fortfahren?</string>
     <string name="graph_reset_message">Alle bisherigen Grafikdaten werden gelöscht.\n(Verlauf und Kalender bleiben erhalten)</string>
     <string name="which_graph_to_see">Welche Grafik möchtest du sehen?</string>
 
     <!-- Graph Picker (Phase0) -->
-    <string name="graph_picker_title">Grafik auswählen</string>
+    <string name="graph_picker_title">Diagramm auswählen</string>
     <string name="graph_picker_strength">Krafttraining (Max. Gewicht)</string>
     <string name="graph_picker_cardio">Cardio (Kumulative Distanz)</string>
     <string name="graph_picker_studio">Studio (Gesamtanzahl)</string>
