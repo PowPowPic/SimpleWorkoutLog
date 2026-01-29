@@ -99,12 +99,19 @@ class WorkoutRepository(
         return workoutSetDao.getSetsBySessionSync(sessionId)
     }
 
+    /**
+     * 【非推奨】既存セッションを取得または作成
+     * 同じ日に同じ種目のセッションがある場合、既存のセッションを返す
+     * ※ 1日に複数回同じ種目をトレーニングする場合は createNewSession を使用すること
+     */
     suspend fun getOrCreateSession(exerciseId: Long, workoutType: String): WorkoutSessionEntity {
         return getOrCreateSession(exerciseId, workoutType, currentLogicalDate().toEpochDay())
     }
 
     /**
-     * 指定日付でセッションを取得または作成（過去のトレーニング追加用）
+     * 【非推奨】指定日付でセッションを取得または作成
+     * 同じ日に同じ種目のセッションがある場合、既存のセッションを返す
+     * ※ 1日に複数回同じ種目をトレーニングする場合は createNewSession を使用すること
      */
     suspend fun getOrCreateSession(exerciseId: Long, workoutType: String, logicalDate: Long): WorkoutSessionEntity {
         val existing = workoutSessionDao.getSessionByExerciseAndDate(exerciseId, logicalDate)
@@ -118,6 +125,28 @@ class WorkoutRepository(
             val id = workoutSessionDao.insert(newSession)
             newSession.copy(id = id)
         }
+    }
+
+    /**
+     * 新規セッションを作成（常に新しいセッションを作成）
+     * 1日に同じ種目を複数回トレーニングする場合に使用
+     */
+    suspend fun createNewSession(exerciseId: Long, workoutType: String): WorkoutSessionEntity {
+        return createNewSession(exerciseId, workoutType, currentLogicalDate().toEpochDay())
+    }
+
+    /**
+     * 指定日付で新規セッションを作成（常に新しいセッションを作成）
+     * 1日に同じ種目を複数回トレーニングする場合に使用
+     */
+    suspend fun createNewSession(exerciseId: Long, workoutType: String, logicalDate: Long): WorkoutSessionEntity {
+        val newSession = WorkoutSessionEntity(
+            exerciseId = exerciseId,
+            logicalDate = logicalDate,
+            workoutType = workoutType
+        )
+        val id = workoutSessionDao.insert(newSession)
+        return newSession.copy(id = id)
     }
 
     suspend fun updateSession(session: WorkoutSessionEntity) {

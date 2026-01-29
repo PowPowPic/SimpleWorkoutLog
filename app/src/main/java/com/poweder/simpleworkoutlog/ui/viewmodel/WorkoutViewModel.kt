@@ -457,7 +457,7 @@ class WorkoutViewModel(
 
             // targetDateを使用してセッションを作成
             val targetLogicalDate = _targetDate.value.toEpochDay()
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STRENGTH, targetLogicalDate)
+            val session = repository.createNewSession(exerciseId, WorkoutType.STRENGTH, targetLogicalDate)
 
             // 有効なセットを全て保存
             validSets.forEach { setItem ->
@@ -665,7 +665,7 @@ class WorkoutViewModel(
     ) {
         viewModelScope.launch {
             val targetLogicalDate = _targetDate.value.toEpochDay()
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.OTHER, targetLogicalDate)
+            val session = repository.createNewSession(exerciseId, WorkoutType.OTHER, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -689,7 +689,7 @@ class WorkoutViewModel(
     ) {
         viewModelScope.launch {
             val targetLogicalDate = _targetDate.value.toEpochDay()
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.CARDIO, targetLogicalDate)
+            val session = repository.createNewSession(exerciseId, WorkoutType.CARDIO, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -713,7 +713,7 @@ class WorkoutViewModel(
     ) {
         viewModelScope.launch {
             val targetLogicalDate = _targetDate.value.toEpochDay()
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.STUDIO, targetLogicalDate)
+            val session = repository.createNewSession(exerciseId, WorkoutType.STUDIO, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -736,7 +736,7 @@ class WorkoutViewModel(
     ) {
         viewModelScope.launch {
             val targetLogicalDate = _targetDate.value.toEpochDay()
-            val session = repository.getOrCreateSession(exerciseId, WorkoutType.INTERVAL, targetLogicalDate)
+            val session = repository.createNewSession(exerciseId, WorkoutType.INTERVAL, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
@@ -773,7 +773,7 @@ class WorkoutViewModel(
             }
 
             val targetLogicalDate = _targetDate.value.toEpochDay()
-            val session = repository.getOrCreateSession(exercise.id, WorkoutType.INTERVAL, targetLogicalDate)
+            val session = repository.createNewSession(exercise.id, WorkoutType.INTERVAL, targetLogicalDate)
 
             val updatedSession = session.copy(
                 durationSeconds = durationSeconds,
