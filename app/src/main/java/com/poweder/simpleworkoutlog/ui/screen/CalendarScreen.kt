@@ -52,8 +52,17 @@ fun CalendarScreen(
     // 月の統計
     val monthlyStats by viewModel.getMonthlyStats(currentMonth).collectAsState(initial = MonthlyStats())
 
-    val monthFormatter = remember {
-        DateTimeFormatter.ofPattern("yyyy年 M月", Locale.getDefault())
+    // 年月のみを表示するためのフォーマット（各ロケールの慣習に従う）
+    val yearMonthText = remember(currentMonth) {
+        val date = currentMonth.atDay(1)
+        val locale = Locale.getDefault()
+        val pattern = when (locale.language) {
+            "ja" -> "yyyy年 M月"
+            "zh" -> "yyyy年M月"
+            "ko" -> "yyyy년 M월"
+            else -> "MMMM yyyy"  // 英語等: "January 2026"
+        }
+        date.format(DateTimeFormatter.ofPattern(pattern, locale))
     }
 
     Column(
@@ -89,7 +98,7 @@ fun CalendarScreen(
 
                 // 年月表示
                 Text(
-                    text = currentMonth.atDay(1).format(monthFormatter),
+                    text = yearMonthText,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = WorkoutColors.TextPrimary
