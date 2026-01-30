@@ -26,10 +26,10 @@
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
-    <string name="today_grand_total">Gesamtgewicht heute</string>
+    <string name="today_grand_total">Heute gehobenes Gesamtgewicht</string>
     <string name="today_duration">Trainingszeit heute</string>
     <string name="today_calories">Verbrauchte Kalorien heute</string>
-    <string name="card_today_menu">Heutiges Training</string>
+    <string name="card_today_menu">Heutiges Trainingsmenü</string>
     <string name="midnight_rule_note">Aufzeichnungen zwischen 0:00 und 3:00 Uhr werden dem Vortag zugeordnet</string>
 
     <string name="add_past_workout">Vergangenes Training hinzufügen</string>
@@ -122,7 +122,7 @@
     <string name="saved_successfully">Gespeichert!</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">Tagesübersicht</string>
+    <string name="day_summary">Übersicht dieses Tages</string>
     <string name="total_duration_label">Zeit</string>
     <string name="total_calories_label">Kalorien</string>
     <string name="total_weight_label">Gewicht</string>
@@ -179,9 +179,9 @@
     <string name="graph_reset_link">Diagramm zurücksetzen</string>
     <string name="graph_reset">Diagramm zurücksetzen</string>
     <string name="graph_reset_title">Diagramm zurücksetzen?</string>
-    <string name="graph_reset_confirm">Alle bisherigen Grafikdaten werden gelöscht. Fortfahren?</string>
-    <string name="graph_reset_message">Alle bisherigen Grafikdaten werden gelöscht.\n(Verlauf und Kalender bleiben erhalten)</string>
-    <string name="which_graph_to_see">Welche Grafik möchtest du sehen?</string>
+    <string name="graph_reset_confirm">Alle bisherigen Diagrammdaten werden gelöscht. Fortfahren?</string>
+    <string name="graph_reset_message">Alle bisherigen Diagrammdaten werden gelöscht.\n(Verlauf und Kalender bleiben erhalten)</string>
+    <string name="which_graph_to_see">Welches Diagramm möchtest du sehen?</string>
 
     <!-- Graph Picker (Phase0) -->
     <string name="graph_picker_title">Diagramm auswählen</string>

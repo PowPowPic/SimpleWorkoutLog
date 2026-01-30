@@ -5,10 +5,10 @@
 
     <!-- ==================== Navigation ==================== -->
     <string name="nav_home">Home</string>
-    <string name="nav_history">Storico</string>
+    <string name="nav_history">Cronologia</string>
     <string name="nav_calendar">Calendario</string>
     <string name="nav_graph">Grafico</string>
-    <string name="nav_settings">Opzioni</string>
+    <string name="nav_settings">Impost.</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
@@ -27,11 +27,10 @@
 
     <!-- ==================== Main Screen ==================== -->
     <string name="today_grand_total">Peso totale di oggi</string>
-    <string name="today_duration">Durata allenamento oggi</string>
+    <string name="today_duration">Durata allenamento di oggi</string>
     <string name="today_calories">Calorie bruciate oggi</string>
     <string name="card_today_menu">Allenamento di oggi</string>
     <string name="midnight_rule_note">Le registrazioni tra le 0:00 e le 3:00 vengono salvate come giorno precedente</string>
-
     <string name="add_past_workout">Aggiungi allenamento precedente</string>
 
     <!-- ==================== Workout Types ==================== -->
@@ -172,7 +171,7 @@
     <string name="language_confirm_message">La nuova lingua verrà applicata.</string>
     <string name="applying_language">Applicazione lingua…</string>
 
-    <!-- Graph Screen -->
+    <!-- ==================== Graph Screen ==================== -->
     <string name="cumulative_calories">Calorie cumulative</string>
     <string name="now">Ora</string>
     <string name="no_data">Nessun dato</string>
@@ -183,22 +182,24 @@
     <string name="graph_reset_message">I dati del grafico verranno eliminati.\n(I record e il calendario resteranno)</string>
     <string name="which_graph_to_see">Quale grafico vuoi vedere?</string>
 
-    <!-- Graph Picker (Phase0) -->
+    <!-- ==================== Graph Picker ==================== -->
     <string name="graph_picker_title">Seleziona grafico</string>
     <string name="graph_picker_strength">Forza (peso max)</string>
     <string name="graph_picker_cardio">Cardio (distanza cumulativa)</string>
     <string name="graph_picker_studio">Studio (conteggio totale)</string>
 
-    <!-- Duration input placeholders -->
+    <!-- ==================== Duration input placeholders ==================== -->
     <string name="duration_hours_placeholder">Ore</string>
     <string name="duration_minutes_placeholder">Minuti</string>
     <string name="duration_seconds_placeholder">Secondi</string>
 
-    <!-- Interval Timer (Level B) -->
+    <!-- ==================== Interval Timer (Level B) ==================== -->
     <string name="total_elapsed">Totale: %1$s</string>
     <string name="edit_interval_result">Modifica risultato</string>
     <string name="input_result">Inserisci risultato</string>
     <string name="duration">Durata esercizio</string>
+
+    <!-- ==================== Interval Timer ==================== -->
     <string name="timer_settings">Impostazioni timer</string>
 
     <string name="warm_up">Riscaldamento</string>
@@ -216,12 +217,12 @@
     <string name="start">Avvia</string>
     <string name="cancel">Annulla</string>
 
-    <!-- Interval Timer Notification -->
+    <!-- ==================== Interval Timer Notification ==================== -->
     <string name="interval_timer_channel_name">Timer intervalli</string>
     <string name="interval_timer_channel_description">Mostra avanzamento del timer intervalli</string>
     <string name="interval_timer">Timer intervalli</string>
 
-    <!-- Timer Settings -->
+    <!-- ==================== Timer Settings ==================== -->
     <string name="timer_settings_section">Impostazioni timer</string>
     <string name="timer_sound">Suono timer</string>
     <string name="timer_sound_desc">Attiva o disattiva il suono del timer</string>
@@ -230,7 +231,7 @@
     <string name="countdown_last_5_seconds">Ultimi 5 secondi</string>
     <string name="countdown_last_5_seconds_desc">Notifica 5–1 secondi prima della fine della fase</string>
 
-    <!-- Interval Presets -->
+    <!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 s lavoro / 10 s recupero × 8 round</string>
     <string name="preset_hiit_desc">Allenamento a intervalli ad alta intensità\nPersonalizza lavoro e recupero</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nAvvia un nuovo round ogni minuto</string>

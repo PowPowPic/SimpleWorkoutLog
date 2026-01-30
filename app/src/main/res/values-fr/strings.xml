@@ -122,7 +122,7 @@
     <string name="saved_successfully">Enregistré !</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">Enregistrements du jour</string>
+    <string name="day_summary">Enregistrements de la journée</string>
     <string name="total_duration_label">Temps</string>
     <string name="total_calories_label">Calories</string>
     <string name="total_weight_label">Charge</string>
@@ -174,7 +174,7 @@
 
     <!-- Graph Screen -->
     <string name="cumulative_calories">Calories cumulées</string>
-    <string name="now">Actuel</string>
+    <string name="now">Maintenant</string>
     <string name="no_data">Aucune donnée</string>
     <string name="graph_reset_link">Réinitialiser le graphique</string>
     <string name="graph_reset">Réinitialiser le graphique</string>

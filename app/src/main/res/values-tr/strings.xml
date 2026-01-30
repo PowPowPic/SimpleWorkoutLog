@@ -34,12 +34,11 @@
 
     <string name="add_past_workout">Geçmiş antrenmanı ekle</string>
 
-
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Egzersiz türünü seç</string>
     <string name="workout_strength">Ağırlık</string>
     <string name="workout_cardio">Kardiyo</string>
-    <string name="workout_interval">Interval</string>
+    <string name="workout_interval">İnterval</string>
     <string name="workout_studio">Stüdyo</string>
     <string name="workout_other">Diğer</string>
     <string name="add_workout_type">＋ Yeni tür ekle</string>
@@ -74,7 +73,7 @@
     <string name="exercise_golf">Golf</string>
 
     <!-- ==================== Strength Training Screen ==================== -->
-    <string name="reps">Tekrar</string>
+    <string name="reps">Tekr.</string>
     <string name="add_new_set">＋ Yeni set</string>
     <string name="session_total">Toplam</string>
     <string name="exercise_duration">Egzersiz süresi</string>
@@ -218,9 +217,9 @@
     <string name="cancel">İptal</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">Interval zamanlayıcı</string>
-    <string name="interval_timer_channel_description">Interval zamanlayıcının ilerlemesini göster</string>
-    <string name="interval_timer">Interval zamanlayıcı</string>
+    <string name="interval_timer_channel_name">İnterval zamanlayıcı</string>
+    <string name="interval_timer_channel_description">İnterval zamanlayıcının ilerlemesini göster</string>
+    <string name="interval_timer">İnterval zamanlayıcı</string>
 
     <!-- Timer Settings -->
     <string name="timer_settings_section">Zamanlayıcı ayarları</string>

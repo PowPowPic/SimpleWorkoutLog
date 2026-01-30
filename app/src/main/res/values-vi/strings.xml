@@ -29,7 +29,7 @@
     <string name="today_grand_total">Tổng khối lượng nâng hôm nay</string>
     <string name="today_duration">Thời gian tập luyện hôm nay</string>
     <string name="today_calories">Lượng calo tiêu thụ hôm nay</string>
-    <string name="card_today_menu">Bài tập hôm nay</string>
+    <string name="card_today_menu">Buổi tập hôm nay</string>
     <string name="midnight_rule_note">Các bản ghi từ 0:00 đến 3:00 sẽ được tính cho ngày hôm trước</string>
 
     <string name="add_past_workout">Thêm buổi tập trong quá khứ</string>
@@ -88,7 +88,7 @@
     <string name="calories">Calo</string>
 
     <!-- ==================== Interval Timer - Settings ==================== -->
-    <string name="interval_timer_settings">Cài đặt bộ đếm</string>
+    <string name="interval_timer_settings">Cài đặt bộ hẹn giờ</string>
     <string name="preset_tabata">Tabata</string>
     <string name="preset_hiit">HIIT</string>
     <string name="warmup_seconds">Khởi động</string>
@@ -108,7 +108,7 @@
 
     <!-- ==================== Interval Timer - UI ==================== -->
     <string name="set_progress">Set %1$d / %2$d</string>
-    <string name="workout_complete">Hoàn thành bài tập!</string>
+    <string name="workout_complete">Hoàn thành buổi tập!</string>
     <string name="total_time_result">Tổng thời gian: %s</string>
     <string name="back_to_home">Về trang chủ</string>
     <string name="pause">Tạm dừng</string>
@@ -157,7 +157,7 @@
 
     <!-- ==================== Dialogs - Delete ==================== -->
     <string name="delete_confirm_title">Xóa?</string>
-    <string name="delete_confirm_message">Bạn có chắc chắn muốn xóa “%1$s” không?</string>
+    <string name="delete_confirm_message">Xóa “%1$s”?</string>
     <string name="delete_all_title">Xóa tất cả dữ liệu</string>
     <string name="delete_all_message">Tất cả dữ liệu sẽ bị xóa. Không thể hoàn tác.</string>
     <string name="delete_all_day_title">Xóa toàn bộ bản ghi?</string>
@@ -199,7 +199,7 @@
     <string name="edit_interval_result">Chỉnh sửa kết quả</string>
     <string name="input_result">Nhập kết quả</string>
     <string name="duration">Thời gian tập luyện</string>
-    <string name="timer_settings">Cài đặt bộ đếm</string>
+    <string name="timer_settings">Cài đặt bộ hẹn giờ</string>
 
     <string name="warm_up">Khởi động</string>
     <string name="training">Tập luyện</string>
@@ -217,14 +217,14 @@
     <string name="cancel">Hủy</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">Bộ đếm ngắt quãng</string>
-    <string name="interval_timer_channel_description">Hiển thị tiến trình của bộ đếm ngắt quãng</string>
-    <string name="interval_timer">Bộ đếm ngắt quãng</string>
+    <string name="interval_timer_channel_name">Bộ hẹn giờ ngắt quãng</string>
+    <string name="interval_timer_channel_description">Hiển thị tiến trình của bộ hẹn giờ ngắt quãng</string>
+    <string name="interval_timer">Bộ hẹn giờ ngắt quãng</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">Cài đặt bộ đếm</string>
-    <string name="timer_sound">Âm thanh bộ đếm</string>
-    <string name="timer_sound_desc">Bật hoặc tắt âm thanh bộ đếm</string>
+    <string name="timer_settings_section">Cài đặt bộ hẹn giờ</string>
+    <string name="timer_sound">Âm thanh hẹn giờ</string>
+    <string name="timer_sound_desc">Bật hoặc tắt âm thanh hẹn giờ</string>
     <string name="timer_vibration">Rung</string>
     <string name="timer_vibration_desc">Bật hoặc tắt rung</string>
     <string name="countdown_last_5_seconds">Đếm ngược 5 giây cuối</string>

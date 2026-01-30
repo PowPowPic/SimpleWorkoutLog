@@ -40,7 +40,7 @@
     <string name="workout_cardio">Cardio</string>
     <string name="workout_interval">Intervalos</string>
     <string name="workout_studio">Estudio</string>
-    <string name="workout_other">Otros</string>
+    <string name="workout_other">Otro</string>
     <string name="add_workout_type">＋ Añadir nuevo tipo</string>
     <string name="workout_type_name">Nombre del tipo</string>
 
@@ -73,7 +73,7 @@
     <string name="exercise_golf">Golf</string>
 
     <!-- ==================== Strength Training Screen ==================== -->
-    <string name="reps">Reps</string>
+    <string name="reps">Rep.</string>
     <string name="add_new_set">＋ Añadir serie</string>
     <string name="session_total">Total</string>
     <string name="exercise_duration">Tiempo de ejercicio</string>

@@ -26,10 +26,10 @@
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
-    <string name="today_grand_total">Total Weight Today</string>
+    <string name="today_grand_total">Total Weight Lifted Today</string>
     <string name="today_duration">Workout Time Today</string>
     <string name="today_calories">Calories Burned Today</string>
-    <string name="card_today_menu">Today’s Workout</string>
+    <string name="card_today_menu">Today’s Workout Menu</string>
     <string name="midnight_rule_note">
         Records from 12:00 AM to 3:00 AM are saved as the previous day.
     </string>
@@ -126,7 +126,7 @@
     <string name="saved_successfully">Saved!</string>
 
     <!-- ==================== History Screen ==================== -->
-    <string name="day_summary">Daily Summary</string>
+    <string name="day_summary">Workout Summary for This Day</string>
     <string name="total_duration_label">Time</string>
     <string name="total_calories_label">Calories</string>
     <string name="total_weight_label">Weight</string>
@@ -144,14 +144,14 @@
     <!-- ==================== Settings ==================== -->
     <string name="settings_title">Settings</string>
     <string name="settings_language_title">Language</string>
-    <string name="settings_language_description">Change display language</string>
+    <string name="settings_language_description">Change the display language</string>
     <string name="settings_weight_unit_title">Weight Unit</string>
     <string name="settings_weight_unit_description">Current: %1$s</string>
     <string name="settings_distance_unit_title">Distance Unit</string>
     <string name="settings_distance_unit_description">Current: %1$s</string>
     <string name="settings_delete_title">Delete All Data</string>
     <string name="settings_delete_description">Delete all workout records</string>
-    <string name="language_system_default">Follow System</string>
+    <string name="language_system_default">Follow system</string>
 
     <!-- ==================== Dialogs - Confirm ==================== -->
     <string name="confirm_back_title">Continue without saving?</string>

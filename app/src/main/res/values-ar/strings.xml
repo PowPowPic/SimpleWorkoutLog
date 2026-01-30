@@ -26,10 +26,10 @@
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
-    <string name="today_grand_total">إجمالي الوزن اليوم</string>
+    <string name="today_grand_total">إجمالي الوزن المرفوع اليوم</string>
     <string name="today_duration">مدة التمرين اليوم</string>
     <string name="today_calories">السعرات المحروقة اليوم</string>
-    <string name="card_today_menu">تمرين اليوم</string>
+    <string name="card_today_menu">قائمة تمارين اليوم</string>
     <string name="midnight_rule_note">يتم حفظ السجلات بين 12:00 و3:00 صباحًا ضمن سجل اليوم السابق</string>
 
     <string name="add_past_workout">إضافة تمرين سابق</string>
@@ -38,7 +38,7 @@
     <string name="select_workout_type">اختر نوع التمرين</string>
     <string name="workout_strength">تمارين القوة</string>
     <string name="workout_cardio">كارديو</string>
-    <string name="workout_interval">تمرين متقطع</string>
+    <string name="workout_interval">تدريب متقطع</string>
     <string name="workout_studio">استوديو</string>
     <string name="workout_other">أخرى</string>
     <string name="add_workout_type">＋ إضافة نوع جديد</string>
@@ -180,8 +180,8 @@
     <string name="graph_reset">إعادة ضبط الرسم</string>
     <string name="graph_reset_title">إعادة ضبط الرسم؟</string>
     <string name="graph_reset_confirm">سيتم حذف بيانات الرسم. هل أنت متأكد؟</string>
-    <string name="graph_reset_message">سيتم حذف بيانات الرسم.\n(سيبقى السجل والتقويم)</string>
-    <string name="which_graph_to_see">أي رسم تريد عرضه؟</string>
+    <string name="graph_reset_message">سيتم حذف بيانات الرسم.\n(ستبقى بيانات السجل والتقويم.)</string>
+    <string name="which_graph_to_see">أي رسم بياني تريد عرضه؟</string>
 
     <!-- ==================== Graph Picker ==================== -->
     <string name="graph_picker_title">اختر الرسم</string>
