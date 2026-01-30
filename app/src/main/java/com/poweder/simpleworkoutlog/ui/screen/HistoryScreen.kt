@@ -570,21 +570,13 @@ private fun CategorySummaryCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 種目一覧（種目名と重量/距離を表示）
+            // 種目一覧（種目名と重量/距離/カロリーを表示）
             sessions.forEach { session ->
                 val exerciseName = exerciseNames[session.exerciseId] ?: "Exercise #${session.exerciseId}"
                 val sessionWeight = sessionWeights[session.id] ?: 0.0
-                
+
                 // ワークアウトタイプに応じて表示内容を決定
                 val detailText = when (session.workoutType) {
-                    WorkoutType.CARDIO -> {
-                        // 有酸素運動の場合は距離を表示
-                        if (session.distance > 0) {
-                            " (${formatDistance(session.distance, distanceUnit)})"
-                        } else {
-                            ""
-                        }
-                    }
                     WorkoutType.STRENGTH -> {
                         // 筋トレの場合は重量を表示
                         if (sessionWeight > 0) {
@@ -593,14 +585,23 @@ private fun CategorySummaryCard(
                             ""
                         }
                     }
-                    else -> {
-                        // その他の場合は重量があれば表示
-                        if (sessionWeight > 0) {
-                            " (${formatWeight(sessionWeight, weightUnit)})"
+                    WorkoutType.CARDIO -> {
+                        // 有酸素運動の場合は距離を表示
+                        if (session.distance > 0) {
+                            " (${formatDistance(session.distance, distanceUnit)})"
                         } else {
                             ""
                         }
                     }
+                    WorkoutType.INTERVAL, WorkoutType.STUDIO, WorkoutType.OTHER -> {
+                        // インターバル・スタジオ・その他の場合は消費カロリーを表示
+                        if (session.caloriesBurned > 0) {
+                            " (${session.caloriesBurned} kcal)"
+                        } else {
+                            ""
+                        }
+                    }
+                    else -> ""
                 }
 
                 Text(
