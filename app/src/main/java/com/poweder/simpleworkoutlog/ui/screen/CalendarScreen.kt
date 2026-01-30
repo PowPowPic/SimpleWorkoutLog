@@ -16,15 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
-import com.poweder.simpleworkoutlog.ui.dialog.WorkoutDayDetailDialog
-import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
@@ -41,22 +38,13 @@ import java.util.Locale
 fun CalendarScreen(
     viewModel: WorkoutViewModel,
     modifier: Modifier = Modifier,
-    onNavigateToStrengthEdit: (Long) -> Unit = {},
-    onNavigateToCardioEdit: (Long) -> Unit = {},
-    onNavigateToIntervalEdit: (Long) -> Unit = {},
-    onNavigateToStudioEdit: (Long) -> Unit = {},
-    onNavigateToOtherEdit: (Long) -> Unit = {}
+    onNavigateToHistory: (LocalDate) -> Unit = {}
 ) {
-    val context = LocalContext.current
     val weightUnit by viewModel.weightUnit.collectAsState()
-    val distanceUnit by viewModel.distanceUnit.collectAsState()
     val adRemoved by viewModel.adRemoved.collectAsState()
 
     // 選択中の月
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-
-    // 選択した日付（詳細ダイアログ用）
-    var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
 
     // 月のワークアウト日セット
     val workoutDates by viewModel.getWorkoutDatesForMonth(currentMonth).collectAsState(initial = emptySet())
@@ -64,66 +52,8 @@ fun CalendarScreen(
     // 月の統計
     val monthlyStats by viewModel.getMonthlyStats(currentMonth).collectAsState(initial = MonthlyStats())
 
-    // 選択日のセッション
-    val sessionsForDate by selectedDate?.let { date ->
-        viewModel.getSessionsForDate(date).collectAsState(initial = emptyList())
-    } ?: remember { mutableStateOf(emptyList()) }
-
-    // 選択日のセット（重量計算用）
-    val setsForDate by selectedDate?.let { date ->
-        viewModel.getSetsForDate(date).collectAsState(initial = emptyList())
-    } ?: remember { mutableStateOf(emptyList()) }
-
-    // 全種目リスト（直接取得）
-    val allExercises by viewModel.allExercises.collectAsState()
-
-    // 種目名マップを作成（getDisplayNameを使用してテンプレート種目も正しく表示）
-    val exerciseNames = remember(allExercises, context) {
-        allExercises.associate { exercise ->
-            exercise.id to exercise.getDisplayName(context)
-        }
-    }
-
-    // セッションIDごとの総重量を計算
-    val sessionWeights = remember(setsForDate) {
-        setsForDate.groupBy { it.sessionId }
-            .mapValues { (_, sets) -> sets.sumOf { it.weight * it.reps } }
-    }
-
     val monthFormatter = remember {
         DateTimeFormatter.ofPattern("yyyy年 M月", Locale.getDefault())
-    }
-
-    // 詳細ダイアログ
-    selectedDate?.let { date ->
-        if (sessionsForDate.isNotEmpty()) {
-            WorkoutDayDetailDialog(
-                date = date,
-                sessions = sessionsForDate,
-                exerciseNames = exerciseNames,
-                sessionWeights = sessionWeights,
-                weightUnit = weightUnit,
-                distanceUnit = distanceUnit,
-                onEditSession = { session ->
-                    // workoutTypeに応じて編集画面へ遷移
-                    selectedDate = null
-                    when (session.workoutType) {
-                        com.poweder.simpleworkoutlog.data.entity.WorkoutType.STRENGTH -> onNavigateToStrengthEdit(session.id)
-                        com.poweder.simpleworkoutlog.data.entity.WorkoutType.CARDIO -> onNavigateToCardioEdit(session.id)
-                        com.poweder.simpleworkoutlog.data.entity.WorkoutType.INTERVAL -> onNavigateToIntervalEdit(session.id)
-                        com.poweder.simpleworkoutlog.data.entity.WorkoutType.STUDIO -> onNavigateToStudioEdit(session.id)
-                        com.poweder.simpleworkoutlog.data.entity.WorkoutType.OTHER -> onNavigateToOtherEdit(session.id)
-                    }
-                },
-                onDeleteSession = { session ->
-                    viewModel.deleteSession(session.id)
-                },
-                onDeleteAllByDate = {
-                    viewModel.deleteSessionsByDate(date)
-                },
-                onDismiss = { selectedDate = null }
-            )
-        }
     }
 
     Column(
@@ -192,8 +122,9 @@ fun CalendarScreen(
                 currentMonth = currentMonth,
                 workoutDates = workoutDates,
                 onDateClick = { date ->
+                    // トレーニング日をタップしたら履歴画面へ遷移
                     if (date in workoutDates) {
-                        selectedDate = date
+                        onNavigateToHistory(date)
                     }
                 }
             )

@@ -22,7 +22,10 @@ sealed class Screen(
 
     // ナビバーに表示する画面
     object Home : Screen("home", R.string.nav_home, Icons.Default.Home)
-    object History : Screen("history", R.string.nav_history, Icons.Default.List)
+    object History : Screen("history", R.string.nav_history, Icons.Default.List) {
+        // 日付指定で履歴画面を開く（カレンダーから遷移用）
+        fun createRouteWithDate(epochDay: Long) = "history?date=$epochDay"
+    }
     object Calendar : Screen("calendar", R.string.nav_calendar, Icons.Default.DateRange)
     object Graph : Screen("graph", R.string.nav_graph, Icons.Default.ShowChart)
     object Settings : Screen("settings", R.string.nav_settings, Icons.Default.Settings)

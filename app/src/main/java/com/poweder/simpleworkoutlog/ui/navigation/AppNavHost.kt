@@ -3,8 +3,10 @@ package com.poweder.simpleworkoutlog.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.poweder.simpleworkoutlog.ui.cardio.CardioScreen
 import com.poweder.simpleworkoutlog.ui.interval.IntervalScreen
 import com.poweder.simpleworkoutlog.ui.other.OtherScreen
@@ -16,6 +18,7 @@ import com.poweder.simpleworkoutlog.ui.settings.SettingsScreen
 import com.poweder.simpleworkoutlog.ui.strength.StrengthTrainingScreen
 import com.poweder.simpleworkoutlog.ui.studio.StudioScreen
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
+import java.time.LocalDate
 
 @Composable
 fun AppNavHost(
@@ -51,12 +54,31 @@ fun AppNavHost(
             )
         }
 
-        composable(Screen.History.route) {
-            HistoryScreen(viewModel = viewModel)
+        // 履歴画面（日付パラメータ対応）
+        composable(
+            route = "${Screen.History.route}?date={date}",
+            arguments = listOf(
+                navArgument("date") {
+                    type = NavType.LongType
+                    defaultValue = -1L
+                }
+            )
+        ) { backStackEntry ->
+            val epochDay = backStackEntry.arguments?.getLong("date") ?: -1L
+            val initialDate = if (epochDay > 0) LocalDate.ofEpochDay(epochDay) else null
+            HistoryScreen(
+                viewModel = viewModel,
+                initialDate = initialDate
+            )
         }
 
         composable(Screen.Calendar.route) {
-            CalendarScreen(viewModel = viewModel)
+            CalendarScreen(
+                viewModel = viewModel,
+                onNavigateToHistory = { date ->
+                    navController.navigate(Screen.History.createRouteWithDate(date.toEpochDay()))
+                }
+            )
         }
 
         composable(Screen.Graph.route) {

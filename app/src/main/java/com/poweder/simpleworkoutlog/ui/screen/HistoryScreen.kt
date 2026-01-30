@@ -46,6 +46,7 @@ import java.util.Locale
 fun HistoryScreen(
     viewModel: WorkoutViewModel,
     modifier: Modifier = Modifier,
+    initialDate: LocalDate? = null,  // カレンダーからの遷移用
     onNavigateToStrengthEdit: (Long) -> Unit = {},
     onNavigateToCardioEdit: (Long) -> Unit = {},
     onNavigateToIntervalEdit: (Long) -> Unit = {},
@@ -57,8 +58,8 @@ fun HistoryScreen(
     val distanceUnit by viewModel.distanceUnit.collectAsState()
     val adRemoved by viewModel.adRemoved.collectAsState()
 
-    // 選択中の日付
-    var selectedDate by remember { mutableStateOf(currentLogicalDate()) }
+    // 選択中の日付（initialDateがあればその日付、なければ今日）
+    var selectedDate by remember { mutableStateOf(initialDate ?: currentLogicalDate()) }
 
     // 選択日のセッション
     val sessionsForDate by viewModel.getSessionsForDate(selectedDate).collectAsState(initial = emptyList())
@@ -574,7 +575,7 @@ private fun CategorySummaryCard(
             sessions.forEach { session ->
                 val exerciseName = exerciseNames[session.exerciseId] ?: "Exercise #${session.exerciseId}"
                 val sessionWeight = sessionWeights[session.id] ?: 0.0
-
+                
                 // ワークアウトタイプに応じて表示内容を決定
                 val detailText = when (session.workoutType) {
                     WorkoutType.STRENGTH -> {

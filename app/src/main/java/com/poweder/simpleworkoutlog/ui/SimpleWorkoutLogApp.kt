@@ -165,20 +165,11 @@ fun SimpleWorkoutLogApp(
                                 )
                                 2 -> CalendarScreen(
                                     viewModel = viewModel,
-                                    onNavigateToStrengthEdit = { sessionId ->
-                                        navController.navigate(Screen.Strength.createRoute(sessionId))
-                                    },
-                                    onNavigateToCardioEdit = { sessionId ->
-                                        navController.navigate(Screen.Cardio.createRoute(sessionId))
-                                    },
-                                    onNavigateToIntervalEdit = { sessionId ->
-                                        navController.navigate(Screen.Interval.createRoute(sessionId))
-                                    },
-                                    onNavigateToStudioEdit = { sessionId ->
-                                        navController.navigate(Screen.Studio.createRoute(sessionId))
-                                    },
-                                    onNavigateToOtherEdit = { sessionId ->
-                                        navController.navigate(Screen.Other.createRoute(sessionId))
+                                    onNavigateToHistory = { date ->
+                                        // 履歴タブに移動
+                                        coroutineScope.launch {
+                                            pagerState.animateScrollToPage(1)
+                                        }
                                     }
                                 )
                                 3 -> GraphScreen(viewModel = viewModel)
