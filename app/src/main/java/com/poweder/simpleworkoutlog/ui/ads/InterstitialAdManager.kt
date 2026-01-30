@@ -34,8 +34,8 @@ class InterstitialAdManager(
 ) {
     companion object {
         private const val TAG = "InterstitialAdManager"
-        // テスト用広告ID（本番時は実際のIDに変更）
-        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+        // 本番広告ID
+        private const val AD_UNIT_ID = "ca-app-pub-7305983073191908/5236598231"
     }
 
     private var interstitialAd: InterstitialAd? = null
