@@ -8,7 +8,7 @@
     <string name="nav_history">Histórico</string>
     <string name="nav_calendar">Calendário</string>
     <string name="nav_graph">Gráfico</string>
-    <string name="nav_settings">Opções</string>
+    <string name="nav_settings">Config.</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
