@@ -1,6 +1,7 @@
 package com.poweder.simpleworkoutlog
 
 import android.app.Application
+import android.util.Log
 import com.poweder.simpleworkoutlog.data.dao.ExerciseDao
 import com.poweder.simpleworkoutlog.data.database.AppDatabase
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
@@ -8,9 +9,16 @@ import com.poweder.simpleworkoutlog.data.entity.WorkoutType
 import com.poweder.simpleworkoutlog.data.preferences.SettingsDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 class WorkoutApplication : Application() {
+    
+    companion object {
+        private const val TAG = "WorkoutApplication"
+    }
+    
     override fun onCreate() {
         super.onCreate()
 
@@ -27,28 +35,39 @@ class WorkoutApplication : Application() {
      * 
      * 方式：
      * - templateKey で既存テンプレを検索
-     * - あれば sortOrder のみ更新（idは維持 → 外部キー参照を壊さない）
      * - なければ新規挿入
+     * - あれば何もしない（sortOrderを維持）
      * - カスタム種目（isTemplate=false）は一切触らない
      * - ユーザーが削除したテンプレートはスキップ（復活させない）
      */
     private fun ensureLatestTemplates() {
         CoroutineScope(Dispatchers.IO).launch {
-            val database = AppDatabase.getInstance(applicationContext)
-            val exerciseDao = database.exerciseDao()
-            val settingsDataStore = SettingsDataStore(applicationContext)
-            
-            // 削除済みテンプレートキーを取得
-            val deletedTemplateKeys = settingsDataStore.getDeletedTemplateKeys()
+            try {
+                val database = AppDatabase.getInstance(applicationContext)
+                val exerciseDao = database.exerciseDao()
+                val settingsDataStore = SettingsDataStore(applicationContext)
+                
+                // 削除済みテンプレートキーを取得（タイムアウト付き）
+                val deletedTemplateKeys = withTimeoutOrNull(3000L) {
+                    settingsDataStore.deletedTemplateKeysFlow.first()
+                } ?: emptySet()
+                
+                Log.d(TAG, "Deleted template keys: $deletedTemplateKeys")
 
-            // 最新テンプレをUpsert（削除は行わない、削除済みはスキップ）
-            upsertLatestTemplates(exerciseDao, deletedTemplateKeys)
+                // 最新テンプレをUpsert（削除は行わない、削除済みはスキップ）
+                upsertLatestTemplates(exerciseDao, deletedTemplateKeys)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to ensure templates", e)
+            }
         }
     }
 
     /**
      * 最新テンプレート種目をUpsert
      * templateKey は strings.xml のキー名と一致させる
+     * 
+     * ★重要：既存テンプレートのsortOrderは変更しない
+     * ユーザーが並び替えた順序を維持するため
      * 
      * @param exerciseDao ExerciseDao
      * @param deletedTemplateKeys ユーザーが削除したテンプレートキーのセット
@@ -58,6 +77,7 @@ class WorkoutApplication : Application() {
         deletedTemplateKeys: Set<String>
     ) {
         // 全テンプレート定義
+        // ★ sortOrderは初回挿入時のみ使用される（既存の場合は無視される）
         val allTemplates = listOf(
             // 筋トレ種目
             ExerciseEntity(
@@ -148,17 +168,22 @@ class WorkoutApplication : Application() {
             )
         )
 
-        // 各テンプレートをUpsert（既存ならsortOrder更新、なければ挿入）
-        // ただし、ユーザーが削除したテンプレートはスキップ
+        // 各テンプレートをUpsert
+        // - 既存テンプレートがある場合：何もしない（sortOrderを維持）
+        // - 新規テンプレートの場合：挿入
+        // - 削除済みテンプレートの場合：スキップ（復活させない）
         allTemplates.forEach { template ->
             val templateKey = template.templateKey ?: return@forEach
             
             // 削除済みテンプレートはスキップ（復活させない）
             if (templateKey in deletedTemplateKeys) {
+                Log.d(TAG, "Skipping deleted template: $templateKey")
                 return@forEach
             }
             
             exerciseDao.upsertTemplate(template)
         }
+        
+        Log.d(TAG, "Templates upsert completed")
     }
 }

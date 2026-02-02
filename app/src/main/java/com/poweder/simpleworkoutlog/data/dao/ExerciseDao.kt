@@ -61,22 +61,21 @@ interface ExerciseDao {
     suspend fun existsByTemplateKey(templateKey: String): Int
 
     /**
-     * テンプレートをUpsert（既存ならsortOrderのみ更新、なければ挿入）
-     * ※ idを維持することで外部キー参照を壊さない
+     * テンプレートをUpsert（なければ挿入、あれば何もしない）
+     * 
+     * ★重要：既存テンプレートのsortOrderは変更しない
+     * ユーザーが並び替えたsortOrderを維持するため、既存テンプレートがある場合は
+     * 何も更新せずスキップする
      */
     @Transaction
     suspend fun upsertTemplate(exercise: ExerciseEntity) {
-        val existing = getByTemplateKey(exercise.templateKey ?: return)
-        if (existing != null) {
-            // 既存テンプレがある場合：sortOrderだけ更新（idは維持）
-            update(existing.copy(
-                sortOrder = exercise.sortOrder,
-                workoutType = exercise.workoutType
-            ))
-        } else {
-            // 新規テンプレの場合：挿入
+        val templateKey = exercise.templateKey ?: return
+        val existing = getByTemplateKey(templateKey)
+        if (existing == null) {
+            // 新規テンプレの場合のみ挿入
             insert(exercise)
         }
+        // 既存テンプレがある場合は何もしない（sortOrderを上書きしない）
     }
 
     @Query("SELECT COUNT(*) FROM exercises")
