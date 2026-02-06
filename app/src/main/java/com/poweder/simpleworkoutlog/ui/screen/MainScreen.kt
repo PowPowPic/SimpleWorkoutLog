@@ -101,12 +101,12 @@ fun MainScreen(
     var currentWorkoutTypeForRename by remember { mutableStateOf<String?>(null) }
 
     // 日付をライフサイクルに連動して更新
-    var logicalDate by remember { mutableStateOf(currentLogicalDate()) }
+    var displayDate by remember { mutableStateOf(LocalDate.now()) }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                logicalDate = currentLogicalDate()
+                displayDate = LocalDate.now()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -433,7 +433,7 @@ fun MainScreen(
 
         // 日付表示
         Text(
-            text = logicalDate.format(dateFormatter),
+            text = displayDate.format(dateFormatter),
             style = MaterialTheme.typography.bodySmall,
             color = WorkoutColors.TextSecondary,
             textAlign = TextAlign.Center,
