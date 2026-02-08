@@ -510,7 +510,7 @@ private fun CumulativeCaloriesChart(data: List<CumulativeDataPoint>, modifier: M
     val maxCumulative = data.maxOfOrNull { it.cumulativeCalories } ?: 0
     val milestoneStep = calculateMilestoneStep(maxCumulative)
     val yAxisMax = if (maxCumulative == 0) 1000 else ((maxCumulative / milestoneStep) + 1) * milestoneStep
-    val dateFormatter = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
+    val dateFormatter: DateTimeFormatter = remember { createLocaleDateFormat() }
     val numberFormat = remember { NumberFormat.getNumberInstance(Locale.getDefault()) }
     val xLabelIndices = remember(data.size) {
         if (data.size <= 8) data.indices.toList() else {
@@ -750,7 +750,7 @@ private fun MaxWeightChart(data: List<DailyMaxWeight>, weightUnit: WeightUnit, m
     val yRange = if (maxW == minW) 10.0 else (maxW - minW)
     val yMin = (minW - yRange * 0.1).coerceAtLeast(0.0)
     val yMax = maxW + yRange * 0.1
-    val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
+    val df: DateTimeFormatter = remember { createLocaleDateFormat() }
     val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
 
     Box(modifier.clip(RoundedCornerShape(12.dp)).background(GraphGradients.chartBackground).border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp)).padding(16.dp)) {
@@ -848,7 +848,7 @@ private fun CardioGraphDialog(
 private fun CumulativeDistanceChart(data: List<Pair<Long, Double>>, distanceUnit: DistanceUnit, modifier: Modifier = Modifier) {
     val maxD = data.maxOfOrNull { it.second } ?: 0.0
     val yMax = if (maxD == 0.0) 10.0 else maxD * 1.1
-    val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
+    val df: DateTimeFormatter = remember { createLocaleDateFormat() }
     val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
 
     Box(modifier.clip(RoundedCornerShape(12.dp)).background(GraphGradients.chartBackground).border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp)).padding(16.dp)) {
@@ -944,7 +944,7 @@ private fun StudioGraphDialog(viewModel: WorkoutViewModel, onReset: () -> Unit, 
 private fun CumulativeSessionCountChart(data: List<Pair<Long, Int>>, modifier: Modifier = Modifier) {
     val maxC = data.maxOfOrNull { it.second } ?: 0
     val yMax = if (maxC == 0) 10 else (maxC * 1.1).toInt()
-    val df = remember { DateTimeFormatter.ofPattern("M/d", Locale.getDefault()) }
+    val df: DateTimeFormatter = remember { createLocaleDateFormat() }
     val xIdx = remember(data.size) { if (data.size <= 6) data.indices.toList() else (0 until data.size step (data.size / 5)).toList().take(6) }
 
     Box(modifier.clip(RoundedCornerShape(12.dp)).background(GraphGradients.chartBackground).border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp)).padding(16.dp)) {
@@ -1043,4 +1043,53 @@ private fun GraphDialogContainer(
             }
         }
     }
+}
+
+// ========== ロケール対応日付フォーマット ==========
+
+/**
+ * ロケールに応じた日付フォーマットを作成
+ * 日本・英語圏: M/d（例: 1/26）
+ * 韓国: M.d（例: 1.26）
+ * ヨーロッパ圏・アラビア語・東南アジア: d/M（例: 26/1）
+ * 中国語（繁体字）: M/d（例: 1/26）
+ */
+private fun createLocaleDateFormat(): DateTimeFormatter {
+    val locale = Locale.getDefault()
+
+    // 各ロケールの慣習に基づいて日付パターンを決定
+    val pattern = when (locale.language) {
+        // ヨーロッパ圏: 日/月 (DD/MM)
+        "de",  // ドイツ語
+        "fr",  // フランス語
+        "es",  // スペイン語
+        "it",  // イタリア語
+        "pt",  // ポルトガル語
+        "tr",  // トルコ語
+        "ar"   // アラビア語
+            -> "d/M"
+
+        // アジア圏（タイ、ベトナム、インドネシア）: 日/月
+        "th",  // タイ語
+        "vi",  // ベトナム語
+        "id", "in"  // インドネシア語
+            -> "d/M"
+
+        // 韓国語: 月.日
+        "ko" -> "M.d"
+
+        // 中国語（繁体字）: 月/日
+        "zh" -> {
+            if (locale.country == "TW" || locale.script == "Hant") {
+                "M/d"
+            } else {
+                "M/d"
+            }
+        }
+
+        // 日本語、英語、その他: 月/日 (MM/DD)
+        else -> "M/d"
+    }
+
+    return DateTimeFormatter.ofPattern(pattern, locale)
 }
