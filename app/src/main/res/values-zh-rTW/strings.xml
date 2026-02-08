@@ -31,7 +31,9 @@
     <string name="today_duration">今天的運動時間</string>
     <string name="today_calories">今天消耗的熱量</string>
     <string name="card_today_menu">今天的訓練內容</string>
-    <string name="midnight_rule_note">凌晨 0:00–3:00 的紀錄會歸類為前一天</string>
+    <string name="midnight_rule_note">
+0:00–3:00 的紀錄將計入前一天。
+</string>
     <string name="add_past_workout">新增過去的訓練</string>
 
     <!-- ==================== Workout Types ==================== -->

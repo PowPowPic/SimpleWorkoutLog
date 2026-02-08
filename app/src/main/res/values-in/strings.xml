@@ -30,7 +30,9 @@
     <string name="today_duration">Durasi latihan hari ini</string>
     <string name="today_calories">Kalori terbakar hari ini</string>
     <string name="card_today_menu">Menu latihan hari ini</string>
-    <string name="midnight_rule_note">Catatan antara 00.00–03.00 akan disimpan sebagai catatan hari sebelumnya</string>
+    <string name="midnight_rule_note">
+Catatan antara 00.00 dan 03.00 dihitung sebagai catatan hari sebelumnya.
+</string>
 
     <string name="add_past_workout">Tambahkan latihan sebelumnya</string>
 

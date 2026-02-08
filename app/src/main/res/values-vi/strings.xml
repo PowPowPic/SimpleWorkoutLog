@@ -30,7 +30,7 @@
     <string name="today_duration">Thời gian tập luyện hôm nay</string>
     <string name="today_calories">Lượng calo tiêu thụ hôm nay</string>
     <string name="card_today_menu">Buổi tập hôm nay</string>
-    <string name="midnight_rule_note">Các bản ghi từ 0:00 đến 3:00 sẽ được tính cho ngày hôm trước</string>
+    <string name="midnight_rule_note">Các bản ghi từ 0:00 đến 3:00 sẽ được tính cho ngày hôm trước.</string>
 
     <string name="add_past_workout">Thêm buổi tập trong quá khứ</string>
 

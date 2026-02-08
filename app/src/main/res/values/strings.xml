@@ -31,8 +31,9 @@
     <string name="today_calories">Calories Burned Today</string>
     <string name="card_today_menu">Today’s Workout Menu</string>
     <string name="midnight_rule_note">
-        Records from 12:00 AM to 3:00 AM are saved as the previous day.
-    </string>
+    Records from 12:00 AM to 3:00 AM are counted as the previous day.
+</string>
+
 
     <string name="add_past_workout">Add Past Workout</string>
 

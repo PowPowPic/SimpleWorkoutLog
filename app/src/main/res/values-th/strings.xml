@@ -30,7 +30,9 @@
     <string name="today_duration">เวลาการออกกำลังกายวันนี้</string>
     <string name="today_calories">แคลอรีที่เผาผลาญวันนี้</string>
     <string name="card_today_menu">เมนูการฝึกวันนี้</string>
-    <string name="midnight_rule_note">บันทึกช่วง 0:00–3:00 จะถูกบันทึกเป็นของวันก่อนหน้า</string>
+    <string name="midnight_rule_note">
+บันทึกช่วง 0:00–3:00 จะถูกนับเป็นของวันก่อนหน้า
+</string>
 
     <string name="add_past_workout">เพิ่มการออกกำลังกายในอดีต</string>
 

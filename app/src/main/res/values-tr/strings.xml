@@ -30,7 +30,9 @@
     <string name="today_duration">Bugünkü egzersiz süresi</string>
     <string name="today_calories">Bugün yakılan kalori</string>
     <string name="card_today_menu">Bugünkü antrenman</string>
-    <string name="midnight_rule_note">00:00–03:00 arasındaki kayıtlar önceki gün olarak kaydedilir</string>
+    <string name="midnight_rule_note">
+00:00–03:00 arasındaki kayıtlar önceki gün olarak sayılır.
+</string>
 
     <string name="add_past_workout">Geçmiş antrenmanı ekle</string>
 

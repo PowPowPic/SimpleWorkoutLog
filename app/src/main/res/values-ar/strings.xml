@@ -30,7 +30,9 @@
     <string name="today_duration">مدة التمرين اليوم</string>
     <string name="today_calories">السعرات المحروقة اليوم</string>
     <string name="card_today_menu">قائمة تمارين اليوم</string>
-    <string name="midnight_rule_note">يتم حفظ السجلات بين 0:00 و3:00 ضمن سجل اليوم السابق</string>
+    <string name="midnight_rule_note">
+تُحتسب السجلات بين 0:00 و3:00 ضمن سجل اليوم السابق.
+</string>
 
     <string name="add_past_workout">إضافة تمرين سابق</string>
 

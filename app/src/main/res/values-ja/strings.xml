@@ -30,7 +30,7 @@
     <string name="today_duration">今日の運動時間</string>
     <string name="today_calories">今日の消費カロリー</string>
     <string name="card_today_menu">今日のトレーニングメニュー</string>
-    <string name="midnight_rule_note">午前0時から午前3時の記録は前日の記録として保存されます</string>
+    <string name="midnight_rule_note">午前0時から午前3時の記録は前日分の記録として保存されます</string>
 
     <string name="add_past_workout">過去のトレーニングを追加</string>
 

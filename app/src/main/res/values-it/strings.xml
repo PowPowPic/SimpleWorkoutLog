@@ -30,7 +30,9 @@
     <string name="today_duration">Durata allenamento di oggi</string>
     <string name="today_calories">Calorie bruciate oggi</string>
     <string name="card_today_menu">Allenamento di oggi</string>
-    <string name="midnight_rule_note">Le registrazioni tra le 0:00 e le 3:00 vengono salvate come giorno precedente</string>
+    <string name="midnight_rule_note">
+Le registrazioni tra le 0:00 e le 3:00 vengono considerate del giorno precedente.
+</string>
     <string name="add_past_workout">Aggiungi allenamento precedente</string>
 
     <!-- ==================== Workout Types ==================== -->
