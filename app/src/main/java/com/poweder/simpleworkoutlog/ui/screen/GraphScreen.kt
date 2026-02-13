@@ -1057,39 +1057,13 @@ private fun GraphDialogContainer(
 private fun createLocaleDateFormat(): DateTimeFormatter {
     val locale = Locale.getDefault()
 
-    // 各ロケールの慣習に基づいて日付パターンを決定
-    val pattern = when (locale.language) {
-        // ヨーロッパ圏: 日/月 (DD/MM)
-        "de",  // ドイツ語
-        "fr",  // フランス語
-        "es",  // スペイン語
-        "it",  // イタリア語
-        "pt",  // ポルトガル語
-        "tr",  // トルコ語
-        "ar"   // アラビア語
-            -> "d/M"
+    // ★ ICU DateTimePatternGenerator でロケール最適な「月/日」パターンを自動取得
+    val uLocale = android.icu.util.ULocale.forLocale(locale)
+    val pattern = android.icu.text.DateTimePatternGenerator.getInstance(uLocale).getBestPattern("Md")
 
-        // アジア圏（タイ、ベトナム、インドネシア）: 日/月
-        "th",  // タイ語
-        "vi",  // ベトナム語
-        "id", "in"  // インドネシア語
-            -> "d/M"
+    // ICU パターンを java.time 互換に変換
+    // ICU は "stand-alone" 形式の 'L' を使うことがあるが java.time では 'M' が必要
+    val javaPattern = pattern.replace('L', 'M')
 
-        // 韓国語: 月.日
-        "ko" -> "M.d"
-
-        // 中国語（繁体字）: 月/日
-        "zh" -> {
-            if (locale.country == "TW" || locale.script == "Hant") {
-                "M/d"
-            } else {
-                "M/d"
-            }
-        }
-
-        // 日本語、英語、その他: 月/日 (MM/DD)
-        else -> "M/d"
-    }
-
-    return DateTimeFormatter.ofPattern(pattern, locale)
+    return DateTimeFormatter.ofPattern(javaPattern, locale)
 }

@@ -117,7 +117,7 @@ fun WorkoutDayDetailDialog(
                     IconButton(onClick = { showDeleteAllConfirm = true }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete All",
+                            contentDescription = stringResource(R.string.cd_delete_all),
                             tint = WorkoutColors.PureRed
                         )
                     }
@@ -334,7 +334,7 @@ private fun ExerciseCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit",
+                            contentDescription = stringResource(R.string.edit),
                             tint = WorkoutColors.PureBlue,
                             modifier = Modifier.size(18.dp)
                         )
@@ -345,7 +345,7 @@ private fun ExerciseCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.delete),
                             tint = WorkoutColors.PureRed,
                             modifier = Modifier.size(18.dp)
                         )

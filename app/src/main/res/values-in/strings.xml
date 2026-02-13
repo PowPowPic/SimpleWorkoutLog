@@ -239,4 +239,9 @@ Catatan antara 00.00 dan 03.00 dihitung sebagai catatan hari sebelumnya.
 
     <string name="drag_to_reorder">Tekan lama lalu seret untuk mengurutkan ulang</string>
 
+    <string name="cd_previous_month">Bulan sebelumnya</string>
+    <string name="cd_next_month">Bulan berikutnya</string>
+    <string name="cd_previous_day">Hari sebelumnya</string>
+    <string name="cd_next_day">Hari berikutnya</string>
+    <string name="cd_delete_all">Hapus semua</string>
 </resources>

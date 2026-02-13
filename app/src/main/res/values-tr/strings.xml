@@ -239,4 +239,9 @@
 
     <string name="drag_to_reorder">Yeniden sıralamak için basılı tutup sürükleyin</string>
 
+    <string name="cd_previous_month">Önceki ay</string>
+    <string name="cd_next_month">Sonraki ay</string>
+    <string name="cd_previous_day">Önceki gün</string>
+    <string name="cd_next_day">Sonraki gün</string>
+    <string name="cd_delete_all">Tümünü sil</string>
 </resources>

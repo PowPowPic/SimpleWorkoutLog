@@ -275,4 +275,10 @@
 
     <string name="drag_to_reorder">Long press and drag to reorder</string>
 
+    <!-- ③ Accessibility: contentDescription for screen readers -->
+    <string name="cd_previous_month">Previous month</string>
+    <string name="cd_next_month">Next month</string>
+    <string name="cd_previous_day">Previous day</string>
+    <string name="cd_next_day">Next day</string>
+    <string name="cd_delete_all">Delete all</string>
 </resources>

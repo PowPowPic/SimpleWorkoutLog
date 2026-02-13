@@ -239,4 +239,9 @@ Aufzeichnungen zwischen 0:00 und 3:00 Uhr werden dem Vortag zugeordnet.
 
     <string name="drag_to_reorder">Gedrückt halten und ziehen, um neu zu sortieren</string>
 
+    <string name="cd_previous_month">Vorheriger Monat</string>
+    <string name="cd_next_month">Nächster Monat</string>
+    <string name="cd_previous_day">Vorheriger Tag</string>
+    <string name="cd_next_day">Nächster Tag</string>
+    <string name="cd_delete_all">Alle löschen</string>
 </resources>

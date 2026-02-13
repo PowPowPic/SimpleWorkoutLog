@@ -237,4 +237,9 @@
 
     <string name="drag_to_reorder">Nhấn giữ và kéo để sắp xếp lại</string>
 
+    <string name="cd_previous_month">Tháng trước</string>
+    <string name="cd_next_month">Tháng sau</string>
+    <string name="cd_previous_day">Ngày trước</string>
+    <string name="cd_next_day">Ngày sau</string>
+    <string name="cd_delete_all">Xóa tất cả</string>
 </resources>

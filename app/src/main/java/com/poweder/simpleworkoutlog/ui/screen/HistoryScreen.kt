@@ -61,6 +61,15 @@ fun HistoryScreen(
     // 選択中の日付（initialDateがあればその日付、なければ今日）
     var selectedDate by remember { mutableStateOf(initialDate ?: currentLogicalDate()) }
 
+    // ★ カレンダーから遷移時: ViewModelの日付リクエストを監視
+    val historyRequestedDate by viewModel.historyRequestedDate.collectAsState()
+    LaunchedEffect(historyRequestedDate) {
+        historyRequestedDate?.let { date ->
+            selectedDate = date
+            viewModel.clearHistoryRequestedDate()
+        }
+    }
+
     // 選択日のセッション
     val sessionsForDate by viewModel.getSessionsForDate(selectedDate).collectAsState(initial = emptyList())
 
@@ -188,7 +197,7 @@ fun HistoryScreen(
             IconButton(onClick = { selectedDate = selectedDate.minusDays(1) }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Previous Day",
+                    contentDescription = stringResource(R.string.cd_previous_day),
                     tint = WorkoutColors.TextPrimary
                 )
             }
@@ -212,7 +221,7 @@ fun HistoryScreen(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = "Next Day",
+                    contentDescription = stringResource(R.string.cd_next_day),
                     tint = if (selectedDate < currentLogicalDate())
                         WorkoutColors.TextPrimary
                     else
@@ -520,7 +529,7 @@ private fun CategorySummaryCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit",
+                            contentDescription = stringResource(R.string.edit),
                             tint = WorkoutColors.PureBlue,
                             modifier = Modifier.size(18.dp)
                         )
@@ -531,7 +540,7 @@ private fun CategorySummaryCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.delete),
                             tint = WorkoutColors.PureRed,
                             modifier = Modifier.size(18.dp)
                         )

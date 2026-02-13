@@ -117,6 +117,24 @@ class WorkoutViewModel(
     private val _targetDate = MutableStateFlow<LocalDate>(currentLogicalDate())
     val targetDate: StateFlow<LocalDate> = _targetDate.asStateFlow()
 
+    // ===== カレンダー→履歴 日付遷移用 =====
+    private val _historyRequestedDate = MutableStateFlow<LocalDate?>(null)
+    val historyRequestedDate: StateFlow<LocalDate?> = _historyRequestedDate.asStateFlow()
+
+    /**
+     * カレンダーから履歴画面への日付遷移をリクエスト
+     */
+    fun requestHistoryDate(date: LocalDate) {
+        _historyRequestedDate.value = date
+    }
+
+    /**
+     * 履歴画面が日付を受け取った後にクリア
+     */
+    fun clearHistoryRequestedDate() {
+        _historyRequestedDate.value = null
+    }
+
     /**
      * 記録対象日を設定（過去のトレーニング追加用）
      */

@@ -241,4 +241,9 @@
 
     <string name="drag_to_reorder">長按並拖曳可重新排序</string>
 
+    <string name="cd_previous_month">上個月</string>
+    <string name="cd_next_month">下個月</string>
+    <string name="cd_previous_day">前一天</string>
+    <string name="cd_next_day">後一天</string>
+    <string name="cd_delete_all">全部刪除</string>
 </resources>

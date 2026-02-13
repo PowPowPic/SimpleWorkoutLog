@@ -48,7 +48,7 @@ fun mileToKm(mile: Double): Double = mile * MILE_TO_KM
  * 重量をフォーマット
  */
 fun formatWeight(value: Double, unit: WeightUnit): String {
-    val df = DecimalFormat("#.#")
+    val df = DecimalFormat("#.#", java.text.DecimalFormatSymbols(java.util.Locale.getDefault()))
     return "${df.format(value)} ${unit.symbol}"
 }
 
@@ -56,7 +56,7 @@ fun formatWeight(value: Double, unit: WeightUnit): String {
  * 距離をフォーマット
  */
 fun formatDistance(value: Double, unit: DistanceUnit): String {
-    val df = DecimalFormat("#.##")
+    val df = DecimalFormat("#.##", java.text.DecimalFormatSymbols(java.util.Locale.getDefault()))
     return "${df.format(value)} ${unit.symbol}"
 }
 

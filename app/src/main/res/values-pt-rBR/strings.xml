@@ -239,4 +239,9 @@ Registros entre 0:00 e 3:00 são contabilizados como o dia anterior.
 
     <string name="drag_to_reorder">Pressione e segure, depois arraste para reorganizar</string>
 
+    <string name="cd_previous_month">Mês anterior</string>
+    <string name="cd_next_month">Próximo mês</string>
+    <string name="cd_previous_day">Dia anterior</string>
+    <string name="cd_next_day">Próximo dia</string>
+    <string name="cd_delete_all">Excluir tudo</string>
 </resources>

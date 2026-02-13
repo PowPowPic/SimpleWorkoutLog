@@ -91,7 +91,7 @@ fun CalendarScreen(
                 IconButton(onClick = { currentMonth = currentMonth.minusMonths(1) }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Previous Month",
+                        contentDescription = stringResource(R.string.cd_previous_month),
                         tint = WorkoutColors.TextPrimary
                     )
                 }
@@ -115,7 +115,7 @@ fun CalendarScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "Next Month",
+                        contentDescription = stringResource(R.string.cd_next_month),
                         tint = if (currentMonth < YearMonth.now())
                             WorkoutColors.TextPrimary
                         else

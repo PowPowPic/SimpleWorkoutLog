@@ -240,4 +240,9 @@ Le registrazioni tra le 0:00 e le 3:00 vengono considerate del giorno precedente
 
     <string name="drag_to_reorder">Tieni premuto e trascina per riordinare</string>
 
+    <string name="cd_previous_month">Mese precedente</string>
+    <string name="cd_next_month">Mese successivo</string>
+    <string name="cd_previous_day">Giorno precedente</string>
+    <string name="cd_next_day">Giorno successivo</string>
+    <string name="cd_delete_all">Elimina tutto</string>
 </resources>

@@ -239,4 +239,9 @@ Les enregistrements entre 0:00 et 3:00 sont comptabilisés comme la veille.
 
     <string name="drag_to_reorder">Appuyez longuement et faites glisser pour réorganiser</string>
 
+    <string name="cd_previous_month">Mois précédent</string>
+    <string name="cd_next_month">Mois suivant</string>
+    <string name="cd_previous_day">Jour précédent</string>
+    <string name="cd_next_day">Jour suivant</string>
+    <string name="cd_delete_all">Tout supprimer</string>
 </resources>

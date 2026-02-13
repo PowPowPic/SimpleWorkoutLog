@@ -239,4 +239,9 @@
 
     <string name="drag_to_reorder">กดค้างไว้แล้วลากเพื่อจัดลำดับใหม่</string>
 
+    <string name="cd_previous_month">เดือนก่อนหน้า</string>
+    <string name="cd_next_month">เดือนถัดไป</string>
+    <string name="cd_previous_day">วันก่อนหน้า</string>
+    <string name="cd_next_day">วันถัดไป</string>
+    <string name="cd_delete_all">ลบทั้งหมด</string>
 </resources>

@@ -237,4 +237,9 @@
 
     <string name="drag_to_reorder">길게 눌러 드래그하여 순서를 변경하세요</string>
 
+    <string name="cd_previous_month">이전 달</string>
+    <string name="cd_next_month">다음 달</string>
+    <string name="cd_previous_day">이전 날</string>
+    <string name="cd_next_day">다음 날</string>
+    <string name="cd_delete_all">모두 삭제</string>
 </resources>

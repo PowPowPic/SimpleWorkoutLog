@@ -240,4 +240,9 @@
 
     <string name="drag_to_reorder">長押ししてドラッグすると並び替えできます</string>
 
+    <string name="cd_previous_month">前の月</string>
+    <string name="cd_next_month">次の月</string>
+    <string name="cd_previous_day">前の日</string>
+    <string name="cd_next_day">次の日</string>
+    <string name="cd_delete_all">すべて削除</string>
 </resources>

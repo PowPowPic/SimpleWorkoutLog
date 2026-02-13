@@ -239,4 +239,9 @@
 
     <string name="drag_to_reorder">اضغط مطولًا ثم اسحب لإعادة الترتيب</string>
 
+    <string name="cd_previous_month">الشهر السابق</string>
+    <string name="cd_next_month">الشهر التالي</string>
+    <string name="cd_previous_day">اليوم السابق</string>
+    <string name="cd_next_day">اليوم التالي</string>
+    <string name="cd_delete_all">حذف الكل</string>
 </resources>

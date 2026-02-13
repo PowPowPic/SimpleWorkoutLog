@@ -166,7 +166,8 @@ fun SimpleWorkoutLogApp(
                                 2 -> CalendarScreen(
                                     viewModel = viewModel,
                                     onNavigateToHistory = { date ->
-                                        // 履歴タブに移動
+                                        // ★ ViewModelに日付をセットしてから履歴タブに移動
+                                        viewModel.requestHistoryDate(date)
                                         coroutineScope.launch {
                                             pagerState.animateScrollToPage(1)
                                         }

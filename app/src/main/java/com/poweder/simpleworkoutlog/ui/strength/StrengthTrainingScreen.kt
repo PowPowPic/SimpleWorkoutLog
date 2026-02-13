@@ -493,7 +493,7 @@ private fun SetItemCard(
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(R.string.delete),
                     tint = WorkoutColors.PureRed
                 )
             }
