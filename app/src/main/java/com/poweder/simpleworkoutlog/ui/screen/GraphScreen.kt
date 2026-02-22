@@ -42,6 +42,7 @@ import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatDistance
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -891,7 +892,11 @@ private fun CumulativeDistanceChart(data: List<Pair<Long, Double>>, distanceUnit
                     val (_, lastCum) = data.last()
                     val lX = pL + cW; val lY = pT + cH - (lastCum / yMax).toFloat() * cH
                     drawCircle(WorkoutColors.AccentOrange, 8.dp.toPx(), Offset(lX, lY))
-                    val label = when (distanceUnit) { DistanceUnit.KM -> "${String.format("%.1f", lastCum)} km"; DistanceUnit.MILE -> "${String.format("%.1f", lastCum * 0.621371)} mi" }
+                    // ロケール対応: formatDistance は桁区切り・小数点をロケールに合わせて表示
+                    val label = when (distanceUnit) {
+                        DistanceUnit.KM -> formatDistance(lastCum, DistanceUnit.KM)
+                        DistanceUnit.MILE -> formatDistance(lastCum * 0.621371, DistanceUnit.MILE)
+                    }
                     drawContext.canvas.nativeCanvas.apply {
                         val p = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FF6B35"); textSize = 14.sp.toPx(); isFakeBoldText = true; textAlign = android.graphics.Paint.Align.RIGHT }
                         drawText(label, lX - 12.dp.toPx(), lY - 12.dp.toPx(), p)

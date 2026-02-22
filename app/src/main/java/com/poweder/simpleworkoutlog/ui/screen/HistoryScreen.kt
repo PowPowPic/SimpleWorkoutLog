@@ -34,6 +34,7 @@ import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatCalories
 import com.poweder.simpleworkoutlog.util.formatDistance
 import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
@@ -443,7 +444,7 @@ private fun DaySummaryCard(
 
                 SummaryItem(
                     label = stringResource(R.string.total_calories_label),
-                    value = "$totalCalories kcal"
+                    value = formatCalories(totalCalories)
                 )
 
                 SummaryItem(
@@ -571,7 +572,7 @@ private fun CategorySummaryCard(
                 }
                 if (categoryCalories > 0) {
                     Text(
-                        text = "$categoryCalories kcal",
+                        text = formatCalories(categoryCalories),
                         style = MaterialTheme.typography.bodyMedium,
                         color = WorkoutColors.TextPrimary
                     )
@@ -584,7 +585,7 @@ private fun CategorySummaryCard(
             sessions.forEach { session ->
                 val exerciseName = exerciseNames[session.exerciseId] ?: "Exercise #${session.exerciseId}"
                 val sessionWeight = sessionWeights[session.id] ?: 0.0
-                
+
                 // ワークアウトタイプに応じて表示内容を決定
                 val detailText = when (session.workoutType) {
                     WorkoutType.STRENGTH -> {
@@ -606,7 +607,7 @@ private fun CategorySummaryCard(
                     WorkoutType.INTERVAL, WorkoutType.STUDIO, WorkoutType.OTHER -> {
                         // インターバル・スタジオ・その他の場合は消費カロリーを表示
                         if (session.caloriesBurned > 0) {
-                            " (${session.caloriesBurned} kcal)"
+                            " (${formatCalories(session.caloriesBurned)})"
                         } else {
                             ""
                         }

@@ -29,6 +29,9 @@ import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatDoubleForInput
+import com.poweder.simpleworkoutlog.util.getDecimalInputRegex
+import com.poweder.simpleworkoutlog.util.parseLocalizedDouble
 import com.poweder.simpleworkoutlog.ui.components.DurationInputField
 import com.poweder.simpleworkoutlog.ui.components.durationToSeconds
 import java.time.format.DateTimeFormatter
@@ -81,7 +84,8 @@ fun CardioScreen(
             durationHours = if (hours > 0) hours.toString() else ""
             durationMinutes = if (minutes > 0) minutes.toString() else ""
             durationSeconds = if (seconds > 0) seconds.toString() else ""
-            distance = if (session.distance > 0) session.distance.toString() else ""
+            // ロケール対応: ドイツ語等では "1,9" のように小数点がカンマになる
+            distance = formatDoubleForInput(session.distance, decimals = 3)
             calories = if (session.caloriesBurned > 0) session.caloriesBurned.toString() else ""
             isEditInitialized = true
         }
@@ -257,7 +261,8 @@ fun CardioScreen(
                     .clickable {
                         // 運動時間を秒に変換
                         val totalDurationSeconds = durationToSeconds(durationHours, durationMinutes, durationSeconds)
-                        val dist = distance.toDoubleOrNull() ?: 0.0
+                        // ロケール対応パース: "1,9" (ドイツ) も "1.9" (英語) も正しく解釈
+                        val dist = parseLocalizedDouble(distance) ?: 0.0
                         val cal = calories.toIntOrNull() ?: 0
 
                         if (isEditMode && sessionId != null) {
@@ -307,6 +312,9 @@ private fun InputField(
     onValueChange: (String) -> Unit,
     suffix: String
 ) {
+    // ロケールに応じた小数点入力regex（ドイツ語等は "," 、英語・日本語等は "."）
+    val decimalRegex = remember { getDecimalInputRegex() }
+
     Column {
         Text(
             text = label,
@@ -323,8 +331,8 @@ private fun InputField(
             OutlinedTextField(
                 value = value,
                 onValueChange = { newValue ->
-                    // 数字とピリオドのみ許可
-                    if (newValue.isEmpty() || newValue.matches(Regex("^\\d*\\.?\\d*$"))) {
+                    // ロケール対応: 数字と小数点記号（ロケールに応じて "." or ","）のみ許可
+                    if (newValue.isEmpty() || newValue.matches(decimalRegex)) {
                         onValueChange(newValue)
                     }
                 },

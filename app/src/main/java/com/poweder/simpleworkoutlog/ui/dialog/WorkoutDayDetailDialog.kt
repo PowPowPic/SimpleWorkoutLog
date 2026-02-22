@@ -26,6 +26,8 @@ import com.poweder.simpleworkoutlog.data.entity.WorkoutType
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
+import com.poweder.simpleworkoutlog.util.formatCalories
+import com.poweder.simpleworkoutlog.util.formatDistance
 import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.LocalDate
@@ -216,7 +218,7 @@ private fun DaySummaryCard(
 
                 SummaryItem(
                     label = stringResource(R.string.total_calories_label),
-                    value = "$totalCalories kcal"
+                    value = formatCalories(totalCalories)
                 )
 
                 SummaryItem(
@@ -372,7 +374,8 @@ private fun ExerciseCard(
                 if (session.distance > 0) {
                     DetailItem(
                         label = stringResource(R.string.distance),
-                        value = "%.2f %s".format(session.distance, distanceUnit.symbol)
+                        // ロケール対応: formatDistance は桁区切り・小数点をロケールに合わせて表示
+                        value = formatDistance(session.distance, distanceUnit)
                     )
                 }
 
@@ -388,7 +391,7 @@ private fun ExerciseCard(
                 if (session.caloriesBurned > 0) {
                     DetailItem(
                         label = stringResource(R.string.total_calories_label),
-                        value = "${session.caloriesBurned} kcal"
+                        value = formatCalories(session.caloriesBurned)
                     )
                 }
             }

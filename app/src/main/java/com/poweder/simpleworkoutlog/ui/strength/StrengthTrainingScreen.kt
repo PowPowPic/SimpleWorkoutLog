@@ -32,7 +32,10 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatDoubleForInput
 import com.poweder.simpleworkoutlog.util.formatWeight
+import com.poweder.simpleworkoutlog.util.getDecimalInputRegex
+import com.poweder.simpleworkoutlog.util.parseLocalizedDouble
 import com.poweder.simpleworkoutlog.ui.components.DurationInputField
 import com.poweder.simpleworkoutlog.ui.components.durationToSeconds
 import java.time.format.DateTimeFormatter
@@ -412,12 +415,16 @@ private fun SetItemCard(
     onUpdate: (Double, Int) -> Unit,
     onDelete: () -> Unit
 ) {
+    // ロケール対応: 編集モードでの重量表示（ドイツ語等では "85,5" のようにカンマ小数点）
     var weightText by remember(setItem.id, setItem.weight) {
-        mutableStateOf(if (setItem.weight > 0) setItem.weight.toString() else "")
+        mutableStateOf(formatDoubleForInput(setItem.weight, decimals = 2))
     }
     var repsText by remember(setItem.id, setItem.reps) {
         mutableStateOf(if (setItem.reps > 0) setItem.reps.toString() else "")
     }
+
+    // ロケール対応の入力regex（ドイツ語等は "," 、英語・日本語等は "."）
+    val decimalRegex = remember { getDecimalInputRegex() }
 
     val cardGradient = Brush.horizontalGradient(
         colors = listOf(
@@ -451,10 +458,14 @@ private fun SetItemCard(
             OutlinedTextField(
                 value = weightText,
                 onValueChange = {
-                    weightText = it
-                    val weight = it.toDoubleOrNull() ?: 0.0
-                    val reps = repsText.toIntOrNull() ?: 0
-                    onUpdate(weight, reps)
+                    // ロケール対応: "," または "." の小数点のみ許可
+                    if (it.isEmpty() || it.matches(decimalRegex)) {
+                        weightText = it
+                        // ロケール対応パース: "85,5" (ドイツ) も "85.5" (英語) も正しく解釈
+                        val weight = parseLocalizedDouble(it) ?: 0.0
+                        val reps = repsText.toIntOrNull() ?: 0
+                        onUpdate(weight, reps)
+                    }
                 },
                 label = { Text(weightUnit.symbol) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),

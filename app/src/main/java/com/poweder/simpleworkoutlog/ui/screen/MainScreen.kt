@@ -39,6 +39,7 @@ import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import com.poweder.simpleworkoutlog.util.formatCalories
 import com.poweder.simpleworkoutlog.util.formatHms
 import com.poweder.simpleworkoutlog.util.formatWeight
 import java.time.LocalDate
@@ -463,7 +464,7 @@ fun MainScreen(
             // 今日の消費カロリーカード
             TodaySummaryCard(
                 title = stringResource(R.string.today_calories),
-                value = "$todayTotalCalories kcal"
+                value = formatCalories(todayTotalCalories)
             )
 
             Spacer(modifier = Modifier.height(8.dp))

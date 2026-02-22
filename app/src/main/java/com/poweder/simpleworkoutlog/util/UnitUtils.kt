@@ -1,6 +1,9 @@
 package com.poweder.simpleworkoutlog.util
 
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
+import java.util.Locale
 
 /**
  * 重量単位
@@ -45,19 +48,88 @@ fun kmToMile(km: Double): Double = km * KM_TO_MILE
 fun mileToKm(mile: Double): Double = mile * MILE_TO_KM
 
 /**
- * 重量をフォーマット
+ * ロケールの小数点記号を取得
+ * ドイツ語・フランス語などは ',' 、英語・日本語などは '.'
  */
-fun formatWeight(value: Double, unit: WeightUnit): String {
-    val df = DecimalFormat("#.#", java.text.DecimalFormatSymbols(java.util.Locale.getDefault()))
-    return "${df.format(value)} ${unit.symbol}"
+fun getDecimalSeparator(locale: Locale = Locale.getDefault()): Char {
+    return DecimalFormatSymbols(locale).decimalSeparator
 }
 
 /**
- * 距離をフォーマット
+ * ロケール対応の小数を含む正規表現パターンを返す
+ * 入力フィールドのバリデーションに使用
+ * 例: ロケールが ',' 小数点なら "^\d*(,)?\d*$"
+ *     ロケールが '.' 小数点なら "^\d*(\.)?\ d*$"
+ */
+fun getDecimalInputRegex(locale: Locale = Locale.getDefault()): Regex {
+    val sep = getDecimalSeparator(locale)
+    return if (sep == ',') {
+        Regex("^\\d*(,)?\\d*$")
+    } else {
+        Regex("^\\d*(\\.)?\\d*$")
+    }
+}
+
+/**
+ * ロケール対応の文字列を Double にパース
+ * "1,9" (ドイツ語) も "1.9" (英語) もどちらも 1.9 として解釈する
+ */
+fun parseLocalizedDouble(value: String): Double? {
+    if (value.isBlank()) return null
+    // カンマを小数点ピリオドに置換して統一パース
+    return value.replace(',', '.').toDoubleOrNull()
+}
+
+/**
+ * Double を入力フィールド表示用にロケール対応フォーマット
+ * 例: ドイツ語なら 1.9 → "1,9"、英語なら 1.9 → "1.9"
+ * 桁区切りは入力フィールドには含めない（入力しやすさのため）
+ */
+fun formatDoubleForInput(value: Double, decimals: Int = 2, locale: Locale = Locale.getDefault()): String {
+    if (value <= 0) return ""
+    val df = DecimalFormat().apply {
+        decimalFormatSymbols = DecimalFormatSymbols(locale)
+        isGroupingUsed = false  // 入力フィールドには桁区切りを入れない
+        minimumFractionDigits = 0
+        maximumFractionDigits = decimals
+    }
+    return df.format(value)
+}
+
+/**
+ * 重量をフォーマット（桁区切り・小数点ロケール対応）
+ * 例: ドイツ語で 12360.5 kg → "12.360,5 kg"
+ *     英語で 12360.5 lb → "12,360.5 lb"
+ */
+fun formatWeight(value: Double, unit: WeightUnit): String {
+    val nf = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
+        minimumFractionDigits = 0
+        maximumFractionDigits = 1
+    }
+    return "${nf.format(value)} ${unit.symbol}"
+}
+
+/**
+ * 距離をフォーマット（桁区切り・小数点ロケール対応）
+ * 例: ドイツ語で 1.9 km → "1,9 km"
+ *     英語で 10000.5 km → "10,000.5 km"
  */
 fun formatDistance(value: Double, unit: DistanceUnit): String {
-    val df = DecimalFormat("#.##", java.text.DecimalFormatSymbols(java.util.Locale.getDefault()))
-    return "${df.format(value)} ${unit.symbol}"
+    val nf = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
+        minimumFractionDigits = 0
+        maximumFractionDigits = 2
+    }
+    return "${nf.format(value)} ${unit.symbol}"
+}
+
+/**
+ * カロリーをフォーマット（桁区切りロケール対応）
+ * 例: ドイツ語で 1000 → "1.000 kcal"
+ *     英語で 1000 → "1,000 kcal"
+ */
+fun formatCalories(value: Int): String {
+    val nf = NumberFormat.getIntegerInstance(Locale.getDefault())
+    return "${nf.format(value)} kcal"
 }
 
 /**
