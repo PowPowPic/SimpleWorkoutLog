@@ -56,12 +56,8 @@ fun CalendarScreen(
     val yearMonthText = remember(currentMonth) {
         val date = currentMonth.atDay(1)
         val locale = Locale.getDefault()
-        val pattern = when (locale.language) {
-            "ja" -> "yyyy年 M月"
-            "zh" -> "yyyy年M月"
-            "ko" -> "yyyy년 M월"
-            else -> "MMMM yyyy"  // 英語等: "January 2026"
-        }
+        val uLocale = android.icu.util.ULocale.forLocale(locale)
+        val pattern = android.icu.text.DateTimePatternGenerator.getInstance(uLocale).getBestPattern("yMMMM")
         date.format(DateTimeFormatter.ofPattern(pattern, locale))
     }
 
