@@ -14,14 +14,15 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 19
-        versionName = "2.1.0"
+        versionName = "2.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        // build.gradle の resourceConfigurations をこれに差し替え
         resourceConfigurations += listOf(
             "en", "ja", "de", "fr", "es", "it", "ko",
             "ar", "th", "tr", "vi", "in", "pt-rBR", "zh-rTW",
-            "pl", "uz"
+            "pl", "uz", "ro", "kk"
         )
     }
 

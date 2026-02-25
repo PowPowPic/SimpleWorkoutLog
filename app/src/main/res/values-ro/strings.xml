@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ==================== App ==================== -->
+    <string name="app_name">Simple Workout Log</string>
+
+    <!-- ==================== Navigation ==================== -->
+    <string name="nav_home">Acasă</string>
+    <string name="nav_history">Istoric</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_graph">Grafic</string>
+    <string name="nav_settings">Setări</string>
+
+    <!-- ==================== Common ==================== -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Anulează</string>
+    <string name="common_close">Închide</string>
+    <string name="common_yes">Da</string>
+    <string name="common_no">Nu</string>
+    <string name="edit">Editează</string>
+    <string name="delete">Șterge</string>
+    <string name="save">Salvează</string>
+    <string name="back">Înapoi</string>
+    <string name="confirm">Confirmă</string>
+    <string name="discard">Da</string>
+    <string name="rename">Redenumește</string>
+    <string name="kcal">kcal</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">Greutatea totală ridicată azi</string>
+    <string name="today_duration">Timpul de antrenament de azi</string>
+    <string name="today_calories">Calorii arse azi</string>
+    <string name="card_today_menu">Planul de antrenament de azi</string>
+    <string name="midnight_rule_note">
+    Înregistrările între 00:00 și 03:00 sunt salvate ca parte a zilei precedente.
+</string>
+
+    <string name="add_past_workout">Adaugă antrenament anterior</string>
+
+    <!-- ==================== Workout Types ==================== -->
+    <string name="select_workout_type">Selectează tipul de antrenament</string>
+    <string name="workout_strength">Forță</string>
+    <string name="workout_cardio">Cardio</string>
+    <string name="workout_interval">Antrenament pe intervale</string>
+    <string name="workout_studio">Studio</string>
+    <string name="workout_other">Altul</string>
+    <string name="add_workout_type">+ Adaugă tip nou</string>
+    <string name="workout_type_name">Nume tip</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">Selectează exercițiul</string>
+    <string name="no_exercises_yet">
+        Nu există exerciții încă. Adaugă unul folosind butonul de mai jos!
+    </string>
+    <string name="add_new_exercise">+ Adaugă exercițiu nou</string>
+    <string name="exercise_name">Nume exercițiu</string>
+
+    <!-- ==================== Exercise Names - Strength ==================== -->
+    <string name="exercise_bench_press">Împins la piept</string>
+    <string name="exercise_squat">Genuflexiuni</string>
+    <string name="exercise_deadlift">Îndreptări</string>
+
+    <!-- ==================== Exercise Names - Cardio ==================== -->
+    <string name="exercise_running">Alergare</string>
+    <string name="exercise_walking">Mers</string>
+    <string name="exercise_indoor_bike">Bicicletă indoor</string>
+
+    <!-- ==================== Exercise Names - Interval ==================== -->
+    <string name="exercise_hiit">HIIT</string>
+    <string name="exercise_tabata">Tabata</string>
+
+    <!-- ==================== Exercise Names - Studio ==================== -->
+    <string name="exercise_yoga">Yoga</string>
+    <string name="exercise_pilates">Pilates</string>
+
+    <!-- ==================== Exercise Names - Other ==================== -->
+    <string name="exercise_snowboarding">Snowboarding</string>
+    <string name="exercise_golf">Golf</string>
+
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">Repetări</string>
+    <string name="add_new_set">+ Adaugă set</string>
+    <string name="session_total">Total</string>
+    <string name="exercise_duration">Durată</string>
+    <string name="exercise_calories">Calorii (kcal)</string>
+    <string name="finish_training">Finalizează &amp; salvează</string>
+    <string name="finish_and_save">Finalizează &amp; salvează</string>
+    <string name="go_home">Înapoi la Acasă</string>
+
+    <!-- ==================== Cardio Screen ==================== -->
+    <string name="duration_minutes">Durată</string>
+    <string name="distance">Distanță</string>
+    <string name="calories">Calorii</string>
+
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">Setări cronometru</string>
+    <string name="preset_tabata">Tabata</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">Încălzire</string>
+    <string name="training_seconds">Antrenament</string>
+    <string name="rest_seconds">Pauză</string>
+    <string name="number_of_sets">Seturi</string>
+    <string name="cooldown_seconds">Răcire</string>
+    <string name="total_time_format">Total: %s</string>
+    <string name="start_timer">Start</string>
+
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">Încălzire</string>
+    <string name="phase_training">Antrenament</string>
+    <string name="phase_rest">Pauză</string>
+    <string name="phase_cooldown">Răcire</string>
+    <string name="phase_finished">Finalizat</string>
+
+    <!-- ==================== Interval Timer - UI ==================== -->
+    <string name="set_progress">Set %1$d / %2$d</string>
+    <string name="workout_complete">Antrenament finalizat!</string>
+    <string name="total_time_result">Timp total: %s</string>
+    <string name="back_to_home">Înapoi la Acasă</string>
+    <string name="pause">Pauză</string>
+    <string name="resume">Reia</string>
+    <string name="stop">Oprește</string>
+    <string name="complete">Salvează</string>
+    <string name="save_workout_result">Salvează rezultatul</string>
+
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">Calorii (kcal)</string>
+    <string name="saved_successfully">Salvat!</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">Rezumatul antrenamentului pentru această zi</string>
+    <string name="total_duration_label">Timp</string>
+    <string name="total_calories_label">Calorii</string>
+    <string name="total_weight_label">Greutate</string>
+    <string name="no_workout_data">Nu există date de antrenament pentru această zi.</string>
+
+    <!-- ==================== Calendar Screen ==================== -->
+    <string name="monthly_summary">Rezumat lunar</string>
+    <string name="workout_days">Zile de antrenament</string>
+    <string name="days_format">%1$d zile</string>
+    <string name="average_duration">Durată medie</string>
+    <string name="total_duration_month">Durată totală</string>
+    <string name="total_calories_month">Total calorii</string>
+    <string name="total_weight_month">Greutate totală</string>
+
+    <!-- ==================== Settings ==================== -->
+    <string name="settings_title">Setări</string>
+    <string name="settings_language_title">Limbă</string>
+    <string name="settings_language_description">Schimbă limba afișată</string>
+    <string name="settings_weight_unit_title">Unitate greutate</string>
+    <string name="settings_weight_unit_description">Curent: %1$s</string>
+    <string name="settings_distance_unit_title">Unitate distanță</string>
+    <string name="settings_distance_unit_description">Curent: %1$s</string>
+    <string name="settings_delete_title">Șterge toate datele</string>
+    <string name="settings_delete_description">Șterge toate înregistrările de antrenament</string>
+    <string name="language_system_default">Urmează sistemul</string>
+
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">Continui fără salvare?</string>
+    <string name="confirm_back_message">
+        Ai seturi nesalvate. Sigur vrei să te întorci?
+    </string>
+    <string name="discard_confirm_title">Continui fără salvare?</string>
+    <string name="discard_confirm_message">
+        Există seturi confirmate care nu au fost salvate.
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">Ștergi?</string>
+    <string name="delete_confirm_message">
+        Sigur vrei să ștergi „%1$s”?
+    </string>
+    <string name="delete_all_title">Șterge toate datele</string>
+    <string name="delete_all_message">
+        Sigur vrei să ștergi toate datele? Această acțiune nu poate fi anulată.
+    </string>
+    <string name="delete_all_day_title">Ștergi toate înregistrările?</string>
+    <string name="delete_all_day_message">
+        Toate înregistrările pentru această zi vor fi șterse. Această acțiune nu poate fi anulată.
+    </string>
+    <string name="delete_session_title">Ștergi înregistrarea?</string>
+    <string name="delete_session_message">
+        Ștergi înregistrarea pentru %1$s?
+    </string>
+    <string name="delete_category_title">Ștergi categoria?</string>
+    <string name="delete_category_message">
+        Toate înregistrările din această categorie vor fi șterse.
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">Aplici limba?</string>
+    <string name="language_confirm_message">
+        Noua setare de limbă va fi aplicată.
+    </string>
+    <string name="applying_language">Se aplică limba…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">Calorii cumulative</string>
+    <string name="now">Acum</string>
+    <string name="no_data">Fără date</string>
+    <string name="graph_reset_link">Resetează graficul</string>
+    <string name="graph_reset">Resetează graficul</string>
+    <string name="graph_reset_title">Resetezi graficul?</string>
+    <string name="graph_reset_confirm">
+        Aceasta va șterge toate datele din grafic. Ești sigur?
+    </string>
+    <string name="graph_reset_message">
+        Datele graficului vor fi șterse.\n(Datele din Istoric și Calendar vor rămâne.)
+    </string>
+    <string name="which_graph_to_see">Ce grafic dorești să vezi?</string>
+
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">Selectează graficul</string>
+    <string name="graph_picker_strength">Forță (tendința greutății maxime)</string>
+    <string name="graph_picker_cardio">Cardio (distanță cumulată)</string>
+    <string name="graph_picker_studio">Studio (total sesiuni)</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">Ore</string>
+    <string name="duration_minutes_placeholder">Minute</string>
+    <string name="duration_seconds_placeholder">Secunde</string>
+
+    <!-- ==================== Interval Timer (Level B) ==================== -->
+    <string name="total_elapsed">Total: %1$s</string>
+    <string name="edit_interval_result">Editează rezultatul</string>
+    <string name="input_result">Introdu rezultatul</string>
+    <string name="duration">Durată</string>
+
+    <!-- ==================== Interval Timer ==================== -->
+    <string name="timer_settings">Setări cronometru</string>
+
+    <string name="warm_up">Încălzire</string>
+    <string name="training">Antrenament</string>
+    <string name="rest">Pauză</string>
+    <string name="cooldown">Răcire</string>
+
+    <string name="seconds_unit">sec</string>
+
+    <string name="sets_count">Seturi</string>
+    <string name="sets_unit">seturi</string>
+
+    <string name="total_time_estimate">Timp total: %1$s</string>
+
+    <string name="start">Start</string>
+    <string name="cancel">Anulează</string>
+
+    <!-- ==================== Interval Timer Notification ==================== -->
+    <string name="interval_timer_channel_name">Cronometru intervale</string>
+    <string name="interval_timer_channel_description">Afișează progresul cronometrului pe intervale</string>
+    <string name="interval_timer">Cronometru intervale</string>
+
+    <!-- ==================== Timer Settings ==================== -->
+    <string name="timer_settings_section">Setări cronometru</string>
+    <string name="timer_sound">Sunet cronometru</string>
+    <string name="timer_sound_desc">Activează sau dezactivează sunetele cronometrului</string>
+    <string name="timer_vibration">Vibrație cronometru</string>
+    <string name="timer_vibration_desc">Activează sau dezactivează notificările prin vibrație</string>
+    <string name="countdown_last_5_seconds">Numărătoare inversă (ultimele 5 secunde)</string>
+    <string name="countdown_last_5_seconds_desc">
+        Notifică cu 5–1 secunde înainte de finalul fiecărei faze
+    </string>
+
+    <!-- ==================== Interval Presets ==================== -->
+    <string name="preset_tabata_desc">20 secunde lucru / 10 secunde pauză × 8 runde</string>
+    <string name="preset_hiit_desc">
+        Antrenament pe intervale de intensitate mare\nPersonalizează timpul de lucru și pauză
+    </string>
+    <string name="preset_emom_desc">
+        La fiecare minut (EMOM)\nÎncepe o rundă nouă în fiecare minut
+    </string>
+
+    <!-- ==================== Settings Hint (English Only) ==================== -->
+    <string name="settings_hint" translatable="false">
+    Language and units (kg/lb, km/mi)\n can be changed in Settings.
+</string>
+
+    <string name="drag_to_reorder">Ține apăsat și trage pentru a reordona</string>
+
+    <!-- ③ Accessibility: contentDescription for screen readers -->
+    <string name="cd_previous_month">Luna anterioară</string>
+    <string name="cd_next_month">Luna următoare</string>
+    <string name="cd_previous_day">Ziua anterioară</string>
+    <string name="cd_next_day">Ziua următoare</string>
+    <string name="cd_delete_all">Șterge tot</string>
+</resources>

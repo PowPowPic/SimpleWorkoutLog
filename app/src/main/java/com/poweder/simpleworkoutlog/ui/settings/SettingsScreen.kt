@@ -500,7 +500,9 @@ private fun LanguageSettingDialog(
         "pt-BR" to "Português (Brasil)",
         "zh-TW" to "繁體中文",
         "pl" to "Polski",
-        "uz" to "Oʻzbekcha"
+        "uz" to "Oʻzbekcha",
+        "ro" to "Română",
+        "kk" to "Қазақша"
     )
 
     AlertDialog(

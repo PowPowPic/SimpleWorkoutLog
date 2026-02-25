@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ==================== App ==================== -->
+    <string name="app_name">Simple Workout Log</string>
+
+    <!-- ==================== Navigation ==================== -->
+    <string name="nav_home">Басты</string>
+    <string name="nav_history">Тарих</string>
+    <string name="nav_calendar">Күнтізбе</string>
+    <string name="nav_graph">График</string>
+    <string name="nav_settings">Баптаулар</string>
+
+    <!-- ==================== Common ==================== -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Болдырмау</string>
+    <string name="common_close">Жабу</string>
+    <string name="common_yes">Иә</string>
+    <string name="common_no">Жоқ</string>
+    <string name="edit">Өңдеу</string>
+    <string name="delete">Жою</string>
+    <string name="save">Сақтау</string>
+    <string name="back">Артқа</string>
+    <string name="confirm">Растау</string>
+    <string name="discard">Иә</string>
+    <string name="rename">Атауын өзгерту</string>
+    <string name="kcal">ккал</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">Бүгін көтерілген жалпы салмақ</string>
+    <string name="today_duration">Бүгінгі жаттығу уақыты</string>
+    <string name="today_calories">Бүгін жағылған калория</string>
+    <string name="card_today_menu">Бүгінгі жаттығу жоспары</string>
+    <string name="midnight_rule_note">
+    00:00 мен 03:00 аралығындағы жазбалар алдыңғы күн ретінде есептеледі.
+</string>
+
+
+    <string name="add_past_workout">Алдыңғы жаттығуды қосу</string>
+
+    <!-- ==================== Workout Types ==================== -->
+    <string name="select_workout_type">Жаттығу түрін таңдаңыз</string>
+    <string name="workout_strength">Күш</string>
+    <string name="workout_cardio">Кардио</string>
+    <string name="workout_interval">Интервалды жаттығу</string>
+    <string name="workout_studio">Студия</string>
+    <string name="workout_other">Басқа</string>
+    <string name="add_workout_type">+ Жаңа түр қосу</string>
+    <string name="workout_type_name">Түр атауы</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">Жаттығуды таңдаңыз</string>
+    <string name="no_exercises_yet">
+        Әзірге жаттығулар жоқ. Төмендегі түйме арқылы қосыңыз!
+    </string>
+    <string name="add_new_exercise">+ Жаңа жаттығу қосу</string>
+    <string name="exercise_name">Жаттығу атауы</string>
+
+    <!-- ==================== Exercise Names - Strength ==================== -->
+    <string name="exercise_bench_press">Бенч-пресс</string>
+    <string name="exercise_squat">Присед</string>
+    <string name="exercise_deadlift">Дедлифт</string>
+
+    <!-- ==================== Exercise Names - Cardio ==================== -->
+    <string name="exercise_running">Жүгіру</string>
+    <string name="exercise_walking">Жаяу жүру</string>
+    <string name="exercise_indoor_bike">Велотренажер</string>
+
+    <!-- ==================== Exercise Names - Interval ==================== -->
+    <string name="exercise_hiit">HIIT</string>
+    <string name="exercise_tabata">Табата</string>
+
+    <!-- ==================== Exercise Names - Studio ==================== -->
+    <string name="exercise_yoga">Йога</string>
+    <string name="exercise_pilates">Пилатес</string>
+
+    <!-- ==================== Exercise Names - Other ==================== -->
+    <string name="exercise_snowboarding">Сноуборд</string>
+    <string name="exercise_golf">Гольф</string>
+
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">Қайталау</string>
+    <string name="add_new_set">+ Жиын қосу</string>
+    <string name="session_total">Барлығы</string>
+    <string name="exercise_duration">Ұзақтығы</string>
+    <string name="exercise_calories">Калория (ккал)</string>
+    <string name="finish_training">Аяқтау және сақтау</string>
+    <string name="finish_and_save">Аяқтау және сақтау</string>
+    <string name="go_home">Басты бетке оралу</string>
+
+    <!-- ==================== Cardio Screen ==================== -->
+    <string name="duration_minutes">Ұзақтығы</string>
+    <string name="distance">Қашықтық</string>
+    <string name="calories">Калория</string>
+
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">Таймер баптаулары</string>
+    <string name="preset_tabata">Табата</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">Жылыту</string>
+    <string name="training_seconds">Жаттығу</string>
+    <string name="rest_seconds">Демалыс</string>
+    <string name="number_of_sets">Жиындар</string>
+    <string name="cooldown_seconds">Баяулату</string>
+    <string name="total_time_format">Барлығы: %s</string>
+    <string name="start_timer">Бастау</string>
+
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">Жылыту</string>
+    <string name="phase_training">Жаттығу</string>
+    <string name="phase_rest">Демалыс</string>
+    <string name="phase_cooldown">Баяулату</string>
+    <string name="phase_finished">Аяқталды</string>
+
+    <!-- ==================== Interval Timer - UI ==================== -->
+    <string name="set_progress">Жиын %1$d / %2$d</string>
+    <string name="workout_complete">Жаттығу аяқталды!</string>
+    <string name="total_time_result">Жалпы уақыт: %s</string>
+    <string name="back_to_home">Басты бетке оралу</string>
+    <string name="pause">Үзіліс</string>
+    <string name="resume">Жалғастыру</string>
+    <string name="stop">Тоқтату</string>
+    <string name="complete">Сақтау</string>
+    <string name="save_workout_result">Нәтижені сақтау</string>
+
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">Калория (ккал)</string>
+    <string name="saved_successfully">Сақталды!</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">Осы күнге арналған жаттығу қорытындысы</string>
+    <string name="total_duration_label">Уақыт</string>
+    <string name="total_calories_label">Калория</string>
+    <string name="total_weight_label">Салмақ</string>
+    <string name="no_workout_data">Бұл күнге жаттығу деректері жоқ.</string>
+
+    <!-- ==================== Calendar Screen ==================== -->
+    <string name="monthly_summary">Айлық қорытынды</string>
+    <string name="workout_days">Жаттығу күндері</string>
+    <string name="days_format">%1$d күн</string>
+    <string name="average_duration">Орташа ұзақтығы</string>
+    <string name="total_duration_month">Жалпы ұзақтығы</string>
+    <string name="total_calories_month">Жалпы калория</string>
+    <string name="total_weight_month">Жалпы салмақ</string>
+
+    <!-- ==================== Settings ==================== -->
+    <string name="settings_title">Баптаулар</string>
+    <string name="settings_language_title">Тіл</string>
+    <string name="settings_language_description">Көрсетілетін тілді өзгерту</string>
+    <string name="settings_weight_unit_title">Салмақ бірлігі</string>
+    <string name="settings_weight_unit_description">Ағымдағы: %1$s</string>
+    <string name="settings_distance_unit_title">Қашықтық бірлігі</string>
+    <string name="settings_distance_unit_description">Ағымдағы: %1$s</string>
+    <string name="settings_delete_title">Барлық деректерді жою</string>
+    <string name="settings_delete_description">Барлық жаттығу жазбаларын жою</string>
+    <string name="language_system_default">Жүйеге сәйкес</string>
+
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">Сақтамай жалғастырасыз ба?</string>
+    <string name="confirm_back_message">
+        Сақталмаған жиындар бар. Артқа қайтқыңыз келетініне сенімдісіз бе?
+    </string>
+    <string name="discard_confirm_title">Сақтамай жалғастырасыз ба?</string>
+    <string name="discard_confirm_message">
+        Расталған, бірақ сақталмаған жиындар бар.
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">Жою керек пе?</string>
+    <string name="delete_confirm_message">
+        "%1$s" жоюды қалайсыз ба?
+    </string>
+    <string name="delete_all_title">Барлық деректерді жою</string>
+    <string name="delete_all_message">
+        Барлық деректерді жоюды қалайсыз ба? Бұл әрекетті қайтару мүмкін емес.
+    </string>
+    <string name="delete_all_day_title">Барлық жазбаларды жою керек пе?</string>
+    <string name="delete_all_day_message">
+        Осы күнге қатысты барлық жаттығу жазбалары жойылады. Бұл әрекетті қайтару мүмкін емес.
+    </string>
+    <string name="delete_session_title">Жазбаны жою керек пе?</string>
+    <string name="delete_session_message">
+        %1$s күнінің жазбасын жою керек пе?
+    </string>
+    <string name="delete_category_title">Санатты жою керек пе?</string>
+    <string name="delete_category_message">
+        Осы санаттағы барлық жазбалар жойылады.
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">Тілді қолдану керек пе?</string>
+    <string name="language_confirm_message">
+        Жаңа тіл параметрі қолданылады.
+    </string>
+    <string name="applying_language">Тіл қолданылуда…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">Жиынтық калория</string>
+    <string name="now">Қазір</string>
+    <string name="no_data">Дерек жоқ</string>
+    <string name="graph_reset_link">Графикті қалпына келтіру</string>
+    <string name="graph_reset">Графикті қалпына келтіру</string>
+    <string name="graph_reset_title">Графикті қалпына келтіру керек пе?</string>
+    <string name="graph_reset_confirm">
+        Бұл барлық график деректерін жояды. Жалғастырасыз ба?
+    </string>
+    <string name="graph_reset_message">
+        График деректері жойылады.\n(Тарих пен күнтізбе деректері сақталады.)
+    </string>
+    <string name="which_graph_to_see">Қай графикті көргіңіз келеді?</string>
+
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">Графикті таңдаңыз</string>
+    <string name="graph_picker_strength">Күш (ең жоғары салмақ тренді)</string>
+    <string name="graph_picker_cardio">Кардио (жиынтық қашықтық)</string>
+    <string name="graph_picker_studio">Студия (сеанстар саны)</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">Сағат</string>
+    <string name="duration_minutes_placeholder">Минут</string>
+    <string name="duration_seconds_placeholder">Секунд</string>
+
+    <!-- ==================== Interval Timer (Level B) ==================== -->
+    <string name="total_elapsed">Барлығы: %1$s</string>
+    <string name="edit_interval_result">Нәтижені өңдеу</string>
+    <string name="input_result">Нәтижені енгізу</string>
+    <string name="duration">Ұзақтығы</string>
+
+    <!-- ==================== Interval Timer ==================== -->
+    <string name="timer_settings">Таймер баптаулары</string>
+
+    <string name="warm_up">Жылыту</string>
+    <string name="training">Жаттығу</string>
+    <string name="rest">Демалыс</string>
+    <string name="cooldown">Баяулату</string>
+
+    <string name="seconds_unit">сек</string>
+
+    <string name="sets_count">Жиындар</string>
+    <string name="sets_unit">жиын</string>
+
+    <string name="total_time_estimate">Жалпы уақыт: %1$s</string>
+
+    <string name="start">Бастау</string>
+    <string name="cancel">Болдырмау</string>
+
+    <!-- ==================== Interval Timer Notification ==================== -->
+    <string name="interval_timer_channel_name">Интервал таймері</string>
+    <string name="interval_timer_channel_description">Интервал таймерінің барысын көрсетеді</string>
+    <string name="interval_timer">Интервал таймері</string>
+
+    <!-- ==================== Timer Settings ==================== -->
+    <string name="timer_settings_section">Таймер баптаулары</string>
+    <string name="timer_sound">Таймер дыбысы</string>
+    <string name="timer_sound_desc">Таймер дыбыстарын қосу немесе өшіру</string>
+    <string name="timer_vibration">Таймер дірілі</string>
+    <string name="timer_vibration_desc">Діріл хабарландыруларын қосу немесе өшіру</string>
+    <string name="countdown_last_5_seconds">Кері санау (соңғы 5 секунд)</string>
+    <string name="countdown_last_5_seconds_desc">
+        Әр кезең аяқталуына 5–1 секунд қалғанда хабарлау
+    </string>
+
+    <!-- ==================== Interval Presets ==================== -->
+    <string name="preset_tabata_desc">20 сек жұмыс / 10 сек демалыс × 8 раунд</string>
+    <string name="preset_hiit_desc">
+        Жоғары қарқынды интервалды жаттығу\nЖұмыс және демалыс уақытын баптаңыз
+    </string>
+    <string name="preset_emom_desc">
+        Әр минут сайын\nӘр минут сайын жаңа раунд бастаңыз
+    </string>
+
+    <!-- ==================== Settings Hint (English Only) ==================== -->
+    <string name="settings_hint" translatable="false">
+    Language and units (kg/lb, km/mi)\n can be changed in Settings.
+</string>
+
+    <string name="drag_to_reorder">Қайта реттеу үшін басып тұрып, жылжытыңыз</string>
+
+    <!-- ③ Accessibility: contentDescription for screen readers -->
+    <string name="cd_previous_month">Алдыңғы ай</string>
+    <string name="cd_next_month">Келесі ай</string>
+    <string name="cd_previous_day">Алдыңғы күн</string>
+    <string name="cd_next_day">Келесі күн</string>
+    <string name="cd_delete_all">Барлығын жою</string>
+</resources>

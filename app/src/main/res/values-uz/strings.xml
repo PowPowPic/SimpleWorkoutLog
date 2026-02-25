@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ==================== App ==================== -->
+    <string name="app_name">Simple Workout Log</string>
+
+    <!-- ==================== Navigation ==================== -->
+    <string name="nav_home">Asosiy</string>
+    <string name="nav_history">Tarix</string>
+    <string name="nav_calendar">Taqvim</string>
+    <string name="nav_graph">Grafik</string>
+    <string name="nav_settings">Sozlamalar</string>
+
+    <!-- ==================== Common ==================== -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Bekor qilish</string>
+    <string name="common_close">Yopish</string>
+    <string name="common_yes">Ha</string>
+    <string name="common_no">Yo‘q</string>
+    <string name="edit">Tahrirlash</string>
+    <string name="delete">O‘chirish</string>
+    <string name="save">Saqlash</string>
+    <string name="back">Orqaga</string>
+    <string name="confirm">Tasdiqlash</string>
+    <string name="discard">Ha</string>
+    <string name="rename">Nomini o‘zgartirish</string>
+    <string name="kcal">kcal</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">Bugungi jami og‘irlik</string>
+    <string name="today_duration">Bugungi mashg‘ulot vaqti</string>
+    <string name="today_calories">Bugun yoqilgan kaloriya</string>
+    <string name="card_today_menu">Bugungi mashg‘ulot rejasi</string>
+    <string name="midnight_rule_note">00:00 dan 03:00 gacha yozuvlar oldingi kunga hisoblanadi.</string>
+
+    <string name="add_past_workout">Oldingi mashg‘ulotni qo‘shish</string>
+
+    <!-- ==================== Workout Types ==================== -->
+    <string name="select_workout_type">Mashg‘ulot turini tanlang</string>
+    <string name="workout_strength">Kuch mashqi</string>
+    <string name="workout_cardio">Kardio</string>
+    <string name="workout_interval">Interval mashg‘uloti</string>
+    <string name="workout_studio">Studio</string>
+    <string name="workout_other">Boshqa</string>
+    <string name="add_workout_type">+ Yangi tur qo‘shish</string>
+    <string name="workout_type_name">Tur nomi</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">Mashqni tanlang</string>
+    <string name="no_exercises_yet">Hozircha mashqlar yo‘q. Quyidagi tugma orqali qo‘shing!</string>
+    <string name="add_new_exercise">+ Yangi mashq qo‘shish</string>
+    <string name="exercise_name">Mashq nomi</string>
+
+    <!-- Strength -->
+    <string name="exercise_bench_press">Bench press</string>
+    <string name="exercise_squat">Otirib turish (Squat)</string>
+    <string name="exercise_deadlift">Deadlift</string>
+
+    <!-- Cardio -->
+    <string name="exercise_running">Yugurish</string>
+    <string name="exercise_walking">Yurish</string>
+    <string name="exercise_indoor_bike">Statsionar velosiped</string>
+
+    <!-- Interval -->
+    <string name="exercise_hiit">HIIT</string>
+    <string name="exercise_tabata">Tabata</string>
+
+    <!-- Studio -->
+    <string name="exercise_yoga">Yoga</string>
+    <string name="exercise_pilates">Pilates</string>
+
+    <!-- Other -->
+    <string name="exercise_snowboarding">Snoubord</string>
+    <string name="exercise_golf">Golf</string>
+
+    <!-- ==================== Strength Screen ==================== -->
+    <string name="reps">Takr.</string>
+    <string name="add_new_set">+ Set qo‘shish</string>
+    <string name="session_total">Jami</string>
+    <string name="exercise_duration">Davomiylik</string>
+    <string name="exercise_calories">Kaloriya (kcal)</string>
+    <string name="finish_training">Tugatish va saqlash</string>
+    <string name="finish_and_save">Tugatish va saqlash</string>
+    <string name="go_home">Asosiyga qaytish</string>
+
+    <!-- Cardio -->
+    <string name="duration_minutes">Davomiylik</string>
+    <string name="distance">Masofa</string>
+    <string name="calories">Kaloriya</string>
+
+    <!-- Interval Settings -->
+    <string name="interval_timer_settings">Timer sozlamalari</string>
+    <string name="preset_tabata">Tabata</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">Qizdirish</string>
+    <string name="training_seconds">Mashq</string>
+    <string name="rest_seconds">Dam olish</string>
+    <string name="number_of_sets">Setlar</string>
+    <string name="cooldown_seconds">Sovish</string>
+    <string name="total_time_format">Jami: %s</string>
+    <string name="start_timer">Boshlash</string>
+
+    <!-- Interval Phases -->
+    <string name="phase_warmup">Qizdirish</string>
+    <string name="phase_training">Mashq</string>
+    <string name="phase_rest">Dam olish</string>
+    <string name="phase_cooldown">Sovish</string>
+    <string name="phase_finished">Tugadi</string>
+
+    <!-- Interval UI -->
+    <string name="set_progress">Set %1$d / %2$d</string>
+    <string name="workout_complete">Mashg‘ulot tugadi!</string>
+    <string name="total_time_result">Jami vaqt: %s</string>
+    <string name="back_to_home">Asosiyga qaytish</string>
+    <string name="pause">Pauza</string>
+    <string name="resume">Davom ettirish</string>
+    <string name="stop">To‘xtatish</string>
+    <string name="complete">Saqlash</string>
+    <string name="save_workout_result">Mashg‘ulot natijasini saqlash</string>
+
+    <!-- History -->
+    <string name="day_summary">Kunlik mashg‘ulot xulosasi</string>
+    <string name="total_duration_label">Vaqt</string>
+    <string name="total_calories_label">Kaloriya</string>
+    <string name="total_weight_label">Og‘irlik</string>
+    <string name="no_workout_data">Bu kun uchun mashg‘ulot ma’lumotlari yo‘q.</string>
+
+    <!-- Calendar -->
+    <string name="monthly_summary">Oylik xulosa</string>
+    <string name="workout_days">Mashg‘ulot kunlari</string>
+    <string name="days_format">%1$d kun</string>
+    <string name="average_duration">O‘rtacha davomiylik</string>
+    <string name="total_duration_month">Jami davomiylik</string>
+    <string name="total_calories_month">Jami kaloriya</string>
+    <string name="total_weight_month">Jami og‘irlik</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Sozlamalar</string>
+    <string name="settings_language_title">Til</string>
+    <string name="settings_language_description">Ko‘rsatish tilini o‘zgartirish</string>
+    <string name="settings_weight_unit_title">Og‘irlik birligi</string>
+    <string name="settings_weight_unit_description">Hozirgi: %1$s</string>
+    <string name="settings_distance_unit_title">Masofa birligi</string>
+    <string name="settings_distance_unit_description">Hozirgi: %1$s</string>
+    <string name="settings_delete_title">Barcha ma’lumotlarni o‘chirish</string>
+    <string name="settings_delete_description">Barcha mashg‘ulot yozuvlarini o‘chirish</string>
+    <string name="language_system_default">Tizim bo‘yicha</string>
+
+    <!-- Graph -->
+    <string name="cumulative_calories">Yig‘ilgan kaloriya</string>
+    <string name="now">Hozir</string>
+    <string name="no_data">Ma’lumot yo‘q</string>
+    <string name="graph_reset_link">Grafikni tiklash</string>
+    <string name="graph_reset">Grafikni tiklash</string>
+    <string name="graph_reset_title">Grafikni tiklaysizmi?</string>
+    <string name="graph_reset_confirm">Bu barcha grafik ma’lumotlarini o‘chiradi. Davom etasizmi?</string>
+    <string name="graph_reset_message">Grafik ma’lumotlari o‘chiriladi.\n(Tarix va taqvim ma’lumotlari saqlanadi.)</string>
+
+</resources>
