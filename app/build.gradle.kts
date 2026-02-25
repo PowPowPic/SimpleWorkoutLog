@@ -13,14 +13,15 @@ android {
         applicationId = "com.poweder.simpleworkoutlog"
         minSdk = 26
         targetSdk = 35
-        versionCode = 18
-        versionName = "2.0.8"
+        versionCode = 19
+        versionName = "2.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        
+
         resourceConfigurations += listOf(
-            "en", "ja", "de", "fr", "es", "it", "ko", 
-            "ar", "th", "tr", "vi", "in", "pt-rBR", "zh-rTW"
+            "en", "ja", "de", "fr", "es", "it", "ko",
+            "ar", "th", "tr", "vi", "in", "pt-rBR", "zh-rTW",
+            "pl", "uz"
         )
     }
 

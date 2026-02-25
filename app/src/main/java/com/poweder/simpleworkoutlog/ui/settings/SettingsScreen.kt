@@ -498,7 +498,9 @@ private fun LanguageSettingDialog(
         "vi" to "Tiếng Việt",
         "in" to "Bahasa Indonesia",
         "pt-BR" to "Português (Brasil)",
-        "zh-TW" to "繁體中文"
+        "zh-TW" to "繁體中文",
+        "pl" to "Polski",
+        "uz" to "Oʻzbekcha"
     )
 
     AlertDialog(
