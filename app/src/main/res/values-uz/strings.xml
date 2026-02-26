@@ -9,7 +9,7 @@
     <string name="nav_history">Tarix</string>
     <string name="nav_calendar">Taqvim</string>
     <string name="nav_graph">Grafik</string>
-    <string name="nav_settings">Sozlamalar</string>
+    <string name="nav_settings">Sozlama</string>
 
     <!-- ==================== Common ==================== -->
     <string name="common_ok">OK</string>
