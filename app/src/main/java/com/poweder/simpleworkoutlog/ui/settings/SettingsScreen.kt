@@ -409,7 +409,7 @@ private fun SettingsItem(
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = WorkoutColors.TextSecondary
+                color = Color.Black
             )
         }
     }
@@ -502,7 +502,10 @@ private fun LanguageSettingDialog(
         "pl" to "Polski",
         "uz" to "Oʻzbekcha",
         "ro" to "Română",
-        "kk" to "Қазақша"
+        "kk" to "Қазақша",
+        "ur" to "اردو",
+        "ky" to "Кыргызча",
+        "bg" to "Български"
     )
 
     AlertDialog(

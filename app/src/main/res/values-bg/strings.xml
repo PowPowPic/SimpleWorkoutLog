@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ==================== App ==================== -->
+    <string name="app_name">Simple Workout Log</string>
+
+    <!-- ==================== Navigation ==================== -->
+    <string name="nav_home">Начало</string>
+    <string name="nav_history">История</string>
+    <string name="nav_calendar">Календар</string>
+    <string name="nav_graph">Графика</string>
+    <string name="nav_settings">Настройки</string>
+
+    <!-- ==================== Common ==================== -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Отказ</string>
+    <string name="common_close">Затвори</string>
+    <string name="common_yes">Да</string>
+    <string name="common_no">Не</string>
+    <string name="edit">Редактиране</string>
+    <string name="delete">Изтриване</string>
+    <string name="save">Запази</string>
+    <string name="back">Назад</string>
+    <string name="confirm">Потвърди</string>
+    <string name="discard">Да</string>
+    <string name="rename">Преименуване</string>
+    <string name="kcal">kcal</string>
+
+    <!-- ==================== Main Screen ==================== -->
+    <string name="today_grand_total">Общо вдигната тежест днес</string>
+    <string name="today_duration">Време за тренировка днес</string>
+    <string name="today_calories">Изгорени калории днес</string>
+    <string name="card_today_menu">Днешно тренировъчно меню</string>
+    <string name="midnight_rule_note">
+    Записите от 0:00 до 3:00 се отчитат към предишния ден.
+</string>
+
+    <string name="add_past_workout">Добавяне на минала тренировка</string>
+
+    <!-- ==================== Workout Types ==================== -->
+    <string name="select_workout_type">Изберете тип тренировка</string>
+    <string name="workout_strength">Сила</string>
+    <string name="workout_cardio">Кардио</string>
+    <string name="workout_interval">Интервална тренировка</string>
+    <string name="workout_studio">Студио</string>
+    <string name="workout_other">Друго</string>
+    <string name="add_workout_type">+ Добавяне на нов тип</string>
+    <string name="workout_type_name">Име на типа</string>
+
+    <!-- ==================== Exercise Selection ==================== -->
+    <string name="select_exercise">Изберете упражнение</string>
+    <string name="no_exercises_yet">
+        Все още няма упражнения. Добавете едно чрез бутона по-долу!
+    </string>
+    <string name="add_new_exercise">+ Добавяне на ново упражнение</string>
+    <string name="exercise_name">Име на упражнението</string>
+
+    <!-- ==================== Exercise Names - Strength ==================== -->
+    <string name="exercise_bench_press">Лег преса</string>
+    <string name="exercise_squat">Клек</string>
+    <string name="exercise_deadlift">Мъртва тяга</string>
+
+    <!-- ==================== Exercise Names - Cardio ==================== -->
+    <string name="exercise_running">Бягане</string>
+    <string name="exercise_walking">Ходене</string>
+    <string name="exercise_indoor_bike">Вътрешен велосипед</string>
+
+    <!-- ==================== Exercise Names - Interval ==================== -->
+    <string name="exercise_hiit">HIIT</string>
+    <string name="exercise_tabata">Табата</string>
+
+    <!-- ==================== Exercise Names - Studio ==================== -->
+    <string name="exercise_yoga">Йога</string>
+    <string name="exercise_pilates">Пилатес</string>
+
+    <!-- ==================== Exercise Names - Other ==================== -->
+    <string name="exercise_snowboarding">Сноуборд</string>
+    <string name="exercise_golf">Голф</string>
+
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">Повторения</string>
+    <string name="add_new_set">+ Добавяне на серия</string>
+    <string name="session_total">Общо</string>
+    <string name="exercise_duration">Продължителност</string>
+    <string name="exercise_calories">Калории (kcal)</string>
+    <string name="finish_training">Завърши и запази</string>
+    <string name="finish_and_save">Завърши и запази</string>
+    <string name="go_home">Обратно към Начало</string>
+
+    <!-- ==================== Cardio Screen ==================== -->
+    <string name="duration_minutes">Продължителност</string>
+    <string name="distance">Разстояние</string>
+    <string name="calories">Калории</string>
+
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">Настройки на таймера</string>
+    <string name="preset_tabata">Табата</string>
+    <string name="preset_hiit">HIIT</string>
+    <string name="warmup_seconds">Загрявка</string>
+    <string name="training_seconds">Тренировка</string>
+    <string name="rest_seconds">Почивка</string>
+    <string name="number_of_sets">Серии</string>
+    <string name="cooldown_seconds">Разпускане</string>
+    <string name="total_time_format">Общо: %s</string>
+    <string name="start_timer">Старт</string>
+
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">Загрявка</string>
+    <string name="phase_training">Тренировка</string>
+    <string name="phase_rest">Почивка</string>
+    <string name="phase_cooldown">Разпускане</string>
+    <string name="phase_finished">Завършено</string>
+
+    <!-- ==================== Interval Timer - UI ==================== -->
+    <string name="set_progress">Серия %1$d / %2$d</string>
+    <string name="workout_complete">Тренировката е завършена!</string>
+    <string name="total_time_result">Общо време: %s</string>
+    <string name="back_to_home">Обратно към Начало</string>
+    <string name="pause">Пауза</string>
+    <string name="resume">Продължи</string>
+    <string name="stop">Стоп</string>
+    <string name="complete">Запази</string>
+    <string name="save_workout_result">Запази резултата от тренировката</string>
+
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">Калории (kcal)</string>
+    <string name="saved_successfully">Запазено!</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">Обобщение на тренировката за този ден</string>
+    <string name="total_duration_label">Време</string>
+    <string name="total_calories_label">Калории</string>
+    <string name="total_weight_label">Тежест</string>
+    <string name="no_workout_data">Няма данни за тренировка за този ден.</string>
+
+    <!-- ==================== Calendar Screen ==================== -->
+    <string name="monthly_summary">Месечно обобщение</string>
+    <string name="workout_days">Дни с тренировка</string>
+    <string name="days_format">%1$d дни</string>
+    <string name="average_duration">Средна продължителност</string>
+    <string name="total_duration_month">Обща продължителност</string>
+    <string name="total_calories_month">Общо калории</string>
+    <string name="total_weight_month">Обща тежест</string>
+
+    <!-- ==================== Settings ==================== -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_language_title">Език</string>
+    <string name="settings_language_description">Промяна на езика на показване</string>
+    <string name="settings_weight_unit_title">Единица за тегло</string>
+    <string name="settings_weight_unit_description">Текущо: %1$s</string>
+    <string name="settings_distance_unit_title">Единица за разстояние</string>
+    <string name="settings_distance_unit_description">Текущо: %1$s</string>
+    <string name="settings_delete_title">Изтриване на всички данни</string>
+    <string name="settings_delete_description">Изтриване на всички записи за тренировки</string>
+    <string name="language_system_default">Според системата</string>
+
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">Да продължите без запазване?</string>
+    <string name="confirm_back_message">
+        Имате незапазени серии. Сигурни ли сте, че искате да се върнете?
+    </string>
+    <string name="discard_confirm_title">Да продължите без запазване?</string>
+    <string name="discard_confirm_message">
+        Има потвърдени серии, които не са запазени.
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">Изтриване?</string>
+    <string name="delete_confirm_message">
+        Сигурни ли сте, че искате да изтриете „%1$s“?
+    </string>
+    <string name="delete_all_title">Изтриване на всички данни</string>
+    <string name="delete_all_message">
+        Сигурни ли сте, че искате да изтриете всички данни? Това действие не може да бъде отменено.
+    </string>
+    <string name="delete_all_day_title">Изтриване на всички записи?</string>
+    <string name="delete_all_day_message">
+        Всички записи за тренировки за този ден ще бъдат изтрити. Това действие не може да бъде отменено.
+    </string>
+    <string name="delete_session_title">Изтриване на запис?</string>
+    <string name="delete_session_message">
+        Да се изтрие ли записът за %1$s?
+    </string>
+    <string name="delete_category_title">Изтриване на категория?</string>
+    <string name="delete_category_message">
+        Всички записи в тази категория ще бъдат изтрити.
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">Да се приложи ли езикът?</string>
+    <string name="language_confirm_message">
+        Новата езикова настройка ще бъде приложена.
+    </string>
+    <string name="applying_language">Прилагане на езика…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">Натрупани калории</string>
+    <string name="now">Сега</string>
+    <string name="no_data">Няма данни</string>
+    <string name="graph_reset_link">Нулиране на графиката</string>
+    <string name="graph_reset">Нулиране на графиката</string>
+    <string name="graph_reset_title">Да се нулира ли графиката?</string>
+    <string name="graph_reset_confirm">
+        Това ще изтрие всички данни от графиката. Сигурни ли сте?
+    </string>
+    <string name="graph_reset_message">
+        Данните от графиката ще бъдат изтрити.\n(Данните в История и Календар ще останат.)
+    </string>
+    <string name="which_graph_to_see">Коя графика искате да видите?</string>
+
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">Изберете графика</string>
+    <string name="graph_picker_strength">Сила (тенденция на максималната тежест)</string>
+    <string name="graph_picker_cardio">Кардио (натрупано разстояние)</string>
+    <string name="graph_picker_studio">Студио (общ брой сесии)</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">Часове</string>
+    <string name="duration_minutes_placeholder">Минути</string>
+    <string name="duration_seconds_placeholder">Секунди</string>
+
+    <!-- ==================== Interval Timer (Level B) ==================== -->
+    <string name="total_elapsed">Общо: %1$s</string>
+    <string name="edit_interval_result">Редактиране на резултата</string>
+    <string name="input_result">Въведете резултат</string>
+    <string name="duration">Продължителност</string>
+
+    <!-- ==================== Interval Timer ==================== -->
+    <string name="timer_settings">Настройки на таймера</string>
+
+    <string name="warm_up">Загрявка</string>
+    <string name="training">Тренировка</string>
+    <string name="rest">Почивка</string>
+    <string name="cooldown">Разпускане</string>
+
+    <string name="seconds_unit">сек</string>
+
+    <string name="sets_count">Серии</string>
+    <string name="sets_unit">серии</string>
+
+    <string name="total_time_estimate">Общо време: %1$s</string>
+
+    <string name="start">Старт</string>
+    <string name="cancel">Отказ</string>
+
+    <!-- ==================== Interval Timer Notification ==================== -->
+    <string name="interval_timer_channel_name">Интервален таймер</string>
+    <string name="interval_timer_channel_description">Показва напредъка на интервалния таймер</string>
+    <string name="interval_timer">Интервален таймер</string>
+
+    <!-- ==================== Timer Settings ==================== -->
+    <string name="timer_settings_section">Настройки на таймера</string>
+    <string name="timer_sound">Звук на таймера</string>
+    <string name="timer_sound_desc">Включване или изключване на звуците на таймера</string>
+    <string name="timer_vibration">Вибрация на таймера</string>
+    <string name="timer_vibration_desc">Включване или изключване на вибрационните известия</string>
+    <string name="countdown_last_5_seconds">Отброяване (последните 5 секунди)</string>
+    <string name="countdown_last_5_seconds_desc">
+        Известяване 5–1 секунди преди края на всяка фаза
+    </string>
+
+    <!-- ==================== Interval Presets ==================== -->
+    <string name="preset_tabata_desc">20 секунди работа / 10 секунди почивка × 8 рунда</string>
+    <string name="preset_hiit_desc">
+        Високоинтензивна интервална тренировка\nПерсонализирайте времето за работа и почивка
+    </string>
+    <string name="preset_emom_desc">
+        Every Minute On the Minute\nЗапочнете нов рунд всяка минута
+    </string>
+
+    <!-- ==================== Settings Hint (English Only) ==================== -->
+    <string name="settings_hint" translatable="false">
+    Language and units (kg/lb, km/mi)\n can be changed in Settings.
+</string>
+
+    <!-- ★ これがスクショで赤文字の英語になっていた部分（bgで必須） -->
+    <string name="drag_to_reorder">Задръжте и плъзнете за пренареждане</string>
+
+    <!-- ③ Accessibility: contentDescription for screen readers -->
+    <string name="cd_previous_month">Предишен месец</string>
+    <string name="cd_next_month">Следващ месец</string>
+    <string name="cd_previous_day">Предишен ден</string>
+    <string name="cd_next_day">Следващ ден</string>
+    <string name="cd_delete_all">Изтриване на всичко</string>
+</resources>

@@ -13,16 +13,16 @@ android {
         applicationId = "com.poweder.simpleworkoutlog"
         minSdk = 26
         targetSdk = 35
-        versionCode = 22
-        versionName = "2.1.2"
+        versionCode = 23
+        versionName = "2.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // build.gradle の resourceConfigurations をこれに差し替え
         resourceConfigurations += listOf(
             "en", "ja", "de", "fr", "es", "it", "ko",
             "ar", "th", "tr", "vi", "in", "pt-rBR", "zh-rTW",
-            "pl", "uz", "ro", "kk"
+            "pl", "uz", "ro", "kk",
+            "ur", "ky", "bg"
         )
     }
 
