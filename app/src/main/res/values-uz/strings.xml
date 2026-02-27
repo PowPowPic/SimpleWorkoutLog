@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- ==================== App ==================== -->
     <string name="app_name">Simple Workout Log</string>
 
@@ -27,19 +26,21 @@
     <string name="kcal">kcal</string>
 
     <!-- ==================== Main Screen ==================== -->
-    <string name="today_grand_total">Bugungi jami og‘irlik</string>
+    <string name="today_grand_total">Bugun ko‘tarilgan umumiy vazn</string>
     <string name="today_duration">Bugungi mashg‘ulot vaqti</string>
-    <string name="today_calories">Bugun yoqilgan kaloriya</string>
-    <string name="card_today_menu">Bugungi mashg‘ulot rejasi</string>
-    <string name="midnight_rule_note">00:00 dan 03:00 gacha yozuvlar oldingi kunga hisoblanadi.</string>
+    <string name="today_calories">Bugun yoqilgan kaloriyalar</string>
+    <string name="card_today_menu">Bugungi mashg‘ulot menyusi</string>
+    <string name="midnight_rule_note">
+    0:00-3:00 oralig‘idagi yozuvlar oldingi kun sifatida hisoblanadi.
+</string>
 
     <string name="add_past_workout">Oldingi mashg‘ulotni qo‘shish</string>
 
     <!-- ==================== Workout Types ==================== -->
     <string name="select_workout_type">Mashg‘ulot turini tanlang</string>
-    <string name="workout_strength">Kuch mashqi</string>
+    <string name="workout_strength">Kuch</string>
     <string name="workout_cardio">Kardio</string>
-    <string name="workout_interval">Interval mashg‘uloti</string>
+    <string name="workout_interval">Interval mashg‘ulot</string>
     <string name="workout_studio">Studio</string>
     <string name="workout_other">Boshqa</string>
     <string name="add_workout_type">+ Yangi tur qo‘shish</string>
@@ -47,52 +48,54 @@
 
     <!-- ==================== Exercise Selection ==================== -->
     <string name="select_exercise">Mashqni tanlang</string>
-    <string name="no_exercises_yet">Hozircha mashqlar yo‘q. Quyidagi tugma orqali qo‘shing!</string>
+    <string name="no_exercises_yet">
+        Hozircha mashqlar yo‘q. Quyidagi tugma orqali bittasini qo‘shing!
+    </string>
     <string name="add_new_exercise">+ Yangi mashq qo‘shish</string>
     <string name="exercise_name">Mashq nomi</string>
 
-    <!-- Strength -->
+    <!-- ==================== Exercise Names - Strength ==================== -->
     <string name="exercise_bench_press">Bench press</string>
-    <string name="exercise_squat">Otirib turish (Squat)</string>
+    <string name="exercise_squat">Squat</string>
     <string name="exercise_deadlift">Deadlift</string>
 
-    <!-- Cardio -->
+    <!-- ==================== Exercise Names - Cardio ==================== -->
     <string name="exercise_running">Yugurish</string>
     <string name="exercise_walking">Yurish</string>
-    <string name="exercise_indoor_bike">Statsionar velosiped</string>
+    <string name="exercise_indoor_bike">Velotrenajyor</string>
 
-    <!-- Interval -->
+    <!-- ==================== Exercise Names - Interval ==================== -->
     <string name="exercise_hiit">HIIT</string>
     <string name="exercise_tabata">Tabata</string>
 
-    <!-- Studio -->
+    <!-- ==================== Exercise Names - Studio ==================== -->
     <string name="exercise_yoga">Yoga</string>
     <string name="exercise_pilates">Pilates</string>
 
-    <!-- Other -->
+    <!-- ==================== Exercise Names - Other ==================== -->
     <string name="exercise_snowboarding">Snoubord</string>
     <string name="exercise_golf">Golf</string>
 
-    <!-- ==================== Strength Screen ==================== -->
-    <string name="reps">Takr.</string>
+    <!-- ==================== Strength Training Screen ==================== -->
+    <string name="reps">Takrorlar</string>
     <string name="add_new_set">+ Set qo‘shish</string>
     <string name="session_total">Jami</string>
     <string name="exercise_duration">Davomiylik</string>
     <string name="exercise_calories">Kaloriya (kcal)</string>
-    <string name="finish_training">Tugatish va saqlash</string>
-    <string name="finish_and_save">Tugatish va saqlash</string>
+    <string name="finish_training">Yakunlash &amp; Saqlash</string>
+    <string name="finish_and_save">Yakunlash &amp; Saqlash</string>
     <string name="go_home">Asosiyga qaytish</string>
 
-    <!-- Cardio -->
+    <!-- ==================== Cardio Screen ==================== -->
     <string name="duration_minutes">Davomiylik</string>
     <string name="distance">Masofa</string>
     <string name="calories">Kaloriya</string>
 
-    <!-- Interval Settings -->
-    <string name="interval_timer_settings">Timer sozlamalari</string>
+    <!-- ==================== Interval Timer - Settings ==================== -->
+    <string name="interval_timer_settings">Taymer sozlamalari</string>
     <string name="preset_tabata">Tabata</string>
     <string name="preset_hiit">HIIT</string>
-    <string name="warmup_seconds">Qizdirish</string>
+    <string name="warmup_seconds">Isinish</string>
     <string name="training_seconds">Mashq</string>
     <string name="rest_seconds">Dam olish</string>
     <string name="number_of_sets">Setlar</string>
@@ -100,16 +103,16 @@
     <string name="total_time_format">Jami: %s</string>
     <string name="start_timer">Boshlash</string>
 
-    <!-- Interval Phases -->
-    <string name="phase_warmup">Qizdirish</string>
+    <!-- ==================== Interval Timer - Phases ==================== -->
+    <string name="phase_warmup">Isinish</string>
     <string name="phase_training">Mashq</string>
     <string name="phase_rest">Dam olish</string>
     <string name="phase_cooldown">Sovish</string>
     <string name="phase_finished">Tugadi</string>
 
-    <!-- Interval UI -->
+    <!-- ==================== Interval Timer - UI ==================== -->
     <string name="set_progress">Set %1$d / %2$d</string>
-    <string name="workout_complete">Mashg‘ulot tugadi!</string>
+    <string name="workout_complete">Mashg‘ulot yakunlandi!</string>
     <string name="total_time_result">Jami vaqt: %s</string>
     <string name="back_to_home">Asosiyga qaytish</string>
     <string name="pause">Pauza</string>
@@ -118,42 +121,163 @@
     <string name="complete">Saqlash</string>
     <string name="save_workout_result">Mashg‘ulot natijasini saqlash</string>
 
-    <!-- History -->
-    <string name="day_summary">Kunlik mashg‘ulot xulosasi</string>
+    <!-- ==================== Other Screen ==================== -->
+    <string name="calories_burned">Kaloriya (kcal)</string>
+    <string name="saved_successfully">Saqlandi!</string>
+
+    <!-- ==================== History Screen ==================== -->
+    <string name="day_summary">Ushbu kun uchun mashg‘ulot xulosasi</string>
     <string name="total_duration_label">Vaqt</string>
     <string name="total_calories_label">Kaloriya</string>
-    <string name="total_weight_label">Og‘irlik</string>
-    <string name="no_workout_data">Bu kun uchun mashg‘ulot ma’lumotlari yo‘q.</string>
+    <string name="total_weight_label">Vazn</string>
+    <string name="no_workout_data">Bu kunda mashg‘ulot ma’lumoti yo‘q.</string>
 
-    <!-- Calendar -->
+    <!-- ==================== Calendar Screen ==================== -->
     <string name="monthly_summary">Oylik xulosa</string>
     <string name="workout_days">Mashg‘ulot kunlari</string>
     <string name="days_format">%1$d kun</string>
     <string name="average_duration">O‘rtacha davomiylik</string>
-    <string name="total_duration_month">Jami davomiylik</string>
-    <string name="total_calories_month">Jami kaloriya</string>
-    <string name="total_weight_month">Jami og‘irlik</string>
+    <string name="total_duration_month">Umumiy vaqt</string>
+    <string name="total_calories_month">Umumiy kaloriyalar</string>
+    <string name="total_weight_month">Umumiy vazn</string>
 
-    <!-- Settings -->
+    <!-- ==================== Settings ==================== -->
     <string name="settings_title">Sozlamalar</string>
     <string name="settings_language_title">Til</string>
     <string name="settings_language_description">Ko‘rsatish tilini o‘zgartirish</string>
-    <string name="settings_weight_unit_title">Og‘irlik birligi</string>
+    <string name="settings_weight_unit_title">Vazn birligi</string>
     <string name="settings_weight_unit_description">Hozirgi: %1$s</string>
     <string name="settings_distance_unit_title">Masofa birligi</string>
     <string name="settings_distance_unit_description">Hozirgi: %1$s</string>
     <string name="settings_delete_title">Barcha ma’lumotlarni o‘chirish</string>
     <string name="settings_delete_description">Barcha mashg‘ulot yozuvlarini o‘chirish</string>
-    <string name="language_system_default">Tizim bo‘yicha</string>
+    <string name="language_system_default">Tizimga mos</string>
 
-    <!-- Graph -->
-    <string name="cumulative_calories">Yig‘ilgan kaloriya</string>
+    <!-- ==================== Dialogs - Confirm ==================== -->
+    <string name="confirm_back_title">Saqlamasdan davom etilsinmi?</string>
+    <string name="confirm_back_message">
+        Saqlanmagan setlar bor. Orqaga qaytishni xohlaysizmi?
+    </string>
+    <string name="discard_confirm_title">Saqlamasdan davom etilsinmi?</string>
+    <string name="discard_confirm_message">
+        Tasdiqlangan, ammo saqlanmagan setlar mavjud.
+    </string>
+
+    <!-- ==================== Dialogs - Delete ==================== -->
+    <string name="delete_confirm_title">O‘chirilsinmi?</string>
+    <string name="delete_confirm_message">
+        “%1$s” o‘chirilsinmi?
+    </string>
+    <string name="delete_all_title">Barcha ma’lumotlarni o‘chirish</string>
+    <string name="delete_all_message">
+        Barcha ma’lumotlar o‘chirilsinmi? Bu amalni bekor qilib bo‘lmaydi.
+    </string>
+    <string name="delete_all_day_title">Barcha yozuvlar o‘chirilsinmi?</string>
+    <string name="delete_all_day_message">
+        Ushbu kunning barcha mashg‘ulot yozuvlari o‘chiriladi. Bu amalni bekor qilib bo‘lmaydi.
+    </string>
+    <string name="delete_session_title">Yozuv o‘chirilsinmi?</string>
+    <string name="delete_session_message">
+        %1$s uchun yozuv o‘chirilsinmi?
+    </string>
+    <string name="delete_category_title">Kategoriya o‘chirilsinmi?</string>
+    <string name="delete_category_message">
+        Ushbu kategoriyadagi barcha yozuvlar o‘chiriladi.
+    </string>
+
+    <!-- ==================== Dialogs - Language ==================== -->
+    <string name="language_confirm_title">Til qo‘llansinmi?</string>
+    <string name="language_confirm_message">
+        Yangi til sozlamasi qo‘llanadi.
+    </string>
+    <string name="applying_language">Til qo‘llanmoqda…</string>
+
+    <!-- ==================== Graph Screen ==================== -->
+    <string name="cumulative_calories">Yig‘ilgan kaloriyalar</string>
     <string name="now">Hozir</string>
     <string name="no_data">Ma’lumot yo‘q</string>
     <string name="graph_reset_link">Grafikni tiklash</string>
     <string name="graph_reset">Grafikni tiklash</string>
-    <string name="graph_reset_title">Grafikni tiklaysizmi?</string>
-    <string name="graph_reset_confirm">Bu barcha grafik ma’lumotlarini o‘chiradi. Davom etasizmi?</string>
-    <string name="graph_reset_message">Grafik ma’lumotlari o‘chiriladi.\n(Tarix va taqvim ma’lumotlari saqlanadi.)</string>
+    <string name="graph_reset_title">Grafik tiklansinmi?</string>
+    <string name="graph_reset_confirm">
+        Bu barcha grafik ma’lumotlarini o‘chiradi. Ishonchingiz komilmi?
+    </string>
+    <string name="graph_reset_message">
+        Grafik ma’lumotlari o‘chiriladi.\n(Tarix va taqvim ma’lumotlari saqlanib qoladi.)
+    </string>
+    <string name="which_graph_to_see">Qaysi grafikni ko‘rmoqchisiz?</string>
 
+    <!-- ==================== Graph Picker ==================== -->
+    <string name="graph_picker_title">Grafikni tanlang</string>
+    <string name="graph_picker_strength">Kuch (maks. vazn tendensiyasi)</string>
+    <string name="graph_picker_cardio">Kardio (yig‘ilgan masofa)</string>
+    <string name="graph_picker_studio">Studio (umumiy sessiyalar)</string>
+
+    <!-- ==================== Duration input placeholders ==================== -->
+    <string name="duration_hours_placeholder">Soat</string>
+    <string name="duration_minutes_placeholder">Daqiqa</string>
+    <string name="duration_seconds_placeholder">Soniya</string>
+
+    <!-- ==================== Interval Timer (Level B) ==================== -->
+    <string name="total_elapsed">Jami: %1$s</string>
+    <string name="edit_interval_result">Natijani tahrirlash</string>
+    <string name="input_result">Natijani kiritish</string>
+    <string name="duration">Davomiylik</string>
+
+    <!-- ==================== Interval Timer ==================== -->
+    <string name="timer_settings">Taymer sozlamalari</string>
+
+    <string name="warm_up">Isinish</string>
+    <string name="training">Mashq</string>
+    <string name="rest">Dam olish</string>
+    <string name="cooldown">Sovish</string>
+
+    <string name="seconds_unit">son</string>
+
+    <string name="sets_count">Setlar</string>
+    <string name="sets_unit">set</string>
+
+    <string name="total_time_estimate">Jami vaqt: %1$s</string>
+
+    <string name="start">Boshlash</string>
+    <string name="cancel">Bekor qilish</string>
+
+    <!-- ==================== Interval Timer Notification ==================== -->
+    <string name="interval_timer_channel_name">Interval taymer</string>
+    <string name="interval_timer_channel_description">Interval taymer jarayonini ko‘rsatadi</string>
+    <string name="interval_timer">Interval taymer</string>
+
+    <!-- ==================== Timer Settings ==================== -->
+    <string name="timer_settings_section">Taymer sozlamalari</string>
+    <string name="timer_sound">Taymer ovozi</string>
+    <string name="timer_sound_desc">Taymer ovozlarini yoqish yoki o‘chirish</string>
+    <string name="timer_vibration">Taymer vibratsiyasi</string>
+    <string name="timer_vibration_desc">Vibratsiya bildirishnomalarini yoqish yoki o‘chirish</string>
+    <string name="countdown_last_5_seconds">Orqaga sanash (so‘nggi 5 soniya)</string>
+    <string name="countdown_last_5_seconds_desc">
+        Har bir bosqich tugashidan 5–1 soniya oldin ogohlantirish
+    </string>
+
+    <!-- ==================== Interval Presets ==================== -->
+    <string name="preset_tabata_desc">20 soniya ish / 10 soniya dam × 8 raund</string>
+    <string name="preset_hiit_desc">
+        Yuqori intensiv interval mashg‘ulot\nIsh va dam vaqtini sozlang
+    </string>
+    <string name="preset_emom_desc">
+        Har daqiqada (EMOM)\nHar daqiqada yangi raund boshlanadi
+    </string>
+
+    <!-- ==================== Settings Hint (English Only) ==================== -->
+    <string name="settings_hint" translatable="false">
+    Language and units (kg/lb, km/mi)\n can be changed in Settings.
+</string>
+
+    <string name="drag_to_reorder">Tartibini o‘zgartirish uchun bosib ushlab sudrang</string>
+
+    <!-- ③ Accessibility: contentDescription for screen readers -->
+    <string name="cd_previous_month">Oldingi oy</string>
+    <string name="cd_next_month">Keyingi oy</string>
+    <string name="cd_previous_day">Oldingi kun</string>
+    <string name="cd_next_day">Keyingi kun</string>
+    <string name="cd_delete_all">Barchasini o‘chirish</string>
 </resources>
