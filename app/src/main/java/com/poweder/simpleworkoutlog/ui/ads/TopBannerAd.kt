@@ -2,6 +2,7 @@ package com.poweder.simpleworkoutlog.ui.ads
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ fun TopBannerAd(
             modifier = modifier
                 .fillMaxWidth()
                 .height(50.dp)
-                .background(Color.Transparent), // 背景を透明に
+                .background(Color.Transparent),
             contentAlignment = Alignment.Center
         ) {
             AndroidView(
@@ -38,6 +39,12 @@ fun TopBannerAd(
                 modifier = Modifier.fillMaxWidth()
             )
         }
+    } else {
+        // 広告削除済み：広告と同じ高さのスペースを確保してレイアウトを維持
+        Spacer(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        )
     }
-    // showAd = false の場合は何も表示しない（高さ0）
 }
