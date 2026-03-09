@@ -432,10 +432,15 @@ fun MainScreen(
         // 広告バナー
         TopBannerAd(showAd = !adRemoved)
 
-        // 日付表示
+        // ① 日付表示
+        // フォントサイズを変更したい場合は fontSize = XX.sp の数値を調整してください
+        // （例：16.sp → 小さめ、20.sp → 大きめ）
+        // style も bodySmall → bodyMedium / titleSmall / titleMedium などに変更可能です
         Text(
             text = displayDate.format(dateFormatter),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.titleSmall,  // ① 変更前: bodySmall
+            fontSize = 18.sp,                             // ① 日付フォントサイズ（調整ポイント）
+            fontWeight = FontWeight.Medium,               // ① 少し太めにして視認性UP
             color = WorkoutColors.TextSecondary,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -544,18 +549,46 @@ fun MainScreen(
 
 /**
  * 今日のサマリーカード（運動時間、消費カロリー用）
+ *
+ * ② カードの高さ調整ポイント：padding(vertical = XX.dp) の数値を変更してください
+ *    現在: 8.dp（変更前: 12.dp）
+ *    小さくしたい → 数値を下げる（例: 6.dp）
+ *    大きくしたい → 数値を上げる（例: 10.dp）
+ *
+ * ③ グラデーション調整ポイント：
+ *    SummaryCardGradient の色定義を WorkoutColors に追加するか、
+ *    直接 colors = listOf(Color(...), Color(...)) で調整してください
+ *    centerColor のアルファ値（0.15f）を上げるとグラデーションが濃くなります
  */
 @Composable
 private fun TodaySummaryCard(
     title: String,
     value: String
 ) {
+    // ③ サマリーカード用グラデーション（運動時間・消費カロリー）
+    // 両端を WorkoutColors.GrandTotalBackground（既存色）、
+    // 中央をアクセントカラー（やや明るい）にすることでグラデーションを際立たせています
+    // centerColor のアルファ値（0.15f）を上げると中央がより明るくなります（調整ポイント）
+    val gradient = Brush.horizontalGradient(
+        colors = listOf(
+            WorkoutColors.GrandTotalBackground,
+            WorkoutColors.GrandTotalBackground.copy(alpha = 0.15f)  // ③ 中央の明るさ（調整ポイント）
+                .let { Color(
+                    red   = (WorkoutColors.GrandTotalBackground.red   * 0.7f + 0.30f).coerceIn(0f, 1f),
+                    green = (WorkoutColors.GrandTotalBackground.green * 0.7f + 0.30f).coerceIn(0f, 1f),
+                    blue  = (WorkoutColors.GrandTotalBackground.blue  * 0.7f + 0.55f).coerceIn(0f, 1f),
+                    alpha = 1f
+                )},
+            WorkoutColors.GrandTotalBackground
+        )
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(WorkoutColors.GrandTotalBackground)
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .background(gradient)                          // ③ 変更前: .background(WorkoutColors.GrandTotalBackground)
+            .padding(vertical = 8.dp, horizontal = 16.dp), // ② 縦パディング（調整ポイント）変更前: 12.dp
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -577,17 +610,42 @@ private fun TodaySummaryCard(
     }
 }
 
+/**
+ * ② カードの高さ調整ポイント：padding(vertical = XX.dp) の数値を変更してください
+ *    現在: 12.dp（変更前: 20.dp）
+ *    小さくしたい → 数値を下げる（例: 8.dp）
+ *    大きくしたい → 数値を上げる（例: 16.dp）
+ *
+ * ③ グラデーション調整ポイント：
+ *    TodaySummaryCard と同じ方式。
+ *    中央色の blue 成分（0.55f）を上げると青みが強くなります
+ */
 @Composable
 private fun GrandTotalCard(
     totalWeight: Double,
     weightUnit: WeightUnit
 ) {
+    // ③ グランドトータルカード用グラデーション（挙上重量）
+    // TodaySummaryCard と同じロジックで中央を少し明るく表示
+    val gradient = Brush.horizontalGradient(
+        colors = listOf(
+            WorkoutColors.GrandTotalBackground,
+            Color(
+                red   = (WorkoutColors.GrandTotalBackground.red   * 0.7f + 0.30f).coerceIn(0f, 1f),
+                green = (WorkoutColors.GrandTotalBackground.green * 0.7f + 0.30f).coerceIn(0f, 1f),
+                blue  = (WorkoutColors.GrandTotalBackground.blue  * 0.7f + 0.55f).coerceIn(0f, 1f),
+                alpha = 1f
+            ),                                                   // ③ 中央色（調整ポイント）
+            WorkoutColors.GrandTotalBackground
+        )
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(WorkoutColors.GrandTotalBackground)
-            .padding(vertical = 20.dp, horizontal = 16.dp),
+            .background(gradient)                           // ③ 変更前: .background(WorkoutColors.GrandTotalBackground)
+            .padding(vertical = 12.dp, horizontal = 16.dp), // ② 縦パディング（調整ポイント）変更前: 20.dp
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -609,6 +667,14 @@ private fun GrandTotalCard(
     }
 }
 
+/**
+ * 今日のトレーニングメニューカード（グラデーション済み）
+ *
+ * ② カードの高さ調整ポイント：padding(vertical = XX.dp) の数値を変更してください
+ *    現在: 18.dp（変更前: 28.dp）
+ *    小さくしたい → 数値を下げる（例: 14.dp）
+ *    大きくしたい → 数値を上げる（例: 22.dp）
+ */
 @Composable
 private fun MainActionCard(
     text: String,
@@ -617,7 +683,7 @@ private fun MainActionCard(
     val gradient = Brush.horizontalGradient(
         colors = listOf(
             WorkoutColors.MainCardStart,
-            WorkoutColors.MainCardEnd,
+            WorkoutColors.StrengthCardEnd,
             WorkoutColors.MainCardStart
         )
     )
@@ -629,7 +695,7 @@ private fun MainActionCard(
             .clip(RoundedCornerShape(12.dp))
             .background(gradient)
             .clickable { onClick() }
-            .padding(vertical = 28.dp),
+            .padding(vertical = 18.dp),                    // ② 縦パディング（調整ポイント）変更前: 28.dp
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -644,6 +710,7 @@ private fun MainActionCard(
 
 /**
  * 過去のトレーニングを追加ボタン
+ * ※ このボタンは修正対象外です（高さ変更なし）
  */
 @Composable
 private fun PastWorkoutButton(

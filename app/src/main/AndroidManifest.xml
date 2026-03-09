@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- これを追加 -->
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name=".WorkoutApplication"
