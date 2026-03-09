@@ -111,6 +111,13 @@ class InterstitialAdManager(
      */
     fun showAdIfAvailable(activity: Activity, onComplete: () -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
+            // 広告削除済みの場合はスキップ
+            val adRemoved = settingsDataStore.adRemovedFlow.first()
+            if (adRemoved) {
+                onComplete()
+                return@launch
+            }
+
             val canShow = canShowAdInCurrentSlot()
 
             if (canShow && interstitialAd != null) {
