@@ -92,12 +92,19 @@ fun CalendarScreen(
                     )
                 }
 
-                // 年月表示
+                // 年月表示（過去月は青色+アンダーライン + タップで今月に戻る）
+                val isCurrentMonth = currentMonth == YearMonth.now()
                 Text(
                     text = yearMonthText,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        textDecoration = if (isCurrentMonth) androidx.compose.ui.text.style.TextDecoration.None
+                        else androidx.compose.ui.text.style.TextDecoration.Underline
+                    ),
                     fontWeight = FontWeight.Bold,
-                    color = WorkoutColors.TextPrimary
+                    color = if (isCurrentMonth) WorkoutColors.TextPrimary else Color(0xFF0000FF),
+                    modifier = if (isCurrentMonth) Modifier else Modifier.clickable {
+                        currentMonth = YearMonth.now()
+                    }
                 )
 
                 // → 翌月ボタン
@@ -183,9 +190,7 @@ private fun CalendarGrid(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
-    // 日付グリッド
+    Spacer(modifier = Modifier.height(4.dp)) // ← 曜日ヘッダーとカレンダーグリッドの間隔
     var dayCounter = 1
     val totalWeeks = ((daysInMonth + firstDayOfWeek - 1) / 7) + 1
 
@@ -219,7 +224,7 @@ private fun CalendarGrid(
             }
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(2.dp)) // ← 週間隔：6週月が一画面に収まるよう調整（狭めたい場合はここを小さく）
     }
 }
 
@@ -243,7 +248,7 @@ private fun DayCell(
 
     Box(
         modifier = modifier
-            .aspectRatio(1f)
+            .aspectRatio(1.4f) // ← 日付セルの縦サイズ調整（大きくするほど縦が縮む。6週月が収まらない場合はここを上げる）
             .padding(2.dp)
             .clip(CircleShape)
             .background(

@@ -203,12 +203,19 @@ fun HistoryScreen(
                 )
             }
 
-            // 日付表示
+            // 日付表示（過去日は青色+アンダーライン + タップで今日に戻る）
+            val isToday = selectedDate == currentLogicalDate()
             Text(
                 text = selectedDate.format(dateFormatter),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    textDecoration = if (isToday) androidx.compose.ui.text.style.TextDecoration.None
+                    else androidx.compose.ui.text.style.TextDecoration.Underline
+                ),
                 fontWeight = FontWeight.Bold,
-                color = WorkoutColors.TextPrimary
+                color = if (isToday) WorkoutColors.TextPrimary else Color(0xFF0000FF),
+                modifier = if (isToday) Modifier else Modifier.clickable {
+                    selectedDate = currentLogicalDate()
+                }
             )
 
             // → 翌日ボタン
