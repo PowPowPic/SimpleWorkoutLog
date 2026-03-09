@@ -242,4 +242,11 @@
     <string name="cd_previous_day">이전 날</string>
     <string name="cd_next_day">다음 날</string>
     <string name="cd_delete_all">모두 삭제</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">광고 제거</string>
+    <string name="remove_ads_description">한 번만 결제하면 앱의 모든 광고가 영구적으로 제거됩니다.</string>
+    <string name="remove_ads_button">광고 제거 (%s)</string>
+    <string name="remove_ads_purchased">광고 제거 완료 ✓</string>
+    <string name="remove_ads_error">구매에 실패했습니다. 다시 시도해 주세요.</string>
 </resources>

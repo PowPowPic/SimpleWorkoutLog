@@ -281,4 +281,11 @@
     <string name="cd_previous_day">Алдыңғы күн</string>
     <string name="cd_next_day">Келесі күн</string>
     <string name="cd_delete_all">Барлығын жою</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Жарнамаларды өшіру</string>
+    <string name="remove_ads_description">Бір рет төлеу арқылы қолданбадағы барлық жарнамалар біржола өшіріледі.</string>
+    <string name="remove_ads_button">Жарнамаларды өшіру (%s)</string>
+    <string name="remove_ads_purchased">Жарнамалар өшірілді ✓</string>
+    <string name="remove_ads_error">Сатып алу сәтсіз аяқталды. Қайталап көріңіз.</string>
 </resources>

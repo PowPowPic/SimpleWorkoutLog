@@ -6,6 +6,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.MobileAds
+import kotlinx.coroutines.launch
+import com.poweder.simpleworkoutlog.billing.BillingManager
 import com.poweder.simpleworkoutlog.data.database.AppDatabase
 import com.poweder.simpleworkoutlog.data.preferences.LastInputDataStore
 import com.poweder.simpleworkoutlog.data.preferences.SettingsDataStore
@@ -19,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: WorkoutViewModel
     private lateinit var interstitialAdManager: InterstitialAdManager
+    private lateinit var billingManager: BillingManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +57,14 @@ class MainActivity : AppCompatActivity() {
         interstitialAdManager = InterstitialAdManager(applicationContext, settingsDataStore)
         interstitialAdManager.loadAd() // プリロード開始
 
+        // 課金マネージャー初期化（接続・購入状態復元）
+        billingManager = BillingManager(applicationContext, settingsDataStore)
+
         setContent {
             SimpleWorkoutLogApp(
                 viewModel = viewModel,
-                interstitialAdManager = interstitialAdManager
+                interstitialAdManager = interstitialAdManager,
+                billingManager = billingManager
             )
         }
     }
@@ -68,5 +75,14 @@ class MainActivity : AppCompatActivity() {
         if (!interstitialAdManager.isAdLoaded()) {
             interstitialAdManager.loadAd()
         }
+        // 購入状態を再チェック（他デバイスでの購入を反映）
+        kotlinx.coroutines.MainScope().launch {
+            billingManager.restorePurchases()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        billingManager.destroy()
     }
 }

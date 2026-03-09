@@ -244,4 +244,11 @@
     <string name="cd_previous_day">Önceki gün</string>
     <string name="cd_next_day">Sonraki gün</string>
     <string name="cd_delete_all">Tümünü sil</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Reklamları Kaldır</string>
+    <string name="remove_ads_description">Tek seferlik ödeme, uygulamadaki tüm reklamları kalıcı olarak kaldırır.</string>
+    <string name="remove_ads_button">Reklamları Kaldır (%s)</string>
+    <string name="remove_ads_purchased">Reklamlar Kaldırıldı ✓</string>
+    <string name="remove_ads_error">Satın alma başarısız oldu. Lütfen tekrar deneyin.</string>
 </resources>

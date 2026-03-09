@@ -280,5 +280,12 @@
     <string name="cd_next_month">Next month</string>
     <string name="cd_previous_day">Previous day</string>
     <string name="cd_next_day">Next day</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Remove Ads</string>
+    <string name="remove_ads_description">Paying once permanently removes all ads from the app.</string>
+    <string name="remove_ads_button">Remove Ads (%s)</string>
+    <string name="remove_ads_purchased">Ads Removed 2713</string>
+    <string name="remove_ads_error">Purchase failed. Please try again.</string>
     <string name="cd_delete_all">Delete all</string>
 </resources>

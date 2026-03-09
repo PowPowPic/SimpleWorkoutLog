@@ -246,4 +246,11 @@
     <string name="cd_previous_day">前一天</string>
     <string name="cd_next_day">後一天</string>
     <string name="cd_delete_all">全部刪除</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">移除廣告</string>
+    <string name="remove_ads_description">一次付款即可永久移除應用程式中的所有廣告。</string>
+    <string name="remove_ads_button">移除廣告（%s）</string>
+    <string name="remove_ads_purchased">已移除廣告 ✓</string>
+    <string name="remove_ads_error">購買失敗，請再試一次。</string>
 </resources>

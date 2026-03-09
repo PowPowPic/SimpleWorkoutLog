@@ -280,4 +280,11 @@
     <string name="cd_previous_day">Ziua anterioară</string>
     <string name="cd_next_day">Ziua următoare</string>
     <string name="cd_delete_all">Șterge tot</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Elimină reclamele</string>
+    <string name="remove_ads_description">O singură plată elimină permanent toate reclamele din aplicație.</string>
+    <string name="remove_ads_button">Elimină reclamele (%s)</string>
+    <string name="remove_ads_purchased">Reclame eliminate ✓</string>
+    <string name="remove_ads_error">Achiziția a eșuat. Vă rugăm să încercați din nou.</string>
 </resources>

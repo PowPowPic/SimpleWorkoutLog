@@ -244,4 +244,11 @@ Registros entre 0:00 e 3:00 são contabilizados como o dia anterior.
     <string name="cd_previous_day">Dia anterior</string>
     <string name="cd_next_day">Próximo dia</string>
     <string name="cd_delete_all">Excluir tudo</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Remover anúncios</string>
+    <string name="remove_ads_description">Um pagamento único remove permanentemente todos os anúncios do aplicativo.</string>
+    <string name="remove_ads_button">Remover anúncios (%s)</string>
+    <string name="remove_ads_purchased">Anúncios removidos ✓</string>
+    <string name="remove_ads_error">A compra falhou. Tente novamente.</string>
 </resources>

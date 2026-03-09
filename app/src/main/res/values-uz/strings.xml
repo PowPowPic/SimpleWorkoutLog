@@ -280,4 +280,11 @@
     <string name="cd_previous_day">Oldingi kun</string>
     <string name="cd_next_day">Keyingi kun</string>
     <string name="cd_delete_all">Barchasini o‘chirish</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Reklamalarni olib tashlash</string>
+    <string name="remove_ads_description">Bir marta to\'lov qilish orqali ilovadagi barcha reklamalar butunlay olib tashlanadi.</string>
+    <string name="remove_ads_button">Reklamalarni olib tashlash (%s)</string>
+    <string name="remove_ads_purchased">Reklamalar olib tashlandi ✓</string>
+    <string name="remove_ads_error">Xarid amalga oshmadi. Iltimos, qayta urinib ko\'ring.</string>
 </resources>

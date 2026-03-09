@@ -280,4 +280,11 @@
     <string name="cd_previous_day">Мурунку күн</string>
     <string name="cd_next_day">Кийинки күн</string>
     <string name="cd_delete_all">Баарын өчүрүү</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Жарнамаларды алып салуу</string>
+    <string name="remove_ads_description">Бир жолу төлөө менен колдонмодогу бардык жарнамалар биротоло алынып салынат.</string>
+    <string name="remove_ads_button">Жарнамаларды алып салуу (%s)</string>
+    <string name="remove_ads_purchased">Жарнамалар алынды ✓</string>
+    <string name="remove_ads_error">Сатып алуу ишке ашкан жок. Кайра аракет кылып көрүңүз.</string>
 </resources>

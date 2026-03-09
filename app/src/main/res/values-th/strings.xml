@@ -244,4 +244,11 @@
     <string name="cd_previous_day">วันก่อนหน้า</string>
     <string name="cd_next_day">วันถัดไป</string>
     <string name="cd_delete_all">ลบทั้งหมด</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">ลบโฆษณา</string>
+    <string name="remove_ads_description">ชำระเงินครั้งเดียวเพื่อลบโฆษณาทั้งหมดออกจากแอปอย่างถาวร</string>
+    <string name="remove_ads_button">ลบโฆษณา (%s)</string>
+    <string name="remove_ads_purchased">ลบโฆษณาแล้ว ✓</string>
+    <string name="remove_ads_error">การซื้อไม่สำเร็จ กรุณาลองอีกครั้ง</string>
 </resources>

@@ -244,4 +244,11 @@ Aufzeichnungen zwischen 0:00 und 3:00 Uhr werden dem Vortag zugeordnet.
     <string name="cd_previous_day">Vorheriger Tag</string>
     <string name="cd_next_day">Nächster Tag</string>
     <string name="cd_delete_all">Alle löschen</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Werbung entfernen</string>
+    <string name="remove_ads_description">Eine einmalige Zahlung entfernt dauerhaft alle Werbeanzeigen aus der App.</string>
+    <string name="remove_ads_button">Werbung entfernen (%s)</string>
+    <string name="remove_ads_purchased">Werbung entfernt ✓</string>
+    <string name="remove_ads_error">Der Kauf ist fehlgeschlagen. Bitte versuchen Sie es erneut.</string>
 </resources>

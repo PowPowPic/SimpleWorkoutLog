@@ -242,4 +242,11 @@
     <string name="cd_previous_day">Ngày trước</string>
     <string name="cd_next_day">Ngày sau</string>
     <string name="cd_delete_all">Xóa tất cả</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">Xóa quảng cáo</string>
+    <string name="remove_ads_description">Chỉ cần thanh toán một lần để xóa vĩnh viễn toàn bộ quảng cáo khỏi ứng dụng.</string>
+    <string name="remove_ads_button">Xóa quảng cáo (%s)</string>
+    <string name="remove_ads_purchased">Đã xóa quảng cáo ✓</string>
+    <string name="remove_ads_error">Mua hàng thất bại. Vui lòng thử lại.</string>
 </resources>

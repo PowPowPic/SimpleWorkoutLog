@@ -276,4 +276,11 @@
     <string name="cd_next_day">اگلا دن</string>
     <string name="cd_delete_all">سب حذف کریں</string>
 
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">اشتہارات ہٹائیں</string>
+    <string name="remove_ads_description">ایک بار ادائیگی کرنے سے ایپ کے تمام اشتہارات مستقل طور پر ہٹ جائیں گے۔</string>
+    <string name="remove_ads_button">اشتہارات ہٹائیں (%s)</string>
+    <string name="remove_ads_purchased">اشتہارات ہٹا دیے گئے ✓</string>
+    <string name="remove_ads_error">خریداری ناکام ہو گئی۔ براہ کرم دوبارہ کوشش کریں۔</string>
 </resources>

@@ -244,4 +244,11 @@
     <string name="cd_previous_day">اليوم السابق</string>
     <string name="cd_next_day">اليوم التالي</string>
     <string name="cd_delete_all">حذف الكل</string>
+
+    <!-- ==================== Remove Ads ==================== -->
+    <string name="remove_ads_title">إزالة الإعلانات</string>
+    <string name="remove_ads_description">الدفع مرة واحدة يزيل جميع الإعلانات من التطبيق نهائيًا.</string>
+    <string name="remove_ads_button">إزالة الإعلانات (%s)</string>
+    <string name="remove_ads_purchased">تمت إزالة الإعلانات ✓</string>
+    <string name="remove_ads_error">فشلت عملية الشراء. يُرجى المحاولة مرة أخرى.</string>
 </resources>

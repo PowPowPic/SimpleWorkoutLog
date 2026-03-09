@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.poweder.simpleworkoutlog.billing.BillingManager
 import com.poweder.simpleworkoutlog.ui.ads.InterstitialAdManager
 import com.poweder.simpleworkoutlog.ui.cardio.CardioScreen
 import com.poweder.simpleworkoutlog.ui.interval.IntervalScreen
@@ -54,7 +55,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SimpleWorkoutLogApp(
     viewModel: WorkoutViewModel,
-    interstitialAdManager: InterstitialAdManager? = null
+    interstitialAdManager: InterstitialAdManager? = null,
+    billingManager: BillingManager? = null
 ) {
     SimpleWorkoutLogTheme {
         val navController = rememberNavController()
@@ -181,7 +183,8 @@ fun SimpleWorkoutLogApp(
                                         coroutineScope.launch {
                                             pagerState.animateScrollToPage(0)
                                         }
-                                    }
+                                    },
+                                    billingManager = billingManager
                                 )
                             }
                         }
