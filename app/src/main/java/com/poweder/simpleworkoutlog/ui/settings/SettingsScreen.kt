@@ -551,7 +551,8 @@ private fun LanguageSettingDialog(
         "kk" to "Қазақша",
         "ur" to "اردو",
         "ky" to "Кыргызча",
-        "bg" to "Български"
+        "bg" to "Български",
+        "az" to "Azərbaycanca"
     )
 
     AlertDialog(
