@@ -85,7 +85,8 @@ class WorkoutViewModel(
         viewModelScope.launch {
             settingsDataStore.setLanguage(language)
             applyLanguage(language)
-            activity.recreate()
+            // AppCompatDelegate.setApplicationLocales() が
+            // Activity再生成を自動で行うため、activity.recreate() は不要
         }
     }
 
