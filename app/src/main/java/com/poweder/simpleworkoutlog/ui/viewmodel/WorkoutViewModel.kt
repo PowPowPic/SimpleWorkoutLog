@@ -79,14 +79,13 @@ class WorkoutViewModel(
     }
 
     /**
-     * 言語を設定し、Activity再生成で確実に反映
+     * 言語を設定し AppCompatDelegate で即時適用
+     * setApplicationLocales() が Activity 再生成を自動でトリガーする
      */
     fun setLanguageAndRecreate(language: String?, activity: android.app.Activity) {
         viewModelScope.launch {
             settingsDataStore.setLanguage(language)
             applyLanguage(language)
-            // AppCompatDelegate.setApplicationLocales() が
-            // Activity再生成を自動で行うため、activity.recreate() は不要
         }
     }
 

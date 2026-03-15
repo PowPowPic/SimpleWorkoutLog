@@ -32,7 +32,6 @@ import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
-import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -152,7 +151,6 @@ fun SettingsScreen(
 
         // 言語適用処理
         LaunchedEffect(Unit) {
-            delay(500)
             activity?.let { act ->
                 viewModel.setLanguageAndRecreate(pendingLanguage, act)
             }
