@@ -16,6 +16,7 @@ import com.poweder.simpleworkoutlog.ui.SimpleWorkoutLogApp
 import com.poweder.simpleworkoutlog.ui.ads.InterstitialAdManager
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModelFactory
+import com.poweder.simpleworkoutlog.util.ReviewHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -59,6 +60,9 @@ class MainActivity : AppCompatActivity() {
 
         // 課金マネージャー初期化（接続・購入状態復元）
         billingManager = BillingManager(applicationContext, settingsDataStore)
+
+        // ★ In-App Review: 条件を満たしていればレビューダイアログをリクエスト
+        ReviewHelper.checkAndRequest(this)
 
         setContent {
             SimpleWorkoutLogApp(

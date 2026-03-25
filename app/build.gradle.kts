@@ -13,8 +13,8 @@ android {
         applicationId = "com.poweder.simpleworkoutlog"
         minSdk = 26
         targetSdk = 35
-        versionCode = 32
-        versionName = "3.1.3"
+        versionCode = 33
+        versionName = "3.1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation("com.android.billingclient:billing-ktx:7.0.0")
+    implementation("com.google.android.play:review-ktx:2.0.1") // ★ In-App Review API
     
     // Navigation
     implementation(libs.androidx.navigation.compose)
