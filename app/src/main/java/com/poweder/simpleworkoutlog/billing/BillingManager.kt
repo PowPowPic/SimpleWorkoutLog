@@ -69,7 +69,8 @@ class BillingManager(
             }
 
             override fun onBillingServiceDisconnected() {
-                // 必要に応じてリトライ
+                // ★ 切断時に自動再接続
+                connectAndInit()
             }
         })
     }
@@ -111,6 +112,11 @@ class BillingManager(
 
     /** 購入フローを起動する */
     fun launchPurchaseFlow(activity: Activity) {
+        // ★ 接続が切れている場合は再接続してから実行
+        if (!billingClient.isReady) {
+            connectAndInit()
+            return
+        }
         val details = _productDetails.value ?: return
 
         val productDetailsParamsList = listOf(
