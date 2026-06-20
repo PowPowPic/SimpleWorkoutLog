@@ -288,4 +288,6 @@
     <string name="remove_ads_button">Жарнамаларды өшіру (%s)</string>
     <string name="remove_ads_purchased">Жарнамалар өшірілді ✓</string>
     <string name="remove_ads_error">Сатып алу сәтсіз аяқталды. Қайталап көріңіз.</string>
+    <string name="privacy_options_title">Құпиялық параметрлері</string>
+    <string name="privacy_options_description">Жарнамаға қатысты құпиялық таңдауларын қарап шығыңыз немесе өзгертіңіз.</string>
 </resources>

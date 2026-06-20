@@ -251,4 +251,6 @@
     <string name="remove_ads_button">Reklamları Kaldır (%s)</string>
     <string name="remove_ads_purchased">Reklamlar Kaldırıldı ✓</string>
     <string name="remove_ads_error">Satın alma başarısız oldu. Lütfen tekrar deneyin.</string>
+    <string name="privacy_options_title">Gizlilik ayarları</string>
+    <string name="privacy_options_description">Reklamlarla ilgili gizlilik tercihlerinizi inceleyin veya değiştirin.</string>
 </resources>

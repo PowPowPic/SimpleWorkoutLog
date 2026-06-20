@@ -283,4 +283,6 @@
     <string name="remove_ads_button">اشتہارات ہٹائیں (%s)</string>
     <string name="remove_ads_purchased">اشتہارات ہٹا دیے گئے ✓</string>
     <string name="remove_ads_error">خریداری ناکام ہو گئی۔ براہ کرم دوبارہ کوشش کریں۔</string>
+    <string name="privacy_options_title">رازداری کی ترتیبات</string>
+    <string name="privacy_options_description">اشتہارات سے متعلق اپنی رازداری کی ترجیحات دیکھیں یا تبدیل کریں۔</string>
 </resources>

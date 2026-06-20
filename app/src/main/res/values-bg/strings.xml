@@ -288,4 +288,6 @@
     <string name="remove_ads_button">Премахване на рекламите (%s)</string>
     <string name="remove_ads_purchased">Рекламите са премахнати ✓</string>
     <string name="remove_ads_error">Покупката не бе успешна. Моля, опитайте отново.</string>
+    <string name="privacy_options_title">Настройки за поверителност</string>
+    <string name="privacy_options_description">Прегледайте или променете настройките си за поверителност при рекламите.</string>
 </resources>

@@ -34,26 +34,35 @@ class InterstitialAdManager(
 ) {
     companion object {
         private const val TAG = "InterstitialAdManager"
-        // 本番広告ID
         private const val AD_UNIT_ID = "ca-app-pub-7305983073191908/5236598231"
     }
 
     private var interstitialAd: InterstitialAd? = null
     private var isLoading = false
 
-    /**
-     * 広告をプリロード
-     */
+    @Volatile
+    private var adsEnabled = false
+
+    /** Apply the shared UMP, SDK-initialization, and ad-removal gate. */
+    fun setAdsEnabled(enabled: Boolean) {
+        adsEnabled = enabled
+        if (enabled) {
+            loadAd()
+        } else {
+            interstitialAd = null
+            isLoading = false
+        }
+    }
+
+    /** 広告をプリロード */
     fun loadAd() {
-        if (isLoading || interstitialAd != null) return
+        if (!adsEnabled || isLoading || interstitialAd != null) return
 
         isLoading = true
-        val adRequest = AdRequest.Builder().build()
-
         InterstitialAd.load(
-            context,
+            context.applicationContext,
             AD_UNIT_ID,
-            adRequest,
+            AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(error: LoadAdError) {
                     Log.d(TAG, "Ad failed to load: ${error.message}")
@@ -63,9 +72,13 @@ class InterstitialAdManager(
 
                 override fun onAdLoaded(ad: InterstitialAd) {
                     Log.d(TAG, "Ad loaded successfully")
-                    interstitialAd = ad
                     isLoading = false
-                    setupFullScreenCallback()
+                    if (adsEnabled) {
+                        interstitialAd = ad
+                        setupFullScreenCallback()
+                    } else {
+                        interstitialAd = null
+                    }
                 }
             }
         )
@@ -76,7 +89,7 @@ class InterstitialAdManager(
             override fun onAdDismissedFullScreenContent() {
                 Log.d(TAG, "Ad dismissed")
                 interstitialAd = null
-                loadAd() // 次回用にプリロード
+                loadAd()
             }
 
             override fun onAdFailedToShowFullScreenContent(error: AdError) {
@@ -91,70 +104,55 @@ class InterstitialAdManager(
         }
     }
 
-    /**
-     * 現在の時間帯スロットを取得（0-3）
-     */
     private fun getCurrentTimeSlot(): Int {
         val hour = LocalDateTime.now().hour
         return when {
-            hour < 6 -> 0   // 0時～6時
-            hour < 12 -> 1  // 6時～12時
-            hour < 18 -> 2  // 12時～18時
-            else -> 3       // 18時～24時
+            hour < 6 -> 0
+            hour < 12 -> 1
+            hour < 18 -> 2
+            else -> 3
         }
     }
 
-    /**
-     * 広告表示可能かチェックして表示
-     * @param activity アクティビティ
-     * @param onComplete 広告表示完了後（表示しなかった場合も含む）のコールバック
-     */
     fun showAdIfAvailable(activity: Activity, onComplete: () -> Unit) {
+        if (!adsEnabled) {
+            onComplete()
+            return
+        }
+
         CoroutineScope(Dispatchers.Main).launch {
-            // 広告削除済みの場合はスキップ
             val adRemoved = settingsDataStore.adRemovedFlow.first()
-            if (adRemoved) {
+            if (adRemoved || !adsEnabled) {
                 onComplete()
                 return@launch
             }
 
             val canShow = canShowAdInCurrentSlot()
 
-            if (canShow && interstitialAd != null) {
-                // 表示記録を保存
+            if (canShow && interstitialAd != null && adsEnabled) {
                 recordAdShown()
-                // 広告表示
                 interstitialAd?.show(activity)
                 onComplete()
             } else {
-                // 広告を表示しない場合
                 if (!canShow) {
                     Log.d(TAG, "Ad already shown in this time slot today")
                 }
                 if (interstitialAd == null) {
                     Log.d(TAG, "Ad not loaded yet")
-                    loadAd() // ロードを試みる
+                    loadAd()
                 }
                 onComplete()
             }
         }
     }
 
-    /**
-     * 現在の時間帯で広告表示可能かチェック
-     */
     private suspend fun canShowAdInCurrentSlot(): Boolean {
         val today = LocalDate.now().toEpochDay()
         val currentSlot = getCurrentTimeSlot()
         val lastShownDate = settingsDataStore.getInterstitialLastShownDate(currentSlot).first()
-
-        // 今日まだこのスロットで表示していなければtrue
         return lastShownDate != today
     }
 
-    /**
-     * 広告表示を記録
-     */
     private suspend fun recordAdShown() {
         val today = LocalDate.now().toEpochDay()
         val currentSlot = getCurrentTimeSlot()
@@ -162,8 +160,5 @@ class InterstitialAdManager(
         Log.d(TAG, "Recorded ad shown for slot $currentSlot on day $today")
     }
 
-    /**
-     * 広告がロード済みかどうか
-     */
     fun isAdLoaded(): Boolean = interstitialAd != null
 }

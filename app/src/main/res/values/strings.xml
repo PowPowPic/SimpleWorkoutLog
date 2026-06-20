@@ -288,4 +288,6 @@
     <string name="remove_ads_purchased">Ads Removed 2713</string>
     <string name="remove_ads_error">Purchase failed. Please try again.</string>
     <string name="cd_delete_all">Delete all</string>
+    <string name="privacy_options_title">Privacy settings</string>
+    <string name="privacy_options_description">Review or change your advertising privacy choices.</string>
 </resources>

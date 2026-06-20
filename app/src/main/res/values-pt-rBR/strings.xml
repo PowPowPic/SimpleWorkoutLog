@@ -251,4 +251,6 @@ Registros entre 0:00 e 3:00 são contabilizados como o dia anterior.
     <string name="remove_ads_button">Remover anúncios (%s)</string>
     <string name="remove_ads_purchased">Anúncios removidos ✓</string>
     <string name="remove_ads_error">A compra falhou. Tente novamente.</string>
+    <string name="privacy_options_title">Configurações de privacidade</string>
+    <string name="privacy_options_description">Revise ou altere suas escolhas de privacidade para anúncios.</string>
 </resources>

@@ -251,4 +251,6 @@ Catatan antara 00.00 dan 03.00 dihitung sebagai catatan hari sebelumnya.
     <string name="remove_ads_button">Hapus Iklan (%s)</string>
     <string name="remove_ads_purchased">Iklan Dihapus ✓</string>
     <string name="remove_ads_error">Pembelian gagal. Silakan coba lagi.</string>
+    <string name="privacy_options_title">Setelan privasi</string>
+    <string name="privacy_options_description">Tinjau atau ubah pilihan privasi iklan Anda.</string>
 </resources>

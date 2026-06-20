@@ -252,4 +252,6 @@ Le registrazioni tra le 0:00 e le 3:00 vengono considerate del giorno precedente
     <string name="remove_ads_button">Rimuovi pubblicità (%s)</string>
     <string name="remove_ads_purchased">Pubblicità rimosse ✓</string>
     <string name="remove_ads_error">Acquisto non riuscito. Riprova.</string>
+    <string name="privacy_options_title">Impostazioni sulla privacy</string>
+    <string name="privacy_options_description">Controlla o modifica le tue scelte sulla privacy per gli annunci.</string>
 </resources>

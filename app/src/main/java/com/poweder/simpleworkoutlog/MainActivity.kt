@@ -5,31 +5,36 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.ads.MobileAds
-import kotlinx.coroutines.launch
 import com.poweder.simpleworkoutlog.billing.BillingManager
 import com.poweder.simpleworkoutlog.data.database.AppDatabase
 import com.poweder.simpleworkoutlog.data.preferences.LastInputDataStore
 import com.poweder.simpleworkoutlog.data.preferences.SettingsDataStore
 import com.poweder.simpleworkoutlog.data.repository.WorkoutRepository
 import com.poweder.simpleworkoutlog.ui.SimpleWorkoutLogApp
+import com.poweder.simpleworkoutlog.ui.ads.GoogleMobileAdsConsentManager
 import com.poweder.simpleworkoutlog.ui.ads.InterstitialAdManager
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModelFactory
 import com.poweder.simpleworkoutlog.util.ReviewHelper
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: WorkoutViewModel
     private lateinit var interstitialAdManager: InterstitialAdManager
     private lateinit var billingManager: BillingManager
+    private lateinit var consentManager: GoogleMobileAdsConsentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Mobile Ads 初期化
-        MobileAds.initialize(this) {}
+        // Refresh UMP information on every launch. Review is checked only after the
+        // consent flow finishes so the two dialogs cannot overlap.
+        consentManager = GoogleMobileAdsConsentManager.getInstance(applicationContext)
+        consentManager.gatherConsent(this) {
+            ReviewHelper.checkAndRequest(this)
+        }
 
         // Database & Repository 初期化
         val database = AppDatabase.getInstance(applicationContext)
@@ -55,14 +60,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.applySavedLanguage()
 
         // インタースティシャル広告マネージャー初期化
+        // 実際の広告ロードはUMP・Mobile Ads初期化・広告削除状態が揃ってから行う。
         interstitialAdManager = InterstitialAdManager(applicationContext, settingsDataStore)
-        interstitialAdManager.loadAd() // プリロード開始
 
         // 課金マネージャー初期化（接続・購入状態復元）
         billingManager = BillingManager(applicationContext, settingsDataStore)
-
-        // ★ In-App Review: 条件を満たしていればレビューダイアログをリクエスト
-        ReviewHelper.checkAndRequest(this)
 
         setContent {
             SimpleWorkoutLogApp(
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // アプリ復帰時に広告をプリロード（まだロードされていない場合）
+        // UMP側で広告が許可済みの場合のみ、マネージャー内部でプリロードされる。
         if (!interstitialAdManager.isAdLoaded()) {
             interstitialAdManager.loadAd()
         }
@@ -86,7 +88,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        interstitialAdManager.setAdsEnabled(false)
         billingManager.destroy()
+        super.onDestroy()
     }
 }

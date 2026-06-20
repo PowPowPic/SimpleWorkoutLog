@@ -287,4 +287,6 @@
     <string name="remove_ads_button">Elimină reclamele (%s)</string>
     <string name="remove_ads_purchased">Reclame eliminate ✓</string>
     <string name="remove_ads_error">Achiziția a eșuat. Vă rugăm să încercați din nou.</string>
+    <string name="privacy_options_title">Setări de confidențialitate</string>
+    <string name="privacy_options_description">Examinați sau modificați opțiunile de confidențialitate pentru reclame.</string>
 </resources>

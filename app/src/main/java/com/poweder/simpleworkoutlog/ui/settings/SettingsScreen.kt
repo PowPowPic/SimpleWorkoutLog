@@ -26,6 +26,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.billing.BillingManager
+import com.poweder.simpleworkoutlog.ui.ads.GoogleMobileAdsConsentManager
 import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
@@ -68,6 +69,10 @@ fun SettingsScreen(
     val activity = context.findActivity()
     val lifecycleOwner = LocalLifecycleOwner.current
     val adRemoved by viewModel.adRemoved.collectAsState()
+    val consentManager = remember(context.applicationContext) {
+        GoogleMobileAdsConsentManager.getInstance(context.applicationContext)
+    }
+    val privacyOptionsRequired by consentManager.privacyOptionsRequired.collectAsState()
 
     // 課金：商品詳細（価格文字列）を監視
     val productDetails by billingManager?.productDetails?.collectAsState()
@@ -341,6 +346,19 @@ fun SettingsScreen(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            // ===== 広告のプライバシー設定（必要な地域のみ） =====
+            if (privacyOptionsRequired) {
+                SettingsItem(
+                    title = stringResource(R.string.privacy_options_title),
+                    description = stringResource(R.string.privacy_options_description),
+                    onClick = {
+                        activity?.let { consentManager.showPrivacyOptionsForm(it) }
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+            }
 
             // ===== 広告削除カード =====
             if (!adRemoved) {
