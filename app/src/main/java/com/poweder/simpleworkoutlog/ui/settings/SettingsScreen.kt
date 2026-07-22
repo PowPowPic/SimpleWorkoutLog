@@ -362,7 +362,10 @@ fun SettingsScreen(
 
             // ===== 広告削除カード =====
             if (!adRemoved) {
-                val price = productDetails?.oneTimePurchaseOfferDetails?.formattedPrice
+                val price = productDetails?.oneTimePurchaseOfferDetailsList
+                    ?.firstOrNull()
+                    ?.formattedPrice
+                    ?: productDetails?.oneTimePurchaseOfferDetails?.formattedPrice
                 SettingsItem(
                     title = stringResource(R.string.remove_ads_title),
                     description = if (price != null) {

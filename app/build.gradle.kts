@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.poweder.simpleworkoutlog"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.poweder.simpleworkoutlog"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 35
-        versionName = "3.2.0"
+        targetSdk = 36
+        versionCode = 36
+        versionName = "3.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -66,7 +66,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
-    implementation("com.android.billingclient:billing-ktx:7.0.0")
+    implementation("com.android.billingclient:billing:9.1.0")
     implementation("com.google.android.play:review-ktx:2.0.1") // ★ In-App Review API
     
     // Navigation

@@ -16,7 +16,6 @@ import com.poweder.simpleworkoutlog.ui.ads.InterstitialAdManager
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModelFactory
 import com.poweder.simpleworkoutlog.util.ReviewHelper
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -82,9 +81,7 @@ class MainActivity : AppCompatActivity() {
             interstitialAdManager.loadAd()
         }
         // 購入状態を再チェック（他デバイスでの購入を反映）
-        kotlinx.coroutines.MainScope().launch {
-            billingManager.restorePurchases()
-        }
+        billingManager.restorePurchases()
     }
 
     override fun onDestroy() {

@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+app.zip
+*.zip
+*.aab
+*.apk
+*.bak
+app/release/
+app/build/
+build/
