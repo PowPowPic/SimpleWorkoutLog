@@ -35,7 +35,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.data.dao.DailyMaxWeight
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
-import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
@@ -176,7 +175,6 @@ fun GraphScreen(
     modifier: Modifier = Modifier
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val adRemoved by viewModel.adRemoved.collectAsState()
     val graphResetDate by viewModel.graphResetDate.collectAsState()
     val weightUnit by viewModel.weightUnit.collectAsState()
     val distanceUnit by viewModel.distanceUnit.collectAsState()
@@ -400,8 +398,6 @@ fun GraphScreen(
             .fillMaxSize()
             .background(Color.Transparent)
     ) {
-        TopBannerAd(showAd = !adRemoved)
-
         Column(
             modifier = Modifier
                 .weight(1f)

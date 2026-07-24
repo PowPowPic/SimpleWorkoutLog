@@ -48,10 +48,6 @@ class WorkoutViewModel(
 
     val distanceUnit: StateFlow<DistanceUnit> = settingsDataStore.distanceUnitFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DistanceUnit.KM)
-
-    val adRemoved: StateFlow<Boolean> = settingsDataStore.adRemovedFlow
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
-
     // 言語設定
     val currentLanguage: StateFlow<String?> = settingsDataStore.languageFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)

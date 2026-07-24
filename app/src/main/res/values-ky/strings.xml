@@ -282,11 +282,4 @@
     <string name="cd_delete_all">Баарын өчүрүү</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">Жарнамаларды алып салуу</string>
-    <string name="remove_ads_description">Бир жолу төлөө менен колдонмодогу бардык жарнамалар биротоло алынып салынат.</string>
-    <string name="remove_ads_button">Жарнамаларды алып салуу (%s)</string>
-    <string name="remove_ads_purchased">Жарнамалар алынды ✓</string>
-    <string name="remove_ads_error">Сатып алуу ишке ашкан жок. Кайра аракет кылып көрүңүз.</string>
-    <string name="privacy_options_title">Купуялык жөндөөлөрү</string>
-    <string name="privacy_options_description">Жарнамага байланыштуу купуялык тандоолоруңузду карап чыгыңыз же өзгөртүңүз.</string>
 </resources>

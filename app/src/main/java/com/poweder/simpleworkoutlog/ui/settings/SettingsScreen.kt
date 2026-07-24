@@ -25,9 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
-import com.poweder.simpleworkoutlog.billing.BillingManager
-import com.poweder.simpleworkoutlog.ui.ads.GoogleMobileAdsConsentManager
-import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.DistanceUnit
@@ -62,21 +59,11 @@ fun Context.findActivity(): Activity? {
 fun SettingsScreen(
     viewModel: WorkoutViewModel,
     onBack: () -> Unit,
-    billingManager: BillingManager? = null,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val activity = context.findActivity()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val adRemoved by viewModel.adRemoved.collectAsState()
-    val consentManager = remember(context.applicationContext) {
-        GoogleMobileAdsConsentManager.getInstance(context.applicationContext)
-    }
-    val privacyOptionsRequired by consentManager.privacyOptionsRequired.collectAsState()
-
-    // 課金：商品詳細（価格文字列）を監視
-    val productDetails by billingManager?.productDetails?.collectAsState()
-        ?: androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(null) }
     val weightUnit by viewModel.weightUnit.collectAsState()
     val distanceUnit by viewModel.distanceUnit.collectAsState()
     val currentLanguage by viewModel.currentLanguage.collectAsState()
@@ -244,9 +231,6 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(backgroundGradient)
     ) {
-        // 広告バナー
-        TopBannerAd(showAd = !adRemoved)
-
         // 日付表示
         Text(
             text = logicalDate.format(dateFormatter),
@@ -346,49 +330,6 @@ fun SettingsScreen(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // ===== 広告のプライバシー設定（必要な地域のみ） =====
-            if (privacyOptionsRequired) {
-                SettingsItem(
-                    title = stringResource(R.string.privacy_options_title),
-                    description = stringResource(R.string.privacy_options_description),
-                    onClick = {
-                        activity?.let { consentManager.showPrivacyOptionsForm(it) }
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-
-            // ===== 広告削除カード =====
-            if (!adRemoved) {
-                val price = productDetails?.oneTimePurchaseOfferDetailsList
-                    ?.firstOrNull()
-                    ?.formattedPrice
-                    ?: productDetails?.oneTimePurchaseOfferDetails?.formattedPrice
-                SettingsItem(
-                    title = stringResource(R.string.remove_ads_title),
-                    description = if (price != null) {
-                        stringResource(R.string.remove_ads_button, price)
-                    } else {
-                        stringResource(R.string.remove_ads_description)
-                    },
-                    onClick = {
-                        activity?.let { act ->
-                            billingManager?.launchPurchaseFlow(act)
-                        }
-                    },
-                    isAccent = true
-                )
-            } else {
-                SettingsItem(
-                    title = stringResource(R.string.remove_ads_title),
-                    description = stringResource(R.string.remove_ads_purchased),
-                    onClick = {},
-                    isPurchased = true
-                )
-            }
-
             // 全データ削除
             SettingsItem(
                 title = stringResource(R.string.settings_delete_title),
@@ -425,25 +366,16 @@ private fun SettingsItem(
     title: String,
     description: String,
     onClick: () -> Unit,
-    isDanger: Boolean = false,
-    isAccent: Boolean = false,   // 広告削除ボタン用：オレンジ強調
-    isPurchased: Boolean = false // 購入済み表示用：グレーアウト
+    isDanger: Boolean = false
 ) {
     val cardGradient = Brush.horizontalGradient(
-        colors = when {
-            isDanger -> listOf(
+        colors = if (isDanger) {
+            listOf(
                 WorkoutColors.PureRed.copy(alpha = 0.3f),
                 WorkoutColors.PureRed.copy(alpha = 0.2f)
             )
-            isAccent -> listOf(
-                WorkoutColors.AccentOrange.copy(alpha = 0.4f),
-                WorkoutColors.AccentOrange.copy(alpha = 0.25f)
-            )
-            isPurchased -> listOf(
-                WorkoutColors.StrengthCardStart.copy(alpha = 0.5f),
-                WorkoutColors.StrengthCardEnd.copy(alpha = 0.5f)
-            )
-            else -> listOf(
+        } else {
+            listOf(
                 WorkoutColors.StrengthCardStart,
                 WorkoutColors.StrengthCardEnd
             )
@@ -463,12 +395,7 @@ private fun SettingsItem(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = when {
-                    isDanger -> WorkoutColors.PureRed
-                    isAccent -> WorkoutColors.AccentOrange
-                    isPurchased -> WorkoutColors.TextSecondary
-                    else -> WorkoutColors.TextPrimary
-                }
+                color = if (isDanger) WorkoutColors.PureRed else WorkoutColors.TextPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(

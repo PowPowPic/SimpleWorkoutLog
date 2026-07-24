@@ -13,8 +13,8 @@ android {
         applicationId = "com.poweder.simpleworkoutlog"
         minSdk = 26
         targetSdk = 36
-        versionCode = 36
-        versionName = "3.3.0"
+        versionCode = 37 // ★調整ポイント（変更前: 36）
+        versionName = "3.4.0" // ★調整ポイント（変更前: 3.3.0）
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -79,10 +79,6 @@ dependencies {
     
     // DataStore
     implementation(libs.androidx.datastore.preferences)
-    
-    // Google Mobile Ads + UMP
-    implementation(libs.play.services.ads)
-    implementation("com.google.android.ump:user-messaging-platform:4.0.0")
     
     // Testing
     testImplementation(libs.junit)

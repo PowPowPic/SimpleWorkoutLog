@@ -28,7 +28,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.data.entity.WorkoutType
-import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.AddExerciseDialog
 import com.poweder.simpleworkoutlog.ui.dialog.ExerciseSelectDialog
 import com.poweder.simpleworkoutlog.ui.dialog.RenameDialog
@@ -66,7 +65,6 @@ fun MainScreen(
     val todayTotalDurationSeconds by viewModel.todayTotalDurationSeconds.collectAsState()
     val todayTotalCalories by viewModel.todayTotalCalories.collectAsState()
     val weightUnit by viewModel.weightUnit.collectAsState()
-    val adRemoved by viewModel.adRemoved.collectAsState()
     val strengthExercises by viewModel.strengthExercises.collectAsState()
     val cardioExercises by viewModel.cardioExercises.collectAsState()
     val studioExercises by viewModel.studioExercises.collectAsState()
@@ -429,9 +427,6 @@ fun MainScreen(
             .fillMaxSize()
             .background(Color.Transparent)
     ) {
-        // 広告バナー
-        TopBannerAd(showAd = !adRemoved)
-
         // ① 日付表示
         // フォントサイズを変更したい場合は fontSize = XX.sp の数値を調整してください
         // （例：16.sp → 小さめ、20.sp → 大きめ）

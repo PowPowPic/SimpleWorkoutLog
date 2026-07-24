@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.poweder.simpleworkoutlog.R
-import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
@@ -41,7 +40,6 @@ fun CalendarScreen(
     onNavigateToHistory: (LocalDate) -> Unit = {}
 ) {
     val weightUnit by viewModel.weightUnit.collectAsState()
-    val adRemoved by viewModel.adRemoved.collectAsState()
 
     // 選択中の月
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
@@ -66,9 +64,6 @@ fun CalendarScreen(
             .fillMaxSize()
             .background(Color.Transparent)
     ) {
-        // 広告バナー
-        TopBannerAd(showAd = !adRemoved)
-
         Column(
             modifier = Modifier
                 .weight(1f)

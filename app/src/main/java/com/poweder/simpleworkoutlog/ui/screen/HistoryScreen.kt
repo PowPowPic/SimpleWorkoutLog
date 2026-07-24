@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.data.entity.WorkoutSessionEntity
 import com.poweder.simpleworkoutlog.data.entity.WorkoutType
-import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.WorkoutDayDetailDialog
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
@@ -57,7 +56,6 @@ fun HistoryScreen(
     val context = LocalContext.current
     val weightUnit by viewModel.weightUnit.collectAsState()
     val distanceUnit by viewModel.distanceUnit.collectAsState()
-    val adRemoved by viewModel.adRemoved.collectAsState()
 
     // 選択中の日付（initialDateがあればその日付、なければ今日）
     var selectedDate by remember { mutableStateOf(initialDate ?: currentLogicalDate()) }
@@ -183,9 +181,6 @@ fun HistoryScreen(
             .fillMaxSize()
             .background(Color.Transparent)
     ) {
-        // 広告バナー
-        TopBannerAd(showAd = !adRemoved)
-
         // 日付ナビゲーション（←日付→形式）
         Row(
             modifier = Modifier

@@ -26,7 +26,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.data.model.SetItem
-import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
@@ -55,7 +54,6 @@ fun StrengthTrainingScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     val weightUnit by viewModel.weightUnit.collectAsState()
-    val adRemoved by viewModel.adRemoved.collectAsState()
     val setItems by viewModel.setItems.collectAsState()
     val sessionTotal by viewModel.sessionTotal.collectAsState()
     val currentExercise by viewModel.currentStrengthExercise.collectAsState()
@@ -158,9 +156,6 @@ fun StrengthTrainingScreen(
             .fillMaxSize()
             .background(backgroundGradient)
     ) {
-        // 広告バナー
-        TopBannerAd(showAd = !adRemoved)
-
         // 日付表示
         Text(
             text = logicalDate.format(dateFormatter),

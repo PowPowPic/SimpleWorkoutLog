@@ -247,11 +247,4 @@
     <string name="cd_delete_all">すべて削除</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">広告を削除</string>
-    <string name="remove_ads_description">一度のお支払いで、アプリ内のすべての広告が永久に削除されます。</string>
-    <string name="remove_ads_button">広告を削除 (%s)</string>
-    <string name="remove_ads_purchased">広告を削除済み ✓</string>
-    <string name="remove_ads_error">購入に失敗しました。もう一度お試しください。</string>
-    <string name="privacy_options_title">プライバシー設定</string>
-    <string name="privacy_options_description">広告に関するプライバシーの選択内容を確認・変更します。</string>
 </resources>

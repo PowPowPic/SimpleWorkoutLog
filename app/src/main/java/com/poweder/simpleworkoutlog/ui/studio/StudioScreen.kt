@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.poweder.simpleworkoutlog.R
-import com.poweder.simpleworkoutlog.ui.ads.TopBannerAd
 import com.poweder.simpleworkoutlog.ui.dialog.getDisplayName
 import com.poweder.simpleworkoutlog.ui.theme.WorkoutColors
 import com.poweder.simpleworkoutlog.ui.viewmodel.WorkoutViewModel
@@ -45,7 +44,6 @@ fun StudioScreen(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val adRemoved by viewModel.adRemoved.collectAsState()
     val currentExercise by viewModel.currentStudioExercise.collectAsState()
     val editingSession by viewModel.editingSession.collectAsState()
 
@@ -147,9 +145,6 @@ fun StudioScreen(
             .fillMaxSize()
             .background(backgroundGradient)
     ) {
-        // 広告バナー
-        TopBannerAd(showAd = !adRemoved)
-
         // 日付表示
         Text(
             text = logicalDate.format(dateFormatter),

@@ -250,11 +250,4 @@
     <string name="cd_delete_all">Usuń wszystko</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">Usuń reklamy</string>
-    <string name="remove_ads_description">Jednorazowa płatność trwale usuwa wszystkie reklamy z aplikacji.</string>
-    <string name="remove_ads_button">Usuń reklamy (%s)</string>
-    <string name="remove_ads_purchased">Reklamy usunięte ✓</string>
-    <string name="remove_ads_error">Zakup nie powiódł się. Spróbuj ponownie.</string>
-    <string name="privacy_options_title">Ustawienia prywatności</string>
-    <string name="privacy_options_description">Sprawdź lub zmień swoje ustawienia prywatności dotyczące reklam.</string>
 </resources>

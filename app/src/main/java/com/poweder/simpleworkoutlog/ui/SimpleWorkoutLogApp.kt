@@ -1,6 +1,5 @@
 package com.poweder.simpleworkoutlog.ui
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,24 +8,17 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.poweder.simpleworkoutlog.billing.BillingManager
-import com.poweder.simpleworkoutlog.ui.ads.GoogleMobileAdsConsentManager
-import com.poweder.simpleworkoutlog.ui.ads.InterstitialAdManager
 import com.poweder.simpleworkoutlog.ui.cardio.CardioScreen
 import com.poweder.simpleworkoutlog.ui.interval.IntervalScreen
 import com.poweder.simpleworkoutlog.ui.navigation.BottomNavBar
@@ -50,7 +42,7 @@ import kotlinx.coroutines.launch
  * 構造:
  * - NavHost: "main_pager"（メイン5画面）と各種目画面（Strength, Cardio等）を管理
  * - HorizontalPager: メイン5画面間のスワイプ遷移
- * - BottomNavBar: タブクリックでPagerを操作（グラフタブのみ広告判定）
+ * - BottomNavBar: タブクリックでPagerを操作
  *
  * 編集モード:
  * - sessionId = -1 → 新規作成モード
@@ -58,37 +50,12 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun SimpleWorkoutLogApp(
-    viewModel: WorkoutViewModel,
-    interstitialAdManager: InterstitialAdManager? = null,
-    billingManager: BillingManager? = null
+    viewModel: WorkoutViewModel
 ) {
     SimpleWorkoutLogTheme {
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        val context = LocalContext.current
-        val activity = context as? Activity
-        val consentManager = remember(context.applicationContext) {
-            GoogleMobileAdsConsentManager.getInstance(context.applicationContext)
-        }
-        val consentGatheringComplete by consentManager.consentGatheringComplete.collectAsState()
-        val canRequestAds by consentManager.canRequestAds.collectAsState()
-        val mobileAdsInitialized by consentManager.mobileAdsInitialized.collectAsState()
-        val adRemoved by viewModel.adRemoved.collectAsState()
-
-        LaunchedEffect(consentGatheringComplete, canRequestAds) {
-            if (consentGatheringComplete && canRequestAds) {
-                consentManager.initializeMobileAds()
-            }
-        }
-
-        val adsEnabled =
-            consentGatheringComplete && canRequestAds && mobileAdsInitialized && !adRemoved
-
-        LaunchedEffect(adsEnabled, interstitialAdManager) {
-            interstitialAdManager?.setAdsEnabled(adsEnabled)
-        }
-
         // メイン5画面のPager状態（初期ページ: 0 = Home）
         val pagerState = rememberPagerState(pageCount = { 5 })
         val coroutineScope = rememberCoroutineScope()
@@ -116,17 +83,8 @@ fun SimpleWorkoutLogApp(
                         BottomNavBar(
                             currentPage = pagerState.currentPage,
                             onPageSelected = { index ->
-                                // グラフタブ（index=3）のボタンクリック時のみ広告判定
-                                if (index == 3 && activity != null && interstitialAdManager != null) {
-                                    interstitialAdManager.showAdIfAvailable(activity) {
-                                        coroutineScope.launch {
-                                            pagerState.animateScrollToPage(index)
-                                        }
-                                    }
-                                } else {
-                                    coroutineScope.launch {
-                                        pagerState.animateScrollToPage(index)
-                                    }
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
                                 }
                             }
                         )
@@ -207,8 +165,7 @@ fun SimpleWorkoutLogApp(
                                         coroutineScope.launch {
                                             pagerState.animateScrollToPage(0)
                                         }
-                                    },
-                                    billingManager = billingManager
+                                    }
                                 )
                             }
                         }

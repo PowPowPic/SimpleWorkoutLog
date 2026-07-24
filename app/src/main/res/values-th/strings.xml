@@ -246,11 +246,4 @@
     <string name="cd_delete_all">ลบทั้งหมด</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">ลบโฆษณา</string>
-    <string name="remove_ads_description">ชำระเงินครั้งเดียวเพื่อลบโฆษณาทั้งหมดออกจากแอปอย่างถาวร</string>
-    <string name="remove_ads_button">ลบโฆษณา (%s)</string>
-    <string name="remove_ads_purchased">ลบโฆษณาแล้ว ✓</string>
-    <string name="remove_ads_error">การซื้อไม่สำเร็จ กรุณาลองอีกครั้ง</string>
-    <string name="privacy_options_title">การตั้งค่าความเป็นส่วนตัว</string>
-    <string name="privacy_options_description">ตรวจสอบหรือเปลี่ยนตัวเลือกความเป็นส่วนตัวเกี่ยวกับโฆษณา</string>
 </resources>

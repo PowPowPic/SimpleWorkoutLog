@@ -282,11 +282,4 @@
     <string name="cd_delete_all">Barchasini o‘chirish</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">Reklamalarni olib tashlash</string>
-    <string name="remove_ads_description">Bir marta to\'lov qilish orqali ilovadagi barcha reklamalar butunlay olib tashlanadi.</string>
-    <string name="remove_ads_button">Reklamalarni olib tashlash (%s)</string>
-    <string name="remove_ads_purchased">Reklamalar olib tashlandi ✓</string>
-    <string name="remove_ads_error">Xarid amalga oshmadi. Iltimos, qayta urinib ko\'ring.</string>
-    <string name="privacy_options_title">Maxfiylik sozlamalari</string>
-    <string name="privacy_options_description">Reklamalarga oid maxfiylik tanlovlaringizni ko‘rib chiqing yoki o‘zgartiring.</string>
 </resources>

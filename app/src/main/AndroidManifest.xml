@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Internet permission for ads -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -25,11 +23,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleWorkoutLog"
         tools:targetApi="36">
-
-        <!-- AdMob App ID（本番用） -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7305983073191908~7079763562" />
 
         <activity
             android:name=".MainActivity"

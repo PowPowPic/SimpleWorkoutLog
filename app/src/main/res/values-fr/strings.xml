@@ -246,11 +246,4 @@ Les enregistrements entre 0:00 et 3:00 sont comptabilisés comme la veille.
     <string name="cd_delete_all">Tout supprimer</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">Supprimer les publicités</string>
-    <string name="remove_ads_description">Un paiement unique supprime définitivement toutes les publicités de l\'application.</string>
-    <string name="remove_ads_button">Supprimer les publicités (%s)</string>
-    <string name="remove_ads_purchased">Publicités supprimées ✓</string>
-    <string name="remove_ads_error">L\'achat a échoué. Veuillez réessayer.</string>
-    <string name="privacy_options_title">Paramètres de confidentialité</string>
-    <string name="privacy_options_description">Consultez ou modifiez vos choix de confidentialité publicitaire.</string>
 </resources>

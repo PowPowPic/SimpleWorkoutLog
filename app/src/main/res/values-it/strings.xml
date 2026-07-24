@@ -247,11 +247,4 @@ Le registrazioni tra le 0:00 e le 3:00 vengono considerate del giorno precedente
     <string name="cd_delete_all">Elimina tutto</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">Rimuovi pubblicità</string>
-    <string name="remove_ads_description">Un unico pagamento rimuove definitivamente tutte le pubblicità dall\'app.</string>
-    <string name="remove_ads_button">Rimuovi pubblicità (%s)</string>
-    <string name="remove_ads_purchased">Pubblicità rimosse ✓</string>
-    <string name="remove_ads_error">Acquisto non riuscito. Riprova.</string>
-    <string name="privacy_options_title">Impostazioni sulla privacy</string>
-    <string name="privacy_options_description">Controlla o modifica le tue scelte sulla privacy per gli annunci.</string>
 </resources>

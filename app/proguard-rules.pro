@@ -43,5 +43,3 @@
     volatile <fields>;
 }
 
-# Google Mobile Ads
--keep class com.google.android.gms.ads.** { *; }

@@ -244,11 +244,4 @@
     <string name="cd_delete_all">Xóa tất cả</string>
 
     <!-- ==================== Remove Ads ==================== -->
-    <string name="remove_ads_title">Xóa quảng cáo</string>
-    <string name="remove_ads_description">Chỉ cần thanh toán một lần để xóa vĩnh viễn toàn bộ quảng cáo khỏi ứng dụng.</string>
-    <string name="remove_ads_button">Xóa quảng cáo (%s)</string>
-    <string name="remove_ads_purchased">Đã xóa quảng cáo ✓</string>
-    <string name="remove_ads_error">Mua hàng thất bại. Vui lòng thử lại.</string>
-    <string name="privacy_options_title">Cài đặt quyền riêng tư</string>
-    <string name="privacy_options_description">Xem lại hoặc thay đổi lựa chọn quyền riêng tư liên quan đến quảng cáo.</string>
 </resources>
