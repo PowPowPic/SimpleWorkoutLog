@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,7 +35,6 @@ fun IntervalScreen(
     modifier: Modifier = Modifier,
     sessionId: Long? = null  // null = 新規作成、値あり = 編集モード
 ) {
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
     val intervalExerciseName by viewModel.intervalExerciseName.collectAsState()
@@ -44,11 +42,9 @@ fun IntervalScreen(
     val plan by viewModel.intervalPlan.collectAsState()
     val showResultInput by viewModel.showIntervalResultInput.collectAsState()
 
-    // Service Connector
-    val serviceConnector = remember { IntervalServiceConnector(context) }
-
-    // Service からの snapshot を監視
-    var snapshot by remember { mutableStateOf<IntervalSnapshot?>(null) }
+    // 通知やForegroundServiceを使わない画面内タイマー
+    val timerController = remember { IntervalTimerController() }
+    val snapshot by timerController.snapshotFlow.collectAsState()
 
     // 編集モードかどうか
     val isEditMode = sessionId != null
@@ -65,9 +61,6 @@ fun IntervalScreen(
 
     // 編集モード初期化フラグ
     var isEditInitialized by remember { mutableStateOf(false) }
-
-    // タイマー開始済みフラグ
-    var timerStarted by remember { mutableStateOf(false) }
 
     // 編集モードの場合、セッションをロード
     LaunchedEffect(sessionId) {
@@ -89,44 +82,23 @@ fun IntervalScreen(
         }
     }
 
-    // Lifecycle に応じて Service にバインド/アンバインド
+    // 画面復帰時は、画面OFF中に経過した時間を時刻差から再計算する
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_START -> {
-                    serviceConnector.bind()
-                }
-                Lifecycle.Event.ON_STOP -> {
-                    // 画面がバックグラウンドに行ってもServiceは動き続ける
-                    // unbindはON_DESTROYで行う
-                }
-                Lifecycle.Event.ON_DESTROY -> {
-                    serviceConnector.unbind()
-                }
-                else -> {}
+            if (event == Lifecycle.Event.ON_START || event == Lifecycle.Event.ON_RESUME) {
+                timerController.refresh()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
-            serviceConnector.unbind()
-        }
-    }
-
-    // Service の snapshotFlow を監視
-    LaunchedEffect(timerStarted) {
-        if (timerStarted) {
-            // 少し待ってからバインドを確認
-            kotlinx.coroutines.delay(100)
-            serviceConnector.snapshotFlow?.collect { newSnapshot ->
-                snapshot = newSnapshot
-            }
         }
     }
 
     // 画面離脱時のクリーンアップ
-    DisposableEffect(Unit) {
+    DisposableEffect(timerController) {
         onDispose {
+            timerController.close()
             viewModel.clearIntervalTimer()
         }
     }
@@ -143,9 +115,7 @@ fun IntervalScreen(
             onConfirm = { newPlan ->
                 showSettingsDialog = false
                 viewModel.setIntervalPlan(newPlan)
-                // Service でタイマーを開始
-                serviceConnector.startTimer(newPlan)
-                timerStarted = true
+                timerController.start(newPlan)
             },
             onDismiss = {
                 showSettingsDialog = false
@@ -200,7 +170,7 @@ fun IntervalScreen(
                             onDurationMinutesChange = { durationMinutes = it },
                             onDurationSecondsChange = { durationSeconds = it },
                             onCancel = {
-                                serviceConnector.stopTimer()
+                                timerController.stop()
                                 viewModel.clearIntervalTimer()
                                 viewModel.clearEditingSession()
                                 onBack()
@@ -254,25 +224,18 @@ fun IntervalScreen(
                                     snapshot = currentSnapshot,
                                     onPauseResume = {
                                         if (currentSnapshot.isRunning) {
-                                            serviceConnector.pauseTimer()
+                                            timerController.pause()
                                         } else {
-                                            serviceConnector.resumeTimer()
+                                            timerController.resume()
                                         }
                                     },
                                     onStop = {
-                                        serviceConnector.stopTimer()
+                                        timerController.stop()
                                         viewModel.showIntervalResultInput()
                                     }
                                 )
                             }
                         }
-                    }
-
-                    // タイマー開始前（設定後、Serviceからのsnapshot待ち）
-                    timerStarted -> {
-                        CircularProgressIndicator(
-                            color = WorkoutColors.AccentOrange
-                        )
                     }
                 }
             }

@@ -219,20 +219,10 @@ Aufzeichnungen zwischen 0:00 und 3:00 Uhr werden dem Vortag zugeordnet.
     <string name="cancel">Abbrechen</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">Intervalltimer</string>
-    <string name="interval_timer_channel_description">Zeigt den Fortschritt des Intervalltimers an</string>
-    <string name="interval_timer">Intervalltimer</string>
+<string name="interval_timer">Intervalltimer</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">Timer-Einstellungen</string>
-    <string name="timer_sound">Timer-Ton</string>
-    <string name="timer_sound_desc">Timer-Ton ein- oder ausschalten</string>
-    <string name="timer_vibration">Timer-Vibration</string>
-    <string name="timer_vibration_desc">Vibration ein- oder ausschalten</string>
-    <string name="countdown_last_5_seconds">Letzte 5 Sekunden</string>
-    <string name="countdown_last_5_seconds_desc">Benachrichtigung 5–1 Sekunden vor Phasenende</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20 Sek. Arbeit / 10 Sek. Pause × 8 Runden</string>
     <string name="preset_hiit_desc">Hochintensives Intervalltraining\nArbeit und Pause frei anpassen</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nJede Minute eine neue Runde starten</string>

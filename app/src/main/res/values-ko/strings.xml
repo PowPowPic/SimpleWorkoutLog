@@ -217,20 +217,10 @@
     <string name="cancel">취소</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">인터벌 타이머</string>
-    <string name="interval_timer_channel_description">인터벌 타이머 진행 상황을 표시</string>
-    <string name="interval_timer">인터벌 타이머</string>
+<string name="interval_timer">인터벌 타이머</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">타이머 설정</string>
-    <string name="timer_sound">타이머 소리</string>
-    <string name="timer_sound_desc">타이머 소리를 켜거나 끕니다</string>
-    <string name="timer_vibration">타이머 진동</string>
-    <string name="timer_vibration_desc">진동 알림을 켜거나 끕니다</string>
-    <string name="countdown_last_5_seconds">마지막 5초 카운트다운</string>
-    <string name="countdown_last_5_seconds_desc">각 페이즈 종료 5~1초 전에 알림</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20초 운동 / 10초 휴식 × 8라운드</string>
     <string name="preset_hiit_desc">고강도 인터벌 트레이닝\n운동과 휴식을 자유롭게 설정</string>
     <string name="preset_emom_desc">Every Minute On the Minute\n매 분 새로운 라운드를 시작</string>

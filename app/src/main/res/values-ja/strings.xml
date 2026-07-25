@@ -189,7 +189,6 @@
     <string name="graph_picker_cardio">有酸素運動（累積距離）</string>
     <string name="graph_picker_studio">スタジオ（累積回数）</string>
 
-
     <!-- Duration input placeholders -->
     <string name="duration_hours_placeholder">時間</string>
     <string name="duration_minutes_placeholder">分</string>
@@ -220,20 +219,10 @@
     <string name="cancel">キャンセル</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">インターバルタイマー</string>
-    <string name="interval_timer_channel_description">インターバルタイマーの進捗を表示</string>
-    <string name="interval_timer">インターバルタイマー</string>
+<string name="interval_timer">インターバルタイマー</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">タイマー設定</string>
-    <string name="timer_sound">タイマー音</string>
-    <string name="timer_sound_desc">タイマーの音をオン／オフします</string>
-    <string name="timer_vibration">タイマーバイブ</string>
-    <string name="timer_vibration_desc">バイブ通知をオン／オフします</string>
-    <string name="countdown_last_5_seconds">ラスト5秒カウントダウン</string>
-    <string name="countdown_last_5_seconds_desc">各フェーズ終了の5〜1秒前に通知します</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20秒ワーク / 10秒休憩 × 8ラウンド</string>
     <string name="preset_hiit_desc">高強度インターバルトレーニング\nワークと休憩を自由にカスタマイズ</string>
     <string name="preset_emom_desc">Every Minute On the Minute\n毎分新しいラウンドをスタート</string>

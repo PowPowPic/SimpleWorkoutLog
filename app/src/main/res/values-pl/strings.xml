@@ -219,20 +219,10 @@
     <string name="cancel">Anuluj</string>
 
     <!-- ==================== Interval Timer Notification ==================== -->
-    <string name="interval_timer_channel_name">Timer interwałowy</string>
-    <string name="interval_timer_channel_description">Pokazuje postęp timera interwałowego</string>
-    <string name="interval_timer">Timer interwałowy</string>
+<string name="interval_timer">Timer interwałowy</string>
 
     <!-- ==================== Timer Settings ==================== -->
-    <string name="timer_settings_section">Ustawienia timera</string>
-    <string name="timer_sound">Dźwięk timera</string>
-    <string name="timer_sound_desc">Włącz lub wyłącz dźwięki timera</string>
-    <string name="timer_vibration">Wibracje timera</string>
-    <string name="timer_vibration_desc">Włącz lub wyłącz powiadomienia wibracyjne</string>
-    <string name="countdown_last_5_seconds">Odliczanie (ostatnie 5 s)</string>
-    <string name="countdown_last_5_seconds_desc">Powiadom 5–1 s przed końcem każdej fazy</string>
-
-    <!-- ==================== Interval Presets ==================== -->
+<!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 s pracy / 10 s odpoczynku × 8 rund</string>
     <string name="preset_hiit_desc">Trening interwałowy o wysokiej intensywności\nDostosuj czas pracy i odpoczynku</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nNowa runda co minutę</string>

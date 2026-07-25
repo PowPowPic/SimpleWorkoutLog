@@ -34,7 +34,6 @@
     00:00 мен 03:00 аралығындағы жазбалар алдыңғы күн ретінде есептеледі.
 </string>
 
-
     <string name="add_past_workout">Алдыңғы жаттығуды қосу</string>
 
     <!-- ==================== Workout Types ==================== -->
@@ -244,22 +243,10 @@
     <string name="cancel">Болдырмау</string>
 
     <!-- ==================== Interval Timer Notification ==================== -->
-    <string name="interval_timer_channel_name">Интервал таймері</string>
-    <string name="interval_timer_channel_description">Интервал таймерінің барысын көрсетеді</string>
-    <string name="interval_timer">Интервал таймері</string>
+<string name="interval_timer">Интервал таймері</string>
 
     <!-- ==================== Timer Settings ==================== -->
-    <string name="timer_settings_section">Таймер баптаулары</string>
-    <string name="timer_sound">Таймер дыбысы</string>
-    <string name="timer_sound_desc">Таймер дыбыстарын қосу немесе өшіру</string>
-    <string name="timer_vibration">Таймер дірілі</string>
-    <string name="timer_vibration_desc">Діріл хабарландыруларын қосу немесе өшіру</string>
-    <string name="countdown_last_5_seconds">Кері санау (соңғы 5 секунд)</string>
-    <string name="countdown_last_5_seconds_desc">
-        Әр кезең аяқталуына 5–1 секунд қалғанда хабарлау
-    </string>
-
-    <!-- ==================== Interval Presets ==================== -->
+<!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 сек жұмыс / 10 сек демалыс × 8 раунд</string>
     <string name="preset_hiit_desc">
         Жоғары қарқынды интервалды жаттығу\nЖұмыс және демалыс уақытын баптаңыз

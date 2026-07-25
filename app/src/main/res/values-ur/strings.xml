@@ -238,22 +238,10 @@
     <string name="cancel">منسوخ کریں</string>
 
     <!-- ==================== Interval Timer Notification ==================== -->
-    <string name="interval_timer_channel_name">انٹرویل ٹائمر</string>
-    <string name="interval_timer_channel_description">انٹرویل ٹائمر کی پیش رفت دکھاتا ہے</string>
-    <string name="interval_timer">انٹرویل ٹائمر</string>
+<string name="interval_timer">انٹرویل ٹائمر</string>
 
     <!-- ==================== Timer Settings ==================== -->
-    <string name="timer_settings_section">ٹائمر کی ترتیبات</string>
-    <string name="timer_sound">ٹائمر کی آواز</string>
-    <string name="timer_sound_desc">آواز آن یا آف کریں</string>
-    <string name="timer_vibration">وائبریشن</string>
-    <string name="timer_vibration_desc">وائبریشن آن یا آف کریں</string>
-    <string name="countdown_last_5_seconds">آخری 5 سیکنڈ کاؤنٹ ڈاؤن</string>
-    <string name="countdown_last_5_seconds_desc">
-        ہر مرحلے کے اختتام سے 5–1 سیکنڈ پہلے اطلاع دیں
-    </string>
-
-    <!-- ==================== Interval Presets ==================== -->
+<!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 سیکنڈ کام / 10 سیکنڈ آرام × 8 راؤنڈ</string>
     <string name="preset_hiit_desc">
         ہائی انٹینسٹی انٹرویل ٹریننگ\nکام اور آرام کا وقت خود مقرر کریں
@@ -275,7 +263,6 @@
     <string name="cd_previous_day">پچھلا دن</string>
     <string name="cd_next_day">اگلا دن</string>
     <string name="cd_delete_all">سب حذف کریں</string>
-
 
     <!-- ==================== Remove Ads ==================== -->
 </resources>

@@ -243,22 +243,10 @@
     <string name="cancel">Отказ</string>
 
     <!-- ==================== Interval Timer Notification ==================== -->
-    <string name="interval_timer_channel_name">Интервален таймер</string>
-    <string name="interval_timer_channel_description">Показва напредъка на интервалния таймер</string>
-    <string name="interval_timer">Интервален таймер</string>
+<string name="interval_timer">Интервален таймер</string>
 
     <!-- ==================== Timer Settings ==================== -->
-    <string name="timer_settings_section">Настройки на таймера</string>
-    <string name="timer_sound">Звук на таймера</string>
-    <string name="timer_sound_desc">Включване или изключване на звуците на таймера</string>
-    <string name="timer_vibration">Вибрация на таймера</string>
-    <string name="timer_vibration_desc">Включване или изключване на вибрационните известия</string>
-    <string name="countdown_last_5_seconds">Отброяване (последните 5 секунди)</string>
-    <string name="countdown_last_5_seconds_desc">
-        Известяване 5–1 секунди преди края на всяка фаза
-    </string>
-
-    <!-- ==================== Interval Presets ==================== -->
+<!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 секунди работа / 10 секунди почивка × 8 рунда</string>
     <string name="preset_hiit_desc">
         Високоинтензивна интервална тренировка\nПерсонализирайте времето за работа и почивка

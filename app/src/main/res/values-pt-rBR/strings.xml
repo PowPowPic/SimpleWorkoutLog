@@ -219,20 +219,10 @@ Registros entre 0:00 e 3:00 são contabilizados como o dia anterior.
     <string name="cancel">Cancelar</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">Timer de intervalos</string>
-    <string name="interval_timer_channel_description">Mostrar o progresso do timer de intervalos</string>
-    <string name="interval_timer">Timer de intervalos</string>
+<string name="interval_timer">Timer de intervalos</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">Config. do timer</string>
-    <string name="timer_sound">Som do timer</string>
-    <string name="timer_sound_desc">Ativar/desativar o som do timer</string>
-    <string name="timer_vibration">Vibração</string>
-    <string name="timer_vibration_desc">Ativar/desativar a vibração</string>
-    <string name="countdown_last_5_seconds">Contagem final (5 s)</string>
-    <string name="countdown_last_5_seconds_desc">Notificar de 5 a 1 s antes do fim da fase</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20 s trabalho / 10 s descanso × 8 rounds</string>
     <string name="preset_hiit_desc">Treino intervalado de alta intensidade\nPersonalize trabalho e descanso</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nComece um novo round a cada minuto</string>

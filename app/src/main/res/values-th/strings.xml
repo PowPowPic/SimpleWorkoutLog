@@ -219,20 +219,10 @@
     <string name="cancel">ยกเลิก</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">ไทเมอร์อินเทอร์วัล</string>
-    <string name="interval_timer_channel_description">แสดงความคืบหน้าของไทเมอร์อินเทอร์วัล</string>
-    <string name="interval_timer">ไทเมอร์อินเทอร์วัล</string>
+<string name="interval_timer">ไทเมอร์อินเทอร์วัล</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">ตั้งค่าไทเมอร์</string>
-    <string name="timer_sound">เสียงไทเมอร์</string>
-    <string name="timer_sound_desc">เปิด/ปิดเสียงไทเมอร์</string>
-    <string name="timer_vibration">สั่นเตือน</string>
-    <string name="timer_vibration_desc">เปิด/ปิดการสั่นเตือน</string>
-    <string name="countdown_last_5_seconds">นับถอยหลัง 5 วินาทีสุดท้าย</string>
-    <string name="countdown_last_5_seconds_desc">แจ้งเตือนก่อนจบแต่ละช่วง 5–1 วินาที</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">ทำงาน 20 วิ / พัก 10 วิ × 8 รอบ</string>
     <string name="preset_hiit_desc">การฝึกแบบอินเทอร์วัลความเข้มข้นสูง\nปรับเวลาออกแรงและพักได้ตามต้องการ</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nเริ่มรอบใหม่ทุกๆ นาที</string>

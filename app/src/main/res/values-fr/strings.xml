@@ -219,20 +219,10 @@ Les enregistrements entre 0:00 et 3:00 sont comptabilisés comme la veille.
     <string name="cancel">Annuler</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">Minuteur d’intervalles</string>
-    <string name="interval_timer_channel_description">Afficher l’avancement du minuteur d’intervalles</string>
-    <string name="interval_timer">Minuteur d’intervalles</string>
+<string name="interval_timer">Minuteur d’intervalles</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">Réglages du minuteur</string>
-    <string name="timer_sound">Son du minuteur</string>
-    <string name="timer_sound_desc">Activer ou désactiver le son</string>
-    <string name="timer_vibration">Vibration</string>
-    <string name="timer_vibration_desc">Activer ou désactiver la vibration</string>
-    <string name="countdown_last_5_seconds">Dernières 5 secondes</string>
-    <string name="countdown_last_5_seconds_desc">Notification 5–1 s avant la fin de la phase</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20 s travail / 10 s repos × 8 rounds</string>
     <string name="preset_hiit_desc">Entraînement fractionné haute intensité\nPersonnalisez travail et repos</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nDémarrer un nouveau round chaque minute</string>

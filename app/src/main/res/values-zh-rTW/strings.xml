@@ -221,20 +221,10 @@
     <string name="cancel">取消</string>
 
     <!-- ==================== Interval Timer Notification ==================== -->
-    <string name="interval_timer_channel_name">間歇計時器</string>
-    <string name="interval_timer_channel_description">顯示間歇計時器的進度</string>
-    <string name="interval_timer">間歇計時器</string>
+<string name="interval_timer">間歇計時器</string>
 
     <!-- ==================== Timer Settings ==================== -->
-    <string name="timer_settings_section">計時器設定</string>
-    <string name="timer_sound">計時器音效</string>
-    <string name="timer_sound_desc">開啟或關閉計時器音效</string>
-    <string name="timer_vibration">計時器震動</string>
-    <string name="timer_vibration_desc">開啟或關閉震動通知</string>
-    <string name="countdown_last_5_seconds">最後 5 秒倒數</string>
-    <string name="countdown_last_5_seconds_desc">在各階段結束前 5～1 秒提醒</string>
-
-    <!-- ==================== Interval Presets ==================== -->
+<!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 秒訓練 / 10 秒休息 × 8 回合</string>
     <string name="preset_hiit_desc">高強度間歇訓練\n可自由自訂訓練與休息時間</string>
     <string name="preset_emom_desc">Every Minute On the Minute\n每分鐘開始新的回合</string>

@@ -219,20 +219,10 @@ Catatan antara 00.00 dan 03.00 dihitung sebagai catatan hari sebelumnya.
     <string name="cancel">Batal</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">Timer interval</string>
-    <string name="interval_timer_channel_description">Menampilkan progres timer interval</string>
-    <string name="interval_timer">Timer interval</string>
+<string name="interval_timer">Timer interval</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">Pengaturan timer</string>
-    <string name="timer_sound">Suara timer</string>
-    <string name="timer_sound_desc">Aktifkan/nonaktifkan suara timer</string>
-    <string name="timer_vibration">Getar timer</string>
-    <string name="timer_vibration_desc">Aktifkan/nonaktifkan getar</string>
-    <string name="countdown_last_5_seconds">Hitung mundur 5 detik</string>
-    <string name="countdown_last_5_seconds_desc">Notifikasi 5–1 detik sebelum fase berakhir</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20 dtk kerja / 10 dtk istirahat × 8 ronde</string>
     <string name="preset_hiit_desc">Latihan interval intensitas tinggi\nBebas atur kerja dan istirahat</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nMulai ronde baru tiap menit</string>

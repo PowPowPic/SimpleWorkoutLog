@@ -219,20 +219,10 @@
     <string name="cancel">İptal</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">İnterval zamanlayıcı</string>
-    <string name="interval_timer_channel_description">İnterval zamanlayıcının ilerlemesini göster</string>
-    <string name="interval_timer">İnterval zamanlayıcı</string>
+<string name="interval_timer">İnterval zamanlayıcı</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">Zamanlayıcı ayarları</string>
-    <string name="timer_sound">Zamanlayıcı sesi</string>
-    <string name="timer_sound_desc">Zamanlayıcı sesini aç/kapat</string>
-    <string name="timer_vibration">Titreşim</string>
-    <string name="timer_vibration_desc">Titreşimi aç/kapat</string>
-    <string name="countdown_last_5_seconds">Son 5 saniye geri sayım</string>
-    <string name="countdown_last_5_seconds_desc">Her aşama bitmeden 5–1 saniye önce bildirim</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20 sn çalışma / 10 sn dinlenme × 8 tur</string>
     <string name="preset_hiit_desc">Yüksek yoğunluklu interval antrenman\nÇalışma ve dinlenmeyi özelleştir</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nHer dakika yeni bir tur başlat</string>

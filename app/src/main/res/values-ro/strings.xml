@@ -243,22 +243,10 @@
     <string name="cancel">Anulează</string>
 
     <!-- ==================== Interval Timer Notification ==================== -->
-    <string name="interval_timer_channel_name">Cronometru intervale</string>
-    <string name="interval_timer_channel_description">Afișează progresul cronometrului pe intervale</string>
-    <string name="interval_timer">Cronometru intervale</string>
+<string name="interval_timer">Cronometru intervale</string>
 
     <!-- ==================== Timer Settings ==================== -->
-    <string name="timer_settings_section">Setări cronometru</string>
-    <string name="timer_sound">Sunet cronometru</string>
-    <string name="timer_sound_desc">Activează sau dezactivează sunetele cronometrului</string>
-    <string name="timer_vibration">Vibrație cronometru</string>
-    <string name="timer_vibration_desc">Activează sau dezactivează notificările prin vibrație</string>
-    <string name="countdown_last_5_seconds">Numărătoare inversă (ultimele 5 secunde)</string>
-    <string name="countdown_last_5_seconds_desc">
-        Notifică cu 5–1 secunde înainte de finalul fiecărei faze
-    </string>
-
-    <!-- ==================== Interval Presets ==================== -->
+<!-- ==================== Interval Presets ==================== -->
     <string name="preset_tabata_desc">20 secunde lucru / 10 secunde pauză × 8 runde</string>
     <string name="preset_hiit_desc">
         Antrenament pe intervale de intensitate mare\nPersonalizează timpul de lucru și pauză

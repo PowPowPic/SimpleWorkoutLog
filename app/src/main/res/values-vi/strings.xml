@@ -217,20 +217,10 @@
     <string name="cancel">Hủy</string>
 
     <!-- Interval Timer Notification -->
-    <string name="interval_timer_channel_name">Bộ hẹn giờ ngắt quãng</string>
-    <string name="interval_timer_channel_description">Hiển thị tiến trình của bộ hẹn giờ ngắt quãng</string>
-    <string name="interval_timer">Bộ hẹn giờ ngắt quãng</string>
+<string name="interval_timer">Bộ hẹn giờ ngắt quãng</string>
 
     <!-- Timer Settings -->
-    <string name="timer_settings_section">Cài đặt bộ hẹn giờ</string>
-    <string name="timer_sound">Âm thanh hẹn giờ</string>
-    <string name="timer_sound_desc">Bật hoặc tắt âm thanh hẹn giờ</string>
-    <string name="timer_vibration">Rung</string>
-    <string name="timer_vibration_desc">Bật hoặc tắt rung</string>
-    <string name="countdown_last_5_seconds">Đếm ngược 5 giây cuối</string>
-    <string name="countdown_last_5_seconds_desc">Thông báo trước khi kết thúc mỗi giai đoạn từ 5 đến 1 giây</string>
-
-    <!-- Interval Presets -->
+<!-- Interval Presets -->
     <string name="preset_tabata_desc">20 giây tập / 10 giây nghỉ × 8 vòng</string>
     <string name="preset_hiit_desc">Bài tập ngắt quãng cường độ cao\nTùy chỉnh thời gian tập và nghỉ</string>
     <string name="preset_emom_desc">Every Minute On the Minute\nBắt đầu vòng mới mỗi phút</string>

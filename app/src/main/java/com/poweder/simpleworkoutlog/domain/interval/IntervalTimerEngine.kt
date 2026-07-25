@@ -8,7 +8,7 @@ package com.poweder.simpleworkoutlog.domain.interval
  * - nowMs（現在時刻）を外から注入して計算する（= テスト可能）
  * - 「今どのフェーズで残り何秒か」を算出することが本体
  * 
- * 将来のForegroundService対応時も、このEngineをそのまま使える
+ * 画面OFFからの復帰時も、時刻差を渡せば現在位置を再計算できる
  */
 class IntervalTimerEngine(private val plan: IntervalPlan) {
 
