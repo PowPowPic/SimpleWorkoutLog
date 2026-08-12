@@ -22,6 +22,7 @@ import com.poweder.simpleworkoutlog.ui.screen.MonthlyStats
 import com.poweder.simpleworkoutlog.util.DistanceUnit
 import com.poweder.simpleworkoutlog.util.WeightUnit
 import com.poweder.simpleworkoutlog.util.currentLogicalDate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,12 +30,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class WorkoutViewModel(
     private val repository: WorkoutRepository,
     private val settingsDataStore: SettingsDataStore,
@@ -109,9 +112,19 @@ class WorkoutViewModel(
         }
     }
 
-    // ===== 記録対象日（デフォルトは今日）=====
-    private val _targetDate = MutableStateFlow<LocalDate>(currentLogicalDate())
+    // ===== 現在の論理日付 / 記録対象日 =====
+    // currentLogicalDate() を ViewModel 初期化時に固定すると、アプリを日付またぎで
+    // 起動したままにした場合に「今日」が前日のまま残る。
+    // そのため現在の論理日付を StateFlow で持ち、必要なタイミングで更新する。
+    private val _currentLogicalDate = MutableStateFlow(currentLogicalDate())
+    val currentLogicalDateState: StateFlow<LocalDate> = _currentLogicalDate.asStateFlow()
+
+    private val _targetDate = MutableStateFlow(_currentLogicalDate.value)
     val targetDate: StateFlow<LocalDate> = _targetDate.asStateFlow()
+
+    // true のときだけ「過去のトレーニングを追加」で選んだ日付を保存先として固定する。
+    // 通常の当日記録では保存直前の currentLogicalDate() を使う。
+    private var hasExplicitTargetDate: Boolean = false
 
     // ===== カレンダー→履歴 日付遷移用 =====
     private val _historyRequestedDate = MutableStateFlow<LocalDate?>(null)
@@ -136,25 +149,64 @@ class WorkoutViewModel(
      */
     fun setTargetDate(date: LocalDate) {
         _targetDate.value = date
+        // この API は「過去のトレーニングを追加」からのみ呼ばれるため、
+        // 選択日が現在の論理日付と同じでも明示指定として固定する。
+        hasExplicitTargetDate = true
+    }
+
+    /**
+     * 現在の論理日付を再評価する。
+     * Home の ON_RESUME / 定期更新から呼び出し、日付またぎ後もサマリーを正しい日に切り替える。
+     */
+    fun refreshCurrentLogicalDate() {
+        val today = currentLogicalDate()
+        if (_currentLogicalDate.value != today) {
+            _currentLogicalDate.value = today
+        }
+        if (!hasExplicitTargetDate && _targetDate.value != today) {
+            _targetDate.value = today
+        }
     }
 
     /**
      * 記録対象日を今日にリセット
      */
     fun resetTargetDateToToday() {
-        _targetDate.value = currentLogicalDate()
+        hasExplicitTargetDate = false
+        val today = currentLogicalDate()
+        _currentLogicalDate.value = today
+        _targetDate.value = today
+    }
+
+    /**
+     * 保存先の日付を決定する。
+     * 通常記録は保存直前の論理日付を使い、過去日付指定時だけ明示日付を維持する。
+     */
+    private fun resolveTargetLogicalDate(): Long {
+        val today = currentLogicalDate()
+        if (_currentLogicalDate.value != today) {
+            _currentLogicalDate.value = today
+        }
+        return if (hasExplicitTargetDate) {
+            _targetDate.value.toEpochDay()
+        } else {
+            _targetDate.value = today
+            today.toEpochDay()
+        }
     }
 
     // ===== 今日のサマリー（セッションから直接計算）=====
 
-    // 今日のセッション
+    // 今日のセッション：論理日付が変わったら購読先も切り替える
     private val todaySessions: StateFlow<List<WorkoutSessionEntity>> =
-        repository.getSessionsByDate(currentLogicalDate().toEpochDay())
+        _currentLogicalDate
+            .flatMapLatest { date -> repository.getSessionsByDate(date.toEpochDay()) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // 今日のセット
+    // 今日のセット：論理日付が変わったら購読先も切り替える
     private val todaySets: StateFlow<List<WorkoutSetEntity>> =
-        repository.getSetsForDate(currentLogicalDate().toEpochDay())
+        _currentLogicalDate
+            .flatMapLatest { date -> repository.getSetsForDate(date.toEpochDay()) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     // 今日の総挙上重量（セットから直接計算）
@@ -173,7 +225,9 @@ class WorkoutViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
     // レガシー：DailyWorkoutEntity（互換性のために維持）
-    val todayWorkout: StateFlow<DailyWorkoutEntity?> = repository.getTodayWorkout()
+    // こちらも論理日付の変更に追従させる。
+    val todayWorkout: StateFlow<DailyWorkoutEntity?> = _currentLogicalDate
+        .flatMapLatest { date -> repository.getDailyWorkout(date.toEpochDay()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     // ===== 種目操作 =====
@@ -470,7 +524,7 @@ class WorkoutViewModel(
             }
 
             // targetDateを使用してセッションを作成
-            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val targetLogicalDate = resolveTargetLogicalDate()
             val session = repository.createNewSession(exerciseId, WorkoutType.STRENGTH, targetLogicalDate)
 
             // 有効なセットを全て保存
@@ -678,7 +732,7 @@ class WorkoutViewModel(
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
-            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val targetLogicalDate = resolveTargetLogicalDate()
             val session = repository.createNewSession(exerciseId, WorkoutType.OTHER, targetLogicalDate)
 
             val updatedSession = session.copy(
@@ -702,7 +756,7 @@ class WorkoutViewModel(
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
-            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val targetLogicalDate = resolveTargetLogicalDate()
             val session = repository.createNewSession(exerciseId, WorkoutType.CARDIO, targetLogicalDate)
 
             val updatedSession = session.copy(
@@ -726,7 +780,7 @@ class WorkoutViewModel(
         caloriesBurned: Int
     ) {
         viewModelScope.launch {
-            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val targetLogicalDate = resolveTargetLogicalDate()
             val session = repository.createNewSession(exerciseId, WorkoutType.STUDIO, targetLogicalDate)
 
             val updatedSession = session.copy(
@@ -749,7 +803,7 @@ class WorkoutViewModel(
         sets: Int
     ) {
         viewModelScope.launch {
-            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val targetLogicalDate = resolveTargetLogicalDate()
             val session = repository.createNewSession(exerciseId, WorkoutType.INTERVAL, targetLogicalDate)
 
             val updatedSession = session.copy(
@@ -786,7 +840,7 @@ class WorkoutViewModel(
                 )
             }
 
-            val targetLogicalDate = _targetDate.value.toEpochDay()
+            val targetLogicalDate = resolveTargetLogicalDate()
             val session = repository.createNewSession(exercise.id, WorkoutType.INTERVAL, targetLogicalDate)
 
             val updatedSession = session.copy(

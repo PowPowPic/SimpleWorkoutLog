@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import kotlinx.coroutines.delay
 import com.poweder.simpleworkoutlog.R
 import com.poweder.simpleworkoutlog.data.entity.ExerciseEntity
 import com.poweder.simpleworkoutlog.data.entity.WorkoutType
@@ -99,18 +100,27 @@ fun MainScreen(
     var exerciseToRename by remember { mutableStateOf<ExerciseEntity?>(null) }
     var currentWorkoutTypeForRename by remember { mutableStateOf<String?>(null) }
 
-    // 日付をライフサイクルに連動して更新
-    var displayDate by remember { mutableStateOf(LocalDate.now()) }
+    // Home に表示する日付は ViewModel の論理日付と同じものを使う。
+    // 0:00〜3:00の前日扱いとサマリーの集計日がずれないようにする。
+    val displayDate by viewModel.currentLogicalDateState.collectAsState()
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                displayDate = LocalDate.now()
+                viewModel.refreshCurrentLogicalDate()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    // Home を開いたまま日付をまたいだ場合にも自動で論理日付を更新する。
+    LaunchedEffect(Unit) {
+        while (true) {
+            viewModel.refreshCurrentLogicalDate()
+            delay(60_000L)
         }
     }
 
@@ -480,7 +490,11 @@ fun MainScreen(
             // 今日のトレーニングメニューカード
             MainActionCard(
                 text = stringResource(R.string.card_today_menu),
-                onClick = { showWorkoutTypeDialog = true }
+                onClick = {
+                    // 過去日付指定が残っていても、通常メニューは必ず「今日」に戻してから開始する。
+                    viewModel.resetTargetDateToToday()
+                    showWorkoutTypeDialog = true
+                }
             )
 
             Spacer(modifier = Modifier.height(8.dp))

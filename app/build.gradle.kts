@@ -13,8 +13,8 @@ android {
         applicationId = "com.poweder.simpleworkoutlog"
         minSdk = 26
         targetSdk = 36
-        versionCode = 39 // ★調整ポイント（変更前: 38）
-        versionName = "3.4.2" // ★調整ポイント（変更前: 3.4.1）
+        versionCode = 40// ★調整ポイント（変更前: 38）
+        versionName = "3.4.3" // ★調整ポイント（変更前: 3.4.1）
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
