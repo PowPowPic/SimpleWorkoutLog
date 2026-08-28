@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
 }
@@ -13,8 +12,8 @@ android {
         applicationId = "com.poweder.simpleworkoutlog"
         minSdk = 26
         targetSdk = 36
-        versionCode = 40// ★調整ポイント（変更前: 38）
-        versionName = "3.4.3" // ★調整ポイント（変更前: 3.4.1）
+        versionCode = 41
+        versionName = "3.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -41,12 +40,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    
-    buildFeatures {
+buildFeatures {
         compose = true
         buildConfig = true  // BuildConfig.DEBUG を使用可能にする
     }
